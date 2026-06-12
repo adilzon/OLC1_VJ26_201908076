@@ -37,4 +37,15 @@ public class Enviroment {
         }
     }
 
+    public ValueWrapper set(String name, ValueWrapper value) {
+        if (variables.containsKey(name)) {
+            variables.put(name, value);
+            return value;
+        } else if (parent != null) {
+            return parent.set(name, value);
+        } else {
+            throw new RuntimeException("Variable '" + name + "' no declarada");
+        }
+    }
+
 }

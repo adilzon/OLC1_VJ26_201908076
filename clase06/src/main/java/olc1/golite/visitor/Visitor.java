@@ -21,4 +21,8 @@ public interface Visitor<T> {
     T visit(Statments.Context ctx);
     T visit(ElifNode.Context ctx);
     T visit(ElifNodes.Context ctx);
+    T visit(Allocate.Context ctx);
+    T visit(Lt.Context ctx);
+    T visit(Breakstm.Context ctx);
+    T visit(WhileFor.Context ctx); 
 }

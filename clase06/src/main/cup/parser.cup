@@ -32,9 +32,11 @@ action code
 terminal String string, integer, decimal;
 terminal lparen, rparen, lbrace, rbrace;
 terminal plus, minus, times, slash, UMENOS;
-terminal scol, assign;
+terminal scol, assign, allocate;
 terminal String id;
 terminal imprimir, kwTrue, kwFalse, kwIf, kwElse;
+terminal kwFor, kwBreak;
+terminal lt;
 
 nonterminal Statments INICIO;
 nonterminal Statments INSTRUCCIONES;
@@ -42,6 +44,7 @@ nonterminal ASTNode INSTRUCCION;
 nonterminal ASTNode EXPRESION;
 nonterminal ElifNodes ELIF;
 
+precedence left lt;
 precedence left plus, minus;
 precedence left times, slash;
 precedence right UMENOS;
@@ -61,8 +64,13 @@ INSTRUCCION ::= imprimir lparen EXPRESION:e rparen scol                     {: R
               | imprimir lparen EXPRESION:e rparen                          {: RESULT = new Imprimir(e); :}
               | id:n assign EXPRESION:e scol                                {: RESULT = new Assign(n, e, nleft, nright); :}
               | id:n assign EXPRESION:e                                     {: RESULT = new Assign(n, e, nleft, nright); :}
+              | id:i allocate EXPRESION:e scol                              {: RESULT = new Allocate(i, e, ileft, iright); :}
+              | id:i allocate EXPRESION:e                                   {: RESULT = new Allocate(i, e, ileft, iright); :}
               | kwIf EXPRESION:c lbrace INSTRUCCIONES:b rbrace              {: RESULT = new IfNode(c, b); :}
               | kwIf EXPRESION:c lbrace INSTRUCCIONES:b rbrace ELIF:el      {: RESULT = new IfNode(c, b, el); :}
+              | kwFor EXPRESION:e lbrace INSTRUCCIONES:i rbrace             {: RESULT = new WhileFor(e, i); :}
+              | kwBreak:b scol                                              {: RESULT = new Breakstm(bleft, bright ); :}
+              | kwBreak:b                                                   {: RESULT = new Breakstm(bleft, bright ); :}
               | error                                                       {: RESULT = null; :}
 ;
 
@@ -75,6 +83,7 @@ EXPRESION ::= minus EXPRESION:a             {: RESULT = new Negate(a); :}%prec U
             | EXPRESION:a minus EXPRESION:b {: RESULT = new Sub(a, b); :}
             | EXPRESION:a times EXPRESION:b {: RESULT = new Mul(a, b); :}
             | EXPRESION:a slash EXPRESION:b {: RESULT = new Div(a, b); :}
+            | EXPRESION:a lt EXPRESION:b    {: RESULT = new Lt(a, b); :}
             | lparen EXPRESION:e rparen     {: RESULT = new Paren(e); :}
             | kwTrue:t                      {: RESULT = new BoolLiteral(true,  tleft, tright); :}
             | kwFalse:f                     {: RESULT = new BoolLiteral(false, fleft, fright); :}

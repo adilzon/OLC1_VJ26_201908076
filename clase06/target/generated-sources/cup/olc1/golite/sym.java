@@ -9,27 +9,31 @@ package olc1.golite;
 public interface sym {
   /* terminals */
   public static final int string = 2;
-  public static final int kwFalse = 19;
+  public static final int kwBreak = 24;
+  public static final int kwFalse = 20;
   public static final int minus = 10;
   public static final int decimal = 4;
-  public static final int imprimir = 17;
+  public static final int imprimir = 18;
+  public static final int lt = 25;
   public static final int UMENOS = 13;
   public static final int scol = 14;
-  public static final int kwIf = 20;
+  public static final int kwIf = 21;
   public static final int times = 11;
-  public static final int kwElse = 21;
+  public static final int kwElse = 22;
   public static final int EOF = 0;
-  public static final int id = 16;
+  public static final int id = 17;
   public static final int slash = 12;
   public static final int rbrace = 8;
   public static final int rparen = 6;
   public static final int assign = 15;
   public static final int error = 1;
-  public static final int kwTrue = 18;
+  public static final int kwTrue = 19;
   public static final int integer = 3;
   public static final int plus = 9;
+  public static final int kwFor = 23;
   public static final int lparen = 5;
   public static final int lbrace = 7;
+  public static final int allocate = 16;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -47,12 +51,16 @@ public interface sym {
   "UMENOS",
   "scol",
   "assign",
+  "allocate",
   "id",
   "imprimir",
   "kwTrue",
   "kwFalse",
   "kwIf",
-  "kwElse"
+  "kwElse",
+  "kwFor",
+  "kwBreak",
+  "lt"
   };
 }
 

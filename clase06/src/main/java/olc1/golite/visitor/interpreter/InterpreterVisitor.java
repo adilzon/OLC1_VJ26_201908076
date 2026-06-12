@@ -11,6 +11,7 @@ import olc1.golite.ast.stm.*;
 import olc1.golite.reports.GoliteError;
 import olc1.golite.visitor.Visitor;
 import olc1.golite.visitor.interpreter.value.*;
+import olc1.golite.visitor.interpreter.transfer.*;
 
 public class InterpreterVisitor implements Visitor<ValueWrapper> {
     public String output = "";
@@ -38,11 +39,16 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper right = Visit(ctx.right);
 
         return switch (left) {
-            case IntValue     l when right instanceof IntValue     r -> new IntValue(l.value() + r.value(), l.line(), l.column());
-            case IntValue     l when right instanceof DecimalValue r -> new DecimalValue(l.value() + r.value(), l.line(), l.column());
-            case DecimalValue l when right instanceof IntValue     r -> new DecimalValue(l.value() + r.value(), l.line(), l.column());
-            case DecimalValue l when right instanceof DecimalValue r -> new DecimalValue(l.value() + r.value(), l.line(), l.column());
-            default -> throw new RuntimeException("Operacion invalida: " + left.getTypeName() + " + " + right.getTypeName());
+            case IntValue l when right instanceof IntValue     r -> 
+                new IntValue(l.value() + r.value(), l.line(), l.column());
+            case IntValue l when right instanceof DecimalValue r -> 
+                new DecimalValue(l.value() + r.value(), l.line(), l.column());
+            case DecimalValue l when right instanceof IntValue     r -> 
+                new DecimalValue(l.value() + r.value(), l.line(), l.column());
+            case DecimalValue l when right instanceof DecimalValue r -> 
+                new DecimalValue(l.value() + r.value(), l.line(), l.column());
+            default -> 
+                throw new RuntimeException("Operacion invalida: " + left.getTypeName() + " + " + right.getTypeName());
         };
     }
 
@@ -51,11 +57,16 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
         return switch (left) {
-            case IntValue     l when right instanceof IntValue     r -> new IntValue((int)(l.value() - r.value()), l.line(), l.column());
-            case IntValue     l when right instanceof DecimalValue r -> new DecimalValue(l.value() - r.value(), l.line(), l.column());
-            case DecimalValue l when right instanceof IntValue     r -> new DecimalValue(l.value() - r.value(), l.line(), l.column());
-            case DecimalValue l when right instanceof DecimalValue r -> new DecimalValue(l.value() - r.value(), l.line(), l.column());
-            default -> throw new RuntimeException("Operacion invalida: " + left.getTypeName() + " - " + right.getTypeName());
+            case IntValue l when right instanceof IntValue     r -> 
+                new IntValue((int)(l.value() - r.value()), l.line(), l.column());
+            case IntValue l when right instanceof DecimalValue r -> 
+                new DecimalValue(l.value() - r.value(), l.line(), l.column());
+            case DecimalValue l when right instanceof IntValue     r -> 
+                new DecimalValue(l.value() - r.value(), l.line(), l.column());
+            case DecimalValue l when right instanceof DecimalValue r -> 
+                new DecimalValue(l.value() - r.value(), l.line(), l.column());
+            default -> 
+                throw new RuntimeException("Operacion invalida: " + left.getTypeName() + " - " + right.getTypeName());
         };
     }
 
@@ -64,11 +75,16 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
         return switch (left) {
-            case IntValue     l when right instanceof IntValue     r -> new IntValue(l.value() * r.value(), l.line(), l.column());
-            case IntValue     l when right instanceof DecimalValue r -> new DecimalValue(l.value() * r.value(), l.line(), l.column());
-            case DecimalValue l when right instanceof IntValue     r -> new DecimalValue(l.value() * r.value(), l.line(), l.column());
-            case DecimalValue l when right instanceof DecimalValue r -> new DecimalValue(l.value() * r.value(), l.line(), l.column());
-            default -> throw new RuntimeException("Operacion invalida: " + left.getTypeName() + " * " + right.getTypeName());
+            case IntValue l when right instanceof IntValue     r -> 
+                new IntValue(l.value() * r.value(), l.line(), l.column());
+            case IntValue l when right instanceof DecimalValue r -> 
+                new DecimalValue(l.value() * r.value(), l.line(), l.column());
+            case DecimalValue l when right instanceof IntValue     r -> 
+                new DecimalValue(l.value() * r.value(), l.line(), l.column());
+            case DecimalValue l when right instanceof DecimalValue r -> 
+                new DecimalValue(l.value() * r.value(), l.line(), l.column());
+            default -> 
+                throw new RuntimeException("Operacion invalida: " + left.getTypeName() + " * " + right.getTypeName());
         };
     }
 
@@ -77,11 +93,34 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
         return switch (left) {
-            case IntValue     l when right instanceof IntValue     r -> new IntValue(l.value() / r.value(), l.line(), l.column());
-            case IntValue     l when right instanceof DecimalValue r -> new DecimalValue(l.value() / r.value(), l.line(), l.column());
-            case DecimalValue l when right instanceof IntValue     r -> new DecimalValue(l.value() / r.value(), l.line(), l.column());
-            case DecimalValue l when right instanceof DecimalValue r -> new DecimalValue(l.value() / r.value(), l.line(), l.column());
-            default -> throw new RuntimeException("Operacion invalida: " + left.getTypeName() + " / " + right.getTypeName());
+            case IntValue l when right instanceof IntValue     r -> 
+                new IntValue(l.value() / r.value(), l.line(), l.column());
+            case IntValue l when right instanceof DecimalValue r -> 
+                new DecimalValue(l.value() / r.value(), l.line(), l.column());
+            case DecimalValue l when right instanceof IntValue     r -> 
+                new DecimalValue(l.value() / r.value(), l.line(), l.column());
+            case DecimalValue l when right instanceof DecimalValue r -> 
+                new DecimalValue(l.value() / r.value(), l.line(), l.column());
+            default -> 
+                throw new RuntimeException("Operacion invalida: " + left.getTypeName() + " / " + right.getTypeName());
+        };
+    }
+
+    @Override
+    public ValueWrapper visit(Lt.Context ctx) {
+        ValueWrapper left  = Visit(ctx.left);
+        ValueWrapper right = Visit(ctx.right);
+        return switch (left) {
+            case IntValue l when right instanceof IntValue     r -> 
+                new BoolValue(l.value() < r.value(), l.line(), l.column());
+            case IntValue l when right instanceof DecimalValue r -> 
+                new BoolValue(l.value() < r.value(), l.line(), l.column());
+            case DecimalValue l when right instanceof IntValue     r -> 
+                new BoolValue(l.value() < r.value(), l.line(), l.column());
+            case DecimalValue l when right instanceof DecimalValue r -> 
+                new BoolValue(l.value() < r.value(), l.line(), l.column());
+            default -> 
+                throw new RuntimeException("Operacion invalida: " + left.getTypeName() + " < " + right.getTypeName());
         };
     }
 
@@ -138,26 +177,6 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
                     ctx.line,
                     ctx.column));
             return defaultVoid;
-        }
-    }
-
-    @Override
-    public ValueWrapper visit(StringLiteral.Context ctx) {
-        return new StringValue(ctx.value, ctx.line, ctx.column);        
-    }
-
-    @Override
-    public ValueWrapper visit(VarRef.Context ctx) {
-        try {
-            return environment.get(ctx.name);
-        } catch (RuntimeException e) {
-            this.errors.add(
-                new GoliteError(
-                    "Semantico",
-                    "Variable '" + ctx.name + "' no declarada",
-                    ctx.line,
-                    ctx.column));
-            return defaultVoid;
         }        
     }
 
@@ -180,26 +199,45 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     }    
 
     @Override
+    public ValueWrapper visit(Allocate.Context ctx) {
+        ValueWrapper val = Visit(ctx.expression);
+       
+        try {
+            environment.set(ctx.id, val);
+        } catch (RuntimeException e) {
+            this.errors.add(
+                new GoliteError(
+                    "Semantico",
+                    "Variable '" + ctx.id + "' no declarada",
+                    ctx.line,
+                    ctx.column));
+        }
+
+        return defaultVoid;
+    }
+
+    @Override
     public ValueWrapper visit(IfNode.Context ctx) {
         Enviroment parentEnv = this.environment;
-        ValueWrapper condition = Visit(ctx.condition);
-
-        if (condition instanceof BoolValue b && b.value()) {
+        
+        ValueWrapper cond = Visit(ctx.condition);
+        if (cond instanceof BoolValue b && b.value()) {
             this.environment = new Enviroment(parentEnv);
             Visit(ctx.body);
             this.environment = parentEnv;
             return defaultVoid;
         } 
 
-        ElifNodes elifList = ctx.elifList;
-        if (elifList != null) {
-            Visit(elifList);
+        ElifNodes elifs = ctx.elifList;
 
-            for (ElifNode elif : elifList.ctx.elifNodesList) {
+        if (elifs != null) {
+            Visit(elifs);
+
+            for (ElifNode elif : elifs.ctx.elifNodesList) {
                 Visit(elif);
-                ValueWrapper elifCondition = Visit(elif.ctx.condition);
+                ValueWrapper elifCond = Visit(elif.ctx.condition);
 
-                if (elifCondition instanceof BoolValue elifB && elifB.value()) {
+                if (elifCond instanceof BoolValue elifB && elifB.value()) {
                     this.environment = new Enviroment(parentEnv);
                     Visit(elif.ctx.body);
                     this.environment = parentEnv;
@@ -211,7 +249,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         return defaultVoid;
     }
 
-    @Deprecated
+    @Override
     public ValueWrapper visit(ElifNodes.Context ctx) {
         // Logica implemantada en otro nodo
         return defaultVoid;
@@ -221,5 +259,31 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     public ValueWrapper visit(ElifNode.Context ctx) {
         // Logica implemantada en otro nodo
         return defaultVoid;
+    }
+
+    @Override
+    public ValueWrapper visit(WhileFor.Context ctx) {
+        Enviroment parentEnv = this.environment;
+        ValueWrapper condition = Visit(ctx.condition);
+
+        while (condition instanceof BoolValue b && b.value()) {
+            this.environment = new Enviroment(parentEnv);
+
+            try {
+                Visit(ctx.body);
+            } catch (BreakException e) {
+                break;
+            }
+           
+            condition = Visit(ctx.condition);
+        }
+
+        this.environment = parentEnv;
+        return defaultVoid;
+    }
+
+    @Override
+    public ValueWrapper visit(Breakstm.Context ctx) {
+        throw new BreakException();
     }
 }
