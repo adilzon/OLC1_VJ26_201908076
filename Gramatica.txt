@@ -1,0 +1,32 @@
+<programa> ::= <instrucciones>
+
+<instrucciones> ::= <instruccion> <instrucciones>
+                  | <instruccion>
+
+<instruccion> ::= "print" "(" <expresion> ")" ";"
+                | <identificador> ":=" <expresion> ";"
+                | <identificador> "=" <expresion> ";"
+                | "if" <expresion> "{" <instrucciones> "}"
+                | "if" <expresion> "{" <instrucciones> "}" <elif_list>
+                | "for" <expresion> "{" <instrucciones> "}"
+                | "break" ";"
+                | "break"
+
+<expresion> ::= <expresion> "+" <expresion>
+              | <expresion> "-" <expresion>
+              | <expresion> "*" <expresion>
+              | <expresion> "/" <expresion>
+              | <expresion> "<" <expresion>
+              | "-" <expresion>
+              | "(" <expresion> ")"
+              | "true"
+              | "false"
+              | <identificador>
+              | <entero>
+              | <decimal>
+              | <cadena>
+
+<identificador> ::= letra (letra | digito)*
+<entero> ::= digito+
+<decimal> ::= digito+ "." digito+
+<cadena> ::= "\"" caracter* "\""
