@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa la función embebida reflect.TypeOf.
+// Me permite obtener en tiempo de ejecución el tipo dinámico de cualquier expresión.
 public class TypeOf implements ASTNode {
     private final ASTNode expression;
     private final int line;

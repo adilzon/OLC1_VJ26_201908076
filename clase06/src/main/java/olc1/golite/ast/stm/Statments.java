@@ -5,6 +5,8 @@ import java.util.List;
 
 import olc1.golite.ast.ASTNode;
 
+// Nodo que agrupa una secuencia de instrucciones consecutivas.
+// Se encarga de evaluar cada sentencia una tras otra.
 public class Statments implements ASTNode {
     private final List<ASTNode> statements;
 

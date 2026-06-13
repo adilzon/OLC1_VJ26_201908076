@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo para la operación de suma (+).
+// Lo utilizo tanto para sumar números (enteros/decimales) como para concatenar cadenas de texto.
 public class Add implements ASTNode {
     private final ASTNode left;
     private final ASTNode right;

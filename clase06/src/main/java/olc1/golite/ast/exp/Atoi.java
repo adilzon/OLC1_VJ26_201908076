@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa la función embebida strconv.Atoi.
+// La implementé para convertir valores de tipo string a tipo int de forma segura.
 public class Atoi implements ASTNode {
     private final ASTNode expression;
     private final int line;

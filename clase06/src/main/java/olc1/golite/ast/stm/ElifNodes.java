@@ -6,6 +6,7 @@ import java.util.List;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo contenedor que agrupa todas las ramas Else If asociadas a una estructura condicional.
 public class ElifNodes implements ASTNode{
     // lista de elifs: [ElifNode, ElifNode, ...]
     private final java.util.List<ElifNode> elifNodesList;

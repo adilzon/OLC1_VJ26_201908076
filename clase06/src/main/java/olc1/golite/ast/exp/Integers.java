@@ -3,6 +3,7 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa un valor literal entero (int) dentro de mi código fuente.
 public class Integers implements ASTNode {
     private final int value;
     private final int line;

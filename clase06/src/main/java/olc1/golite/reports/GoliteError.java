@@ -1,5 +1,7 @@
 package olc1.golite.reports;
 
+// Clase para representar los errores léxicos, sintácticos y semánticos detectados.
+// Almacena el tipo de error, descripción detallada y posición exacta (fila y columna).
 public class GoliteError {
     private final String type;
     private final String description;

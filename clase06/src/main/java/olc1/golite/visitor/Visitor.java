@@ -3,6 +3,8 @@ package olc1.golite.visitor;
 import olc1.golite.ast.exp.*;
 import olc1.golite.ast.stm.*;
 
+// Interfaz base del patrón Visitor.
+// Define la firma de los métodos 'visit' para cada nodo concreto de mi estructura AST.
 public interface Visitor<T> {
     T visit(Integers.Context ctx);
     T visit(Decimal.Context ctx);

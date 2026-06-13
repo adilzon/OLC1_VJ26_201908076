@@ -3,6 +3,8 @@ package olc1.golite.ast.stm;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo individual para representar una rama Else If.
+// Contiene su propia condición y el cuerpo de instrucciones correspondiente.
 public class ElifNode implements ASTNode {
     // else if condition { statements }
     private final ASTNode condition;

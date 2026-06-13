@@ -3,6 +3,7 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa un valor literal booleano (true o false) dentro de mi código fuente.
 public class BoolLiteral implements ASTNode {
     private final boolean value;
     private final int line;

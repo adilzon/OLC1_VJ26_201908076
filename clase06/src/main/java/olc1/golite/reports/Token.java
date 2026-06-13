@@ -1,5 +1,7 @@
 package olc1.golite.reports;
 
+// Representa un lexema reconocido por el analizador léxico (Lexer).
+// Contiene el tipo de token, el texto original escaneado y su posición en el código fuente.
 public class Token {
     private final String type;
     private final String lexeme;

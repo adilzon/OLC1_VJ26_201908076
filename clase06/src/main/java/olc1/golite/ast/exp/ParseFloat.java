@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa la función embebida strconv.ParseFloat.
+// La implementé para convertir cadenas de texto a números decimales (float64).
 public class ParseFloat implements ASTNode {
     private final ASTNode expression;
     private final int line;

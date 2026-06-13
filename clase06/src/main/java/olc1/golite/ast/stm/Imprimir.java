@@ -5,6 +5,8 @@ import java.util.List;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo para la sentencia de impresión (imprimir o fmt.Println).
+// Me permite escribir en la consola del intérprete las expresiones dadas separadas por espacios.
 public class Imprimir implements ASTNode {
     private final List<ASTNode> expressions;
 

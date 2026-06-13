@@ -3,6 +3,8 @@ package olc1.golite.ast.stm;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa la sentencia de continuación continue.
+// La uso para saltar directamente a la siguiente iteración del bucle activo.
 public class Continuestm implements ASTNode {
     private int line, column;
 

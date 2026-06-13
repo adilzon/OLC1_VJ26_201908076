@@ -3,6 +3,7 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa la referencia o lectura del nombre de una variable existente.
 public class VarRef implements ASTNode {
     private final String name;
     private final int line;

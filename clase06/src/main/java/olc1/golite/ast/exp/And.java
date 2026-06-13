@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo para la operación lógica AND (&&).
+// Implementa la evaluación por cortocircuito para optimizar el flujo de ejecución.
 public class And implements ASTNode {
     private final ASTNode left, right;
 

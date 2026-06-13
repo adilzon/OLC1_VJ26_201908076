@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo agrupador para expresiones encerradas entre paréntesis ().
+// Sirve para mantener y forzar la precedencia explícita en el AST.
 public class Paren implements ASTNode {
     private final ASTNode expression;
 

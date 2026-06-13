@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo para la operación relacional de desigualdad (!=).
+// Compara dos operandos del mismo tipo para asegurar que no sean iguales.
 public class NotEqual implements ASTNode {
     private final ASTNode left, right;
 

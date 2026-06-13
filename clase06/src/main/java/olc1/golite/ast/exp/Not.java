@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo para la operación lógica unaria de negación (!).
+// Invierte el valor de expresiones booleanas.
 public class Not implements ASTNode {
     private final ASTNode expression;
 

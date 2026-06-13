@@ -14,6 +14,8 @@ import olc1.golite.visitor.Visitor;
 import olc1.golite.visitor.interpreter.value.*;
 import olc1.golite.visitor.interpreter.transfer.*;
 
+// Decidí utilizar el patrón de diseño Visitor para recorrer el árbol de sintaxis abstracta (AST)
+// de forma limpia, separando por completo la estructura sintáctica de la lógica de evaluación.
 public class InterpreterVisitor implements Visitor<ValueWrapper> {
     public String output = "";
     private final ValueWrapper defaultVoid = new VoidValue(-1, -1);
@@ -40,6 +42,8 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
+        // Aquí manejo tanto la suma aritmética para enteros y decimales, 
+        // como la concatenación de strings si ambos operandos resultan ser cadenas.
         if (left instanceof IntValue l && right instanceof IntValue r) {
             return new IntValue(l.value() + r.value(), l.line(), l.column());
         }
@@ -89,6 +93,8 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
+        // Control de división por cero: si detecto que el divisor es cero,
+        // agrego un error semántico y devuelvo un valor por defecto (0 o 0.0) para continuar la ejecución.
         if (left instanceof IntValue l && right instanceof IntValue r) {
             if (r.value() == 0) {
                 this.errors.add(new GoliteError("Semantico", "Division por cero", r.line(), r.column()));
@@ -196,6 +202,8 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper val = Visit(ctx.value);
        
         try {
+            // Declaro la variable en el entorno activo. 
+            // Si la declaración es exitosa, la agrego a mi lista para la visualización del reporte de símbolos.
             environment.declare(ctx.name, val);
             boolean exists = false;
             String scopeName = environment.getScopeName();
@@ -229,6 +237,8 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper val = Visit(ctx.expression);
        
         try {
+            // Busco la variable en los entornos accesibles. Si ya existe,
+            // valido estáticamente que el nuevo valor coincida con el tipo previamente definido.
             ValueWrapper existing = environment.get(ctx.id);
             if (existing != null && !existing.getTypeName().equals(val.getTypeName())) {
                 this.errors.add(new GoliteError("Semantico", "Tipo incorrecto en asignacion a '" + ctx.id + "'. Se esperaba: " + existing.getTypeName() + ", obtenido: " + val.getTypeName(), ctx.line, ctx.column));
@@ -251,12 +261,14 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     public ValueWrapper visit(IfNode.Context ctx) {
         Enviroment parentEnv = this.environment;
         
+        // Evalúo la condición. Si no es booleana, registro el error semántico correspondiente.
         ValueWrapper cond = Visit(ctx.condition);
         if (!(cond instanceof BoolValue)) {
             this.errors.add(new GoliteError("Semantico", "La condicion de un 'if' debe evaluar a tipo bool, obtenido: " + cond.getTypeName(), cond.line(), cond.column()));
             return defaultVoid;
         }
 
+        // Si la condición del if se cumple, creo un sub-ámbito y ejecuto su bloque.
         if (((BoolValue) cond).value()) {
             this.environment = new Enviroment(parentEnv, "If");
             Visit(ctx.body);
@@ -266,6 +278,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
 
         ElifNodes elifs = ctx.elifList;
 
+        // Si la condición del if falló, evalúo los bloques Else If (elifs) y Else Puro secuencialmente.
         if (elifs != null) {
             Visit(elifs);
 
@@ -308,6 +321,8 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
             return defaultVoid;
         }
 
+        // Bucle estilo while. Implementé excepciones personalizadas para controlar de forma
+        // limpia las interrupciones del flujo que causan 'break' y 'continue'.
         while (condition instanceof BoolValue b && b.value()) {
             this.environment = new Enviroment(parentEnv, "For");
 
@@ -316,7 +331,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
             } catch (BreakException e) {
                 break;
             } catch (ContinueException e) {
-                // Ignore and continue the loop iteration
+                // Ignoro la excepción del continue para saltar directamente a la siguiente condición
             }
            
             condition = Visit(ctx.condition);
@@ -441,6 +456,8 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
+        // Operación de módulo (%). Verifico que ambos operandos sean enteros 
+        // y que no haya división por cero.
         if (left instanceof IntValue l && right instanceof IntValue r) {
             if (r.value() == 0) {
                 this.errors.add(new GoliteError("Semantico", "Division por cero en modulo", r.line(), r.column()));
@@ -455,6 +472,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     @Override
     public ValueWrapper visit(And.Context ctx) {
         ValueWrapper left  = Visit(ctx.left);
+        // Implementación de evaluación cortocircuitada para el operador lógico &&.
         if (left instanceof BoolValue l) {
             if (!l.value()) {
                 return new BoolValue(false, l.line(), l.column());
@@ -473,6 +491,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     @Override
     public ValueWrapper visit(Or.Context ctx) {
         ValueWrapper left  = Visit(ctx.left);
+        // Implementación de evaluación cortocircuitada para el operador lógico ||.
         if (left instanceof BoolValue l) {
             if (l.value()) {
                 return new BoolValue(true, l.line(), l.column());
@@ -543,6 +562,8 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     @Override
     public ValueWrapper visit(BlockStm.Context ctx) {
         Enviroment parentEnv = this.environment;
+        // Creo un nuevo entorno local para el bloque de llaves {}. 
+        // Esto permite el anidamiento y shadowing de variables temporales.
         this.environment = new Enviroment(parentEnv, "Block");
         Visit(ctx.body);
         this.environment = parentEnv;
@@ -552,6 +573,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     @Override
     public ValueWrapper visit(ForClasico.Context ctx) {
         Enviroment parentEnv = this.environment;
+        // Inicializo el ámbito principal del For clásico (donde vive la variable de control 'init')
         this.environment = new Enviroment(parentEnv, "ForClasico");
 
         if (ctx.init != null) {
@@ -565,6 +587,8 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
             return defaultVoid;
         }
 
+        // Bucle clásico de 3 partes. Creo un sub-entorno local para el cuerpo en cada iteración,
+        // manejando 'break' y 'continue' de forma que continúe al bloque 'post' de actualización.
         while (((BoolValue) condVal).value()) {
             Enviroment bodyEnv = this.environment;
             this.environment = new Enviroment(bodyEnv, "ForBody");
@@ -574,7 +598,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
             } catch (BreakException e) {
                 break;
             } catch (ContinueException e) {
-                // Continue goes to the post execution
+                // El continue salta la iteración actual y va directo al bloque post
             } finally {
                 this.environment = bodyEnv;
             }

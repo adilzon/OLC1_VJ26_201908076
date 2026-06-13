@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo para la operación de residuo o módulo (%).
+// Valida que los operandos sean enteros y calcula el residuo de la división.
 public class Mod implements ASTNode {
     private final ASTNode left, right;
 

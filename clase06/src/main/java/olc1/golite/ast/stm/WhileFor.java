@@ -3,6 +3,7 @@ package olc1.golite.ast.stm;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa el bucle for estilo while (que solo tiene una condición booleana).
 public class WhileFor implements ASTNode{
     // For condition { body }
     private final ASTNode condition;

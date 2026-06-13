@@ -3,6 +3,8 @@ package olc1.golite.ast.stm;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa la estructura de control condicional if/else.
+// Permite ejecutar bloques de código selectivos basados en condiciones booleanas.
 public class IfNode implements ASTNode {
     private final ASTNode condition;
     private final ASTNode body;

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+// Generador de reportes en formato HTML.
+// Lo diseñé para renderizar tablas dinámicas y limpias con tokens, errores y la tabla de símbolos del programa.
 public class HtmlReportGenerator {
 
     private static String escapeHtml(String text) {

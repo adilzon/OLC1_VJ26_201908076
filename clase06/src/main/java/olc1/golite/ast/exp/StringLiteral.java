@@ -3,6 +3,7 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa una constante literal de texto (string) en el código.
 public class StringLiteral implements ASTNode {
     private final String value;
     private final int line;

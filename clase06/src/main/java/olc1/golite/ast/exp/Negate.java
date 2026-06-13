@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo para la operación unaria de negación aritmética (-).
+// Cambia el signo algebraico de enteros y decimales.
 public class Negate implements ASTNode {
     private final ASTNode expression;
 

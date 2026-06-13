@@ -3,6 +3,7 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo para la operación aritmética de resta o sustracción (-).
 public class Sub implements ASTNode {
     private final ASTNode left;
     private final ASTNode right;

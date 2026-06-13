@@ -3,6 +3,8 @@ package olc1.golite.ast.stm;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa la sentencia de interrupción break.
+// La uso para salir abruptamente del bucle activo más cercano.
 public class Breakstm implements ASTNode {
     private int line, column;
 

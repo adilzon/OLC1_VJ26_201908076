@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa la asignación ordinaria de valores (=) a variables ya existentes.
+// Permite actualizar el valor validando que no cambie el tipo dinámico.
 public class Allocate implements ASTNode {
     // id = EXPRESSION
     private final String id;

@@ -11,6 +11,8 @@ import olc1.golite.reports.GoliteError;
 import olc1.golite.reports.HtmlReportGenerator;
 import olc1.golite.visitor.interpreter.InterpreterVisitor;
 
+// Clase de pruebas automatizadas.
+// La escribí para validar la correcta generación de reportes HTML y evaluar flujos complejos de mi intérprete.
 public class TestReports {
     public static void main(String[] args) {
         System.out.println("=== INICIANDO PRUEBA DE REPORTES GOLITE ===");

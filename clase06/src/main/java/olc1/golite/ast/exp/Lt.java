@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo para la operación relacional menor que (<).
+// Me permite comparar números o cadenas y determinar su orden relativo.
 public class Lt implements ASTNode {
     // left < right
     private final ASTNode left, right;

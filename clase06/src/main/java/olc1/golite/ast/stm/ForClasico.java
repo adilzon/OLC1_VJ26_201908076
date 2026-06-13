@@ -3,6 +3,8 @@ package olc1.golite.ast.stm;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo para el bucle clásico de tres partes (init; cond; post).
+// Me permite iterar controlando el inicio, la condición y el incremento en su propio ámbito.
 public class ForClasico implements ASTNode {
     private final ASTNode init;
     private final ASTNode condition;

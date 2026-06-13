@@ -1,5 +1,7 @@
 package olc1.golite.reports;
 
+// Representa un registro en la Tabla de Símbolos.
+// Guarda información esencial de cada variable: nombre, tipo, ámbito de vida y posición física.
 public class Symbol {
     private final String name;
     private final String symbolType; // e.g., "Variable", "Método", "Función"

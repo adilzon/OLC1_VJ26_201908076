@@ -3,6 +3,8 @@ package olc1.golite.ast.stm;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa la declaración de variables con inferencia de tipos (:=) o var explícito.
+// Introduce nuevas variables en el entorno actual del compilador.
 public class Assign implements ASTNode {
     private final String name;
     private final ASTNode value;

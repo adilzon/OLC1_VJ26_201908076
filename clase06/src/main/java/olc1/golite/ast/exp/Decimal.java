@@ -3,6 +3,7 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Representa un valor literal decimal (float64) dentro de mi código fuente.
 public class Decimal implements ASTNode{
     private final double value;
     private final int line;

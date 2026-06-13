@@ -3,6 +3,8 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
+// Nodo para la operación lógica OR (||).
+// Implementa la evaluación por cortocircuito.
 public class Or implements ASTNode {
     private final ASTNode left, right;
 
