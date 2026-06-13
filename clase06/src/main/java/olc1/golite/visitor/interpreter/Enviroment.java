@@ -8,15 +8,32 @@ import olc1.golite.visitor.interpreter.value.ValueWrapper;
 public class Enviroment {
     private final Map<String, ValueWrapper> variables;
     private final Enviroment parent;
+    private final String name;
 
     public Enviroment() {
         variables = new HashMap<>();
         this.parent = null;
+        this.name = "Global";
     }
 
     public Enviroment(Enviroment parent) {
         variables = new HashMap<>();
         this.parent = parent;
+        this.name = "Local";
+    }
+
+    public Enviroment(Enviroment parent, String name) {
+        variables = new HashMap<>();
+        this.parent = parent;
+        this.name = name;
+    }
+
+    public String getScopeName() {
+        if (parent == null) {
+            return name;
+        } else {
+            return parent.getScopeName() + " -> " + name;
+        }
     }
 
     public ValueWrapper declare(String name, ValueWrapper value) {

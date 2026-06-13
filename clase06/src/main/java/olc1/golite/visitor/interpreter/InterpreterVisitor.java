@@ -9,6 +9,7 @@ import olc1.golite.ast.ASTNode;
 import olc1.golite.ast.exp.*;
 import olc1.golite.ast.stm.*;
 import olc1.golite.reports.GoliteError;
+import olc1.golite.reports.Symbol;
 import olc1.golite.visitor.Visitor;
 import olc1.golite.visitor.interpreter.value.*;
 import olc1.golite.visitor.interpreter.transfer.*;
@@ -18,6 +19,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     private final ValueWrapper defaultVoid = new VoidValue(-1, -1);
     private Enviroment environment = new Enviroment();
     public final List<GoliteError> errors = new ArrayList<>();
+    public final List<Symbol> symbols = new ArrayList<>();
 
     public ValueWrapper Visit(ASTNode node) {
         return node.accept(this);
@@ -186,6 +188,17 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
        
         try {
             environment.declare(ctx.name, val);
+            boolean exists = false;
+            String scopeName = environment.getScopeName();
+            for (Symbol s : this.symbols) {
+                if (s.getName().equals(ctx.name) && s.getScope().equals(scopeName) && s.getLine() == ctx.line && s.getColumn() == ctx.column) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists) {
+                this.symbols.add(new Symbol(ctx.name, "Variable", val.getTypeName(), scopeName, ctx.line, ctx.column));
+            }
         } catch (RuntimeException e) {
             this.errors.add(
                 new GoliteError(
@@ -222,7 +235,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         
         ValueWrapper cond = Visit(ctx.condition);
         if (cond instanceof BoolValue b && b.value()) {
-            this.environment = new Enviroment(parentEnv);
+            this.environment = new Enviroment(parentEnv, "If");
             Visit(ctx.body);
             this.environment = parentEnv;
             return defaultVoid;
@@ -238,7 +251,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
                 ValueWrapper elifCond = Visit(elif.ctx.condition);
 
                 if (elifCond instanceof BoolValue elifB && elifB.value()) {
-                    this.environment = new Enviroment(parentEnv);
+                    this.environment = new Enviroment(parentEnv, "Else If");
                     Visit(elif.ctx.body);
                     this.environment = parentEnv;
                     return defaultVoid;
@@ -267,7 +280,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper condition = Visit(ctx.condition);
 
         while (condition instanceof BoolValue b && b.value()) {
-            this.environment = new Enviroment(parentEnv);
+            this.environment = new Enviroment(parentEnv, "For");
 
             try {
                 Visit(ctx.body);

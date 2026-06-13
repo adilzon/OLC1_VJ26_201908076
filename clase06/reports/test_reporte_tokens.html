@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Tokens</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #151b2c;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent: #6366f1;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --table-hdr: #1e293b;
+            --border-color: #242f47;
+            --row-hover: #1e263d;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 2.5rem 1.5rem;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        th {
+            background-color: var(--table-hdr);
+            color: var(--text-main);
+            font-weight: 600;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+        td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            transition: background-color 0.2s;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background-color: var(--row-hover);
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-lexico {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        .badge-sintactico {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+        .badge-semantico {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        .badge-token {
+            background-color: rgba(99, 102, 241, 0.15);
+            color: #818cf8;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        .badge-symbol {
+            background-color: rgba(168, 85, 247, 0.15);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+        .empty-state {
+            padding: 4rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Reporte de Tokens</h1>
+            <p class="subtitle">Golite Compiler - Reportes Generados Automáticamente</p>
+        </header>
+        <div class="card">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tipo de Token</th>
+                            <th>Lexema</th>
+                            <th>Línea</th>
+                            <th>Columna</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><span class="badge badge-token">id</span></td>
+                            <td><code>x</code></td>
+                            <td>1</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><span class="badge badge-token">assign</span></td>
+                            <td><code>:=</code></td>
+                            <td>1</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><span class="badge badge-token">integer</span></td>
+                            <td><code>10</code></td>
+                            <td>1</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><span class="badge badge-token">scol</span></td>
+                            <td><code>;</code></td>
+                            <td>1</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><span class="badge badge-token">id</span></td>
+                            <td><code>y</code></td>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><span class="badge badge-token">assign</span></td>
+                            <td><code>:=</code></td>
+                            <td>2</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><span class="badge badge-token">decimal</span></td>
+                            <td><code>20.5</code></td>
+                            <td>2</td>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><span class="badge badge-token">scol</span></td>
+                            <td><code>;</code></td>
+                            <td>2</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><span class="badge badge-token">kwIf</span></td>
+                            <td><code>if</code></td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><span class="badge badge-token">kwTrue</span></td>
+                            <td><code>true</code></td>
+                            <td>3</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td><span class="badge badge-token">lbrace</span></td>
+                            <td><code>{</code></td>
+                            <td>3</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td><span class="badge badge-token">id</span></td>
+                            <td><code>z</code></td>
+                            <td>4</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td><span class="badge badge-token">assign</span></td>
+                            <td><code>:=</code></td>
+                            <td>4</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td><span class="badge badge-token">string</span></td>
+                            <td><code>&quot;hola&quot;</code></td>
+                            <td>4</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td><span class="badge badge-token">scol</span></td>
+                            <td><code>;</code></td>
+                            <td>4</td>
+                            <td>15</td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td><span class="badge badge-token">kwFor</span></td>
+                            <td><code>for</code></td>
+                            <td>5</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td><span class="badge badge-token">id</span></td>
+                            <td><code>x</code></td>
+                            <td>5</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td><span class="badge badge-token">lt</span></td>
+                            <td><code>&lt;</code></td>
+                            <td>5</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td><span class="badge badge-token">integer</span></td>
+                            <td><code>15</code></td>
+                            <td>5</td>
+                            <td>12</td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td><span class="badge badge-token">lbrace</span></td>
+                            <td><code>{</code></td>
+                            <td>5</td>
+                            <td>15</td>
+                        </tr>
+                        <tr>
+                            <td>21</td>
+                            <td><span class="badge badge-token">id</span></td>
+                            <td><code>w</code></td>
+                            <td>6</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>22</td>
+                            <td><span class="badge badge-token">assign</span></td>
+                            <td><code>:=</code></td>
+                            <td>6</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td>23</td>
+                            <td><span class="badge badge-token">integer</span></td>
+                            <td><code>5</code></td>
+                            <td>6</td>
+                            <td>13</td>
+                        </tr>
+                        <tr>
+                            <td>24</td>
+                            <td><span class="badge badge-token">scol</span></td>
+                            <td><code>;</code></td>
+                            <td>6</td>
+                            <td>14</td>
+                        </tr>
+                        <tr>
+                            <td>25</td>
+                            <td><span class="badge badge-token">id</span></td>
+                            <td><code>x</code></td>
+                            <td>7</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>26</td>
+                            <td><span class="badge badge-token">allocate</span></td>
+                            <td><code>=</code></td>
+                            <td>7</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td>27</td>
+                            <td><span class="badge badge-token">id</span></td>
+                            <td><code>x</code></td>
+                            <td>7</td>
+                            <td>12</td>
+                        </tr>
+                        <tr>
+                            <td>28</td>
+                            <td><span class="badge badge-token">plus</span></td>
+                            <td><code>+</code></td>
+                            <td>7</td>
+                            <td>14</td>
+                        </tr>
+                        <tr>
+                            <td>29</td>
+                            <td><span class="badge badge-token">integer</span></td>
+                            <td><code>1</code></td>
+                            <td>7</td>
+                            <td>16</td>
+                        </tr>
+                        <tr>
+                            <td>30</td>
+                            <td><span class="badge badge-token">scol</span></td>
+                            <td><code>;</code></td>
+                            <td>7</td>
+                            <td>17</td>
+                        </tr>
+                        <tr>
+                            <td>31</td>
+                            <td><span class="badge badge-token">rbrace</span></td>
+                            <td><code>}</code></td>
+                            <td>8</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>32</td>
+                            <td><span class="badge badge-token">rbrace</span></td>
+                            <td><code>}</code></td>
+                            <td>9</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>33</td>
+                            <td><span class="badge badge-token">id</span></td>
+                            <td><code>x</code></td>
+                            <td>10</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>34</td>
+                            <td><span class="badge badge-token">assign</span></td>
+                            <td><code>:=</code></td>
+                            <td>10</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>35</td>
+                            <td><span class="badge badge-token">integer</span></td>
+                            <td><code>50</code></td>
+                            <td>10</td>
+                            <td>5</td>
+                        </tr>
+                        <tr>
+                            <td>36</td>
+                            <td><span class="badge badge-token">scol</span></td>
+                            <td><code>;</code></td>
+                            <td>10</td>
+                            <td>7</td>
+                        </tr>
+                        <tr>
+                            <td>37</td>
+                            <td><span class="badge badge-token">id</span></td>
+                            <td><code>a</code></td>
+                            <td>11</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>38</td>
+                            <td><span class="badge badge-token">allocate</span></td>
+                            <td><code>=</code></td>
+                            <td>11</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>39</td>
+                            <td><span class="badge badge-token">integer</span></td>
+                            <td><code>5</code></td>
+                            <td>11</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td><span class="badge badge-token">scol</span></td>
+                            <td><code>;</code></td>
+                            <td>11</td>
+                            <td>5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

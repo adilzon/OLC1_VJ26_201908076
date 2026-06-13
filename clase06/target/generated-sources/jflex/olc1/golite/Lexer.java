@@ -11,6 +11,7 @@ import java.util.List;
 import java_cup.runtime.Symbol;
 
 import olc1.golite.reports.GoliteError;
+import olc1.golite.reports.Token;
 
 
 @SuppressWarnings("fallthrough")
@@ -282,15 +283,13 @@ public class Lexer implements java_cup.runtime.Scanner {
   private boolean zzEOFDone;
 
   /* user code: */
-    // private Symbol symbol(int type) {
-    //     return new Symbol(type, yyline, yycolumn);
-    // }
-
-    // private Symbol symbol(int type, Object value) {
-    //     return new Symbol(type, yyline, yycolumn, value);
-    // }
-
     public final List<GoliteError> errors = new ArrayList<>();
+    public final List<Token> tokens = new ArrayList<>();
+
+    private Symbol addToken(int type, String typeName, String lexeme) {
+        tokens.add(new Token(typeName, lexeme, yyline, yycolumn));
+        return new Symbol(type, yyline, yycolumn, lexeme);
+    }
 
 
   /**
@@ -729,117 +728,117 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 27: break;
           case 3:
-            { return new Symbol(sym.lparen, yyline, yycolumn, yytext());
+            { return addToken(sym.lparen, "lparen", yytext());
             }
           // fall through
           case 28: break;
           case 4:
-            { return new Symbol(sym.rparen, yyline, yycolumn, yytext());
+            { return addToken(sym.rparen, "rparen", yytext());
             }
           // fall through
           case 29: break;
           case 5:
-            { return new Symbol(sym.times, yyline, yycolumn, yytext());
+            { return addToken(sym.times, "times", yytext());
             }
           // fall through
           case 30: break;
           case 6:
-            { return new Symbol(sym.plus, yyline, yycolumn, yytext());
+            { return addToken(sym.plus, "plus", yytext());
             }
           // fall through
           case 31: break;
           case 7:
-            { return new Symbol(sym.minus, yyline, yycolumn, yytext());
+            { return addToken(sym.minus, "minus", yytext());
             }
           // fall through
           case 32: break;
           case 8:
-            { return new Symbol(sym.slash, yyline, yycolumn, yytext());
+            { return addToken(sym.slash, "slash", yytext());
             }
           // fall through
           case 33: break;
           case 9:
-            { return new Symbol(sym.integer, yyline, yycolumn, yytext());
+            { return addToken(sym.integer, "integer", yytext());
             }
           // fall through
           case 34: break;
           case 10:
-            { return new Symbol(sym.scol, yyline, yycolumn, yytext());
+            { return addToken(sym.scol, "scol", yytext());
             }
           // fall through
           case 35: break;
           case 11:
-            { return new Symbol(sym.lt, yyline, yycolumn, yytext());
+            { return addToken(sym.lt, "lt", yytext());
             }
           // fall through
           case 36: break;
           case 12:
-            { return new Symbol(sym.allocate, yyline, yycolumn, yytext());
+            { return addToken(sym.allocate, "allocate", yytext());
             }
           // fall through
           case 37: break;
           case 13:
-            { return new Symbol(sym.id, yyline, yycolumn, yytext());
+            { return addToken(sym.id, "id", yytext());
             }
           // fall through
           case 38: break;
           case 14:
-            { return new Symbol(sym.lbrace, yyline, yycolumn, yytext());
+            { return addToken(sym.lbrace, "lbrace", yytext());
             }
           // fall through
           case 39: break;
           case 15:
-            { return new Symbol(sym.rbrace, yyline, yycolumn, yytext());
+            { return addToken(sym.rbrace, "rbrace", yytext());
             }
           // fall through
           case 40: break;
           case 16:
-            { return new Symbol(sym.string, yyline, yycolumn, yytext());
+            { return addToken(sym.string, "string", yytext());
             }
           // fall through
           case 41: break;
           case 17:
-            { return new Symbol(sym.assign, yyline, yycolumn, yytext());
+            { return addToken(sym.assign, "assign", yytext());
             }
           // fall through
           case 42: break;
           case 18:
-            { return new Symbol(sym.kwIf,      yyline, yycolumn, yytext());
+            { return addToken(sym.kwIf,      "kwIf", yytext());
             }
           // fall through
           case 43: break;
           case 19:
-            { return new Symbol(sym.decimal, yyline, yycolumn, yytext());
+            { return addToken(sym.decimal, "decimal", yytext());
             }
           // fall through
           case 44: break;
           case 20:
-            { return new Symbol(sym.kwFor,     yyline, yycolumn, yytext());
+            { return addToken(sym.kwFor,     "kwFor", yytext());
             }
           // fall through
           case 45: break;
           case 21:
-            { return new Symbol(sym.kwElse,    yyline, yycolumn, yytext());
+            { return addToken(sym.kwElse,    "kwElse", yytext());
             }
           // fall through
           case 46: break;
           case 22:
-            { return new Symbol(sym.kwTrue,    yyline, yycolumn, yytext());
+            { return addToken(sym.kwTrue,    "kwTrue", yytext());
             }
           // fall through
           case 47: break;
           case 23:
-            { return new Symbol(sym.kwBreak,   yyline, yycolumn, yytext());
+            { return addToken(sym.kwBreak,   "kwBreak", yytext());
             }
           // fall through
           case 48: break;
           case 24:
-            { return new Symbol(sym.kwFalse,   yyline, yycolumn, yytext());
+            { return addToken(sym.kwFalse,   "kwFalse", yytext());
             }
           // fall through
           case 49: break;
           case 25:
-            { return new Symbol(sym.imprimir, yyline, yycolumn, yytext());
+            { return addToken(sym.imprimir, "imprimir", yytext());
             }
           // fall through
           case 50: break;

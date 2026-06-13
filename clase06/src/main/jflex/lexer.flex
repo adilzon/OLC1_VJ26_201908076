@@ -7,6 +7,7 @@ import java.util.List;
 import java_cup.runtime.Symbol;
 
 import olc1.golite.reports.GoliteError;
+import olc1.golite.reports.Token;
 
 %%
 
@@ -23,15 +24,13 @@ import olc1.golite.reports.GoliteError;
 //%unicode
 
 %{
-    // private Symbol symbol(int type) {
-    //     return new Symbol(type, yyline, yycolumn);
-    // }
-
-    // private Symbol symbol(int type, Object value) {
-    //     return new Symbol(type, yyline, yycolumn, value);
-    // }
-
     public final List<GoliteError> errors = new ArrayList<>();
+    public final List<Token> tokens = new ArrayList<>();
+
+    private Symbol addToken(int type, String typeName, String lexeme) {
+        tokens.add(new Token(typeName, lexeme, yyline, yycolumn));
+        return new Symbol(type, yyline, yycolumn, lexeme);
+    }
 %}
 
 %init{
@@ -54,35 +53,35 @@ str_lex = ({normal_char} | {escape_char})*
 %%
 
 // Numbers
-{digit}+\.{digit}+  { return new Symbol(sym.decimal, yyline, yycolumn, yytext()); }
-{digit}+            { return new Symbol(sym.integer, yyline, yycolumn, yytext()); }
+{digit}+\.{digit}+  { return addToken(sym.decimal, "decimal", yytext()); }
+{digit}+            { return addToken(sym.integer, "integer", yytext()); }
 
 // Symbols
-"("     { return new Symbol(sym.lparen, yyline, yycolumn, yytext()); }
-")"     { return new Symbol(sym.rparen, yyline, yycolumn, yytext()); }
-"+"     { return new Symbol(sym.plus, yyline, yycolumn, yytext()); }
-"-"     { return new Symbol(sym.minus, yyline, yycolumn, yytext()); }
-"*"     { return new Symbol(sym.times, yyline, yycolumn, yytext()); }
-"/"     { return new Symbol(sym.slash, yyline, yycolumn, yytext()); }
-"="     { return new Symbol(sym.allocate, yyline, yycolumn, yytext()); }
-";"     { return new Symbol(sym.scol, yyline, yycolumn, yytext()); }
-"{"     { return new Symbol(sym.lbrace, yyline, yycolumn, yytext()); }
-"}"     { return new Symbol(sym.rbrace, yyline, yycolumn, yytext()); }
-":="    { return new Symbol(sym.assign, yyline, yycolumn, yytext()); }
-"<"     { return new Symbol(sym.lt, yyline, yycolumn, yytext()); }
+"("     { return addToken(sym.lparen, "lparen", yytext()); }
+")"     { return addToken(sym.rparen, "rparen", yytext()); }
+"+"     { return addToken(sym.plus, "plus", yytext()); }
+"-"     { return addToken(sym.minus, "minus", yytext()); }
+"*"     { return addToken(sym.times, "times", yytext()); }
+"/"     { return addToken(sym.slash, "slash", yytext()); }
+"="     { return addToken(sym.allocate, "allocate", yytext()); }
+";"     { return addToken(sym.scol, "scol", yytext()); }
+"{"     { return addToken(sym.lbrace, "lbrace", yytext()); }
+"}"     { return addToken(sym.rbrace, "rbrace", yytext()); }
+":="    { return addToken(sym.assign, "assign", yytext()); }
+"<"     { return addToken(sym.lt, "lt", yytext()); }
 
 // Key Words
-"print"  { return new Symbol(sym.imprimir, yyline, yycolumn, yytext()); }
-"true"      { return new Symbol(sym.kwTrue,    yyline, yycolumn, yytext()); }
-"false"     { return new Symbol(sym.kwFalse,   yyline, yycolumn, yytext()); }
-"if"        { return new Symbol(sym.kwIf,      yyline, yycolumn, yytext()); }
-"else"      { return new Symbol(sym.kwElse,    yyline, yycolumn, yytext()); }
-"for"       { return new Symbol(sym.kwFor,     yyline, yycolumn, yytext()); }
-"break"     { return new Symbol(sym.kwBreak,   yyline, yycolumn, yytext()); }
+"print"     { return addToken(sym.imprimir, "imprimir", yytext()); }
+"true"      { return addToken(sym.kwTrue,    "kwTrue", yytext()); }
+"false"     { return addToken(sym.kwFalse,   "kwFalse", yytext()); }
+"if"        { return addToken(sym.kwIf,      "kwIf", yytext()); }
+"else"      { return addToken(sym.kwElse,    "kwElse", yytext()); }
+"for"       { return addToken(sym.kwFor,     "kwFor", yytext()); }
+"break"     { return addToken(sym.kwBreak,   "kwBreak", yytext()); }
 
 // ID - String
-{letter}({letter}|{digit})* { return new Symbol(sym.id, yyline, yycolumn, yytext()); }
-\"{str_lex}\"               { return new Symbol(sym.string, yyline, yycolumn, yytext()); }
+{letter}({letter}|{digit})* { return addToken(sym.id, "id", yytext()); }
+\"{str_lex}\"               { return addToken(sym.string, "string", yytext()); }
 
 // Ignorar
 {whitespace}    {/* pass */}
