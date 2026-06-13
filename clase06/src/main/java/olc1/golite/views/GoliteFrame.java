@@ -70,10 +70,17 @@ public class GoliteFrame extends JFrame {
 
             ASTNode ast = (ASTNode) parser.parse().value;
             interpreter = new InterpreterVisitor();
-            interpreter.Visit(ast);
+            
+            if (ast != null && lexer.errors.isEmpty() && parser.errors.isEmpty()) {
+                interpreter.Visit(ast);
+            }
 
             cleanConsole();
-            consoleTextArea.append(interpreter.output);
+            if (!lexer.errors.isEmpty() || !parser.errors.isEmpty() || (interpreter != null && !interpreter.errors.isEmpty())) {
+                errors();
+            } else {
+                consoleTextArea.append(interpreter.output);
+            }
         } catch (Exception e) {
             consoleTextArea.append("Error: " + e.getMessage() + "\n");
         }

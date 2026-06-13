@@ -25,4 +25,19 @@ public interface Visitor<T> {
     T visit(Lt.Context ctx);
     T visit(Breakstm.Context ctx);
     T visit(WhileFor.Context ctx); 
+    T visit(Gt.Context ctx);
+    T visit(Gte.Context ctx);
+    T visit(Lte.Context ctx);
+    T visit(Equal.Context ctx);
+    T visit(NotEqual.Context ctx);
+    T visit(Mod.Context ctx);
+    T visit(And.Context ctx);
+    T visit(Or.Context ctx);
+    T visit(Not.Context ctx);
+    T visit(Continuestm.Context ctx);
+    T visit(Atoi.Context ctx);
+    T visit(ParseFloat.Context ctx);
+    T visit(TypeOf.Context ctx);
+    T visit(BlockStm.Context ctx);
+    T visit(ForClasico.Context ctx);
 }

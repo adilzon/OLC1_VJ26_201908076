@@ -17,17 +17,31 @@ public class TestReports {
 
         // --- PRUEBA 1: PROGRAMA VALIDO SINTACTICAMENTE CON ANALISIS SEMANTICO Y SIMBOLOS ---
         System.out.println("\n--- PRUEBA 1: Analisis Semantico y Simbolos ---");
-        String code1 = "x := 10;\n" +
-                       "y := 20.5;\n" +
-                       "if true {\n" +
-                       "    z := \"hola\";\n" +
-                       "    for x < 15 {\n" +
-                       "        w := 5;\n" +
-                       "        x = x + 1;\n" +
-                       "    }\n" +
-                       "}\n" +
-                       "x := 50;\n" + // Error Semantico: Re-declaracion
-                       "a = 5;\n";   // Error Semantico: No declarada
+                String code1 = "func main() {\n" +
+                       "    // 1. Concatenacion de strings\n" +
+                       "    s1 := \"Hola \";\n" +
+                       "    s2 := \"Mundo!\";\n" +
+                       "    s3 := s1 + s2;\n" +
+                       "    fmt.Println(s3);\n" +
+                       "    \n" +
+                       "    // 2. Funciones embebidas\n" +
+                       "    valInt := strconv.Atoi(\"123\");\n" +
+                       "    valFloat := strconv.ParseFloat(\"45.67\");\n" +
+                       "    fmt.Println(valInt);\n" +
+                       "    fmt.Println(valFloat);\n" +
+                       "    fmt.Println(reflect.TypeOf(valInt));\n" +
+                       "    fmt.Println(reflect.TypeOf(valFloat));\n" +
+                       "    fmt.Println(reflect.TypeOf(s3));\n" +
+                       "    \n" +
+                       "    // 3. Division por cero (provoca error semantico)\n" +
+                       "    divZero := 10 / 0;\n" +
+                       "    modZero := 10 % 0;\n" +
+                       "    \n" +
+                       "    // 4. Errores de validacion de tipos estáticos (provoca errores semanticos)\n" +
+                       "    var x int = 10;\n" +
+                       "    x = 20.5;\n" + // Error: int = decimal
+                       "    invalidAdd := 10 + 20.5;\n" + // Error: int + decimal
+                       "}\n";
 
         Lexer lexer1 = null;
         parser parser1 = null;
@@ -48,6 +62,8 @@ public class TestReports {
             System.out.println("- Tokens escaneados: " + lexer1.tokens.size());
             System.out.println("- Simbolos detectados (unicos): " + interpreter1.symbols.size());
             System.out.println("- Errores semanticos: " + interpreter1.errors.size());
+            System.out.println("- Salida consola:");
+            System.out.print(interpreter1.output);
             for (var sym : interpreter1.symbols) {
                 System.out.printf("  [Simbolo] Nombre: %s, Tipo: %s, Ambito: %s, Pos: %d:%d\n",
                     sym.getName(), sym.getDataType(), sym.getScope(), sym.getLine(), sym.getColumn());

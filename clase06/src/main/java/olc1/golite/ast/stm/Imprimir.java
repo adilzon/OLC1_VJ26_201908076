@@ -1,20 +1,27 @@
 package olc1.golite.ast.stm;
 
+import java.util.ArrayList;
+import java.util.List;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
 public class Imprimir implements ASTNode {
-    private final ASTNode expression;
+    private final List<ASTNode> expressions;
 
     public Imprimir(ASTNode expression) {
-        this.expression = expression;
+        this.expressions = new ArrayList<>();
+        this.expressions.add(expression);
+    }
+
+    public Imprimir(List<ASTNode> expressions) {
+        this.expressions = expressions;
     }
 
     public static class Context {
-        public final ASTNode expression;
+        public final List<ASTNode> expressions;
 
         public Context(Imprimir node) {
-            this.expression = node.expression;
+            this.expressions = node.expressions;
         }
     }
 
@@ -22,5 +29,4 @@ public class Imprimir implements ASTNode {
     public <T> T accept(Visitor<T> visitor) {
         return visitor.visit(new Context(this));
     }
-
 }

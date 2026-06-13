@@ -8,32 +8,63 @@ package olc1.golite;
 /** CUP generated interface containing symbol constants. */
 public interface sym {
   /* terminals */
-  public static final int string = 2;
-  public static final int kwBreak = 24;
-  public static final int kwFalse = 20;
-  public static final int minus = 10;
-  public static final int decimal = 4;
-  public static final int imprimir = 18;
-  public static final int lt = 25;
-  public static final int UMENOS = 13;
-  public static final int scol = 14;
-  public static final int kwIf = 21;
-  public static final int times = 11;
-  public static final int kwElse = 22;
-  public static final int EOF = 0;
-  public static final int id = 17;
   public static final int slash = 12;
-  public static final int rbrace = 8;
-  public static final int rparen = 6;
-  public static final int assign = 15;
-  public static final int error = 1;
-  public static final int kwTrue = 19;
-  public static final int integer = 3;
-  public static final int plus = 9;
   public static final int kwFor = 23;
-  public static final int lparen = 5;
+  public static final int minusAssign = 36;
+  public static final int plusAssign = 35;
+  public static final int plus = 9;
+  public static final int mod = 31;
+  public static final int imprimir = 18;
   public static final int lbrace = 7;
+  public static final int minus = 10;
+  public static final int notequal = 30;
+  public static final int gte = 26;
+  public static final int gt = 28;
+  public static final int rbrace = 8;
+  public static final int kwFalse = 20;
+  public static final int kwIf = 21;
+  public static final int comma = 56;
+  public static final int string = 2;
+  public static final int kwTypeOf = 53;
+  public static final int kwParseFloat = 52;
+  public static final int scol = 14;
+  public static final int equal = 29;
+  public static final int kwReflect = 50;
+  public static final int kwStrconv = 49;
+  public static final int kwString = 46;
+  public static final int UMENOS = 13;
+  public static final int EOF = 0;
+  public static final int minusMinus = 55;
+  public static final int kwBool = 47;
+  public static final int kwPrintln = 43;
+  public static final int lt = 25;
+  public static final int error = 1;
+  public static final int times = 11;
+  public static final int kwAtoi = 51;
+  public static final int kwContinue = 39;
+  public static final int or = 33;
+  public static final int lte = 27;
+  public static final int lparen = 5;
+  public static final int kwMain = 42;
+  public static final int kwFloat64 = 45;
+  public static final int integer = 3;
+  public static final int kwFmt = 40;
+  public static final int id = 17;
+  public static final int rparen = 6;
+  public static final int kwTrue = 19;
   public static final int allocate = 16;
+  public static final int kwVar = 38;
+  public static final int kwRune = 48;
+  public static final int not = 34;
+  public static final int and = 32;
+  public static final int assign = 15;
+  public static final int kwElse = 22;
+  public static final int plusPlus = 54;
+  public static final int kwFunc = 41;
+  public static final int kwBreak = 24;
+  public static final int decimal = 4;
+  public static final int dot = 37;
+  public static final int kwInt = 44;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -60,7 +91,38 @@ public interface sym {
   "kwElse",
   "kwFor",
   "kwBreak",
-  "lt"
+  "lt",
+  "gte",
+  "lte",
+  "gt",
+  "equal",
+  "notequal",
+  "mod",
+  "and",
+  "or",
+  "not",
+  "plusAssign",
+  "minusAssign",
+  "dot",
+  "kwVar",
+  "kwContinue",
+  "kwFmt",
+  "kwFunc",
+  "kwMain",
+  "kwPrintln",
+  "kwInt",
+  "kwFloat64",
+  "kwString",
+  "kwBool",
+  "kwRune",
+  "kwStrconv",
+  "kwReflect",
+  "kwAtoi",
+  "kwParseFloat",
+  "kwTypeOf",
+  "plusPlus",
+  "minusMinus",
+  "comma"
   };
 }
 

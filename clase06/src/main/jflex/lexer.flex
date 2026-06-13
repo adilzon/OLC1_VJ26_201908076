@@ -18,10 +18,9 @@ import olc1.golite.reports.Token;
 %public // Paquete del lexer
 %line // conteo de lienas
 %column // conteo de columnas
-%8bit  // recibir caracteres en formato UTF-8
+%unicode // recibir caracteres en formato unicode
 // %debug // Habilitar modo debug para ver el proceso de tokenización
 %ignorecase // ignorar mayusculas y minusculas
-//%unicode
 
 %{
     public final List<GoliteError> errors = new ArrayList<>();
@@ -44,11 +43,14 @@ import olc1.golite.reports.Token;
 
 // Definición de patrones léxicos
 digit = [0-9]
-letter = [a-zA-Z]
+identifier = [a-zA-Z_][a-zA-Z0-9_]*
 whitespace = [\ \r\t\f\n]+
 escape_char = \\ [\"\\nrt]
 normal_char = [^\"\\\n\r]
 str_lex = ({normal_char} | {escape_char})*
+LineComment = "//" [^\r\n]*
+BlockComment = "/*" [^*]* ~"*/"
+Comment = {LineComment} | {BlockComment}
 
 %%
 
@@ -56,7 +58,20 @@ str_lex = ({normal_char} | {escape_char})*
 {digit}+\.{digit}+  { return addToken(sym.decimal, "decimal", yytext()); }
 {digit}+            { return addToken(sym.integer, "integer", yytext()); }
 
-// Symbols
+// Symbols (two-character symbols first to avoid prefix matching issues)
+":="    { return addToken(sym.assign, "assign", yytext()); }
+">="    { return addToken(sym.gte, "gte", yytext()); }
+"<="    { return addToken(sym.lte, "lte", yytext()); }
+"=="    { return addToken(sym.equal, "equal", yytext()); }
+"!="    { return addToken(sym.notequal, "notequal", yytext()); }
+"+="    { return addToken(sym.plusAssign, "plusAssign", yytext()); }
+"-="    { return addToken(sym.minusAssign, "minusAssign", yytext()); }
+"&&"    { return addToken(sym.and, "and", yytext()); }
+"||"    { return addToken(sym.or, "or", yytext()); }
+"++"    { return addToken(sym.plusPlus, "plusPlus", yytext()); }
+"--"    { return addToken(sym.minusMinus, "minusMinus", yytext()); }
+
+// Single character symbols
 "("     { return addToken(sym.lparen, "lparen", yytext()); }
 ")"     { return addToken(sym.rparen, "rparen", yytext()); }
 "+"     { return addToken(sym.plus, "plus", yytext()); }
@@ -67,8 +82,12 @@ str_lex = ({normal_char} | {escape_char})*
 ";"     { return addToken(sym.scol, "scol", yytext()); }
 "{"     { return addToken(sym.lbrace, "lbrace", yytext()); }
 "}"     { return addToken(sym.rbrace, "rbrace", yytext()); }
-":="    { return addToken(sym.assign, "assign", yytext()); }
 "<"     { return addToken(sym.lt, "lt", yytext()); }
+">"     { return addToken(sym.gt, "gt", yytext()); }
+"%"     { return addToken(sym.mod, "mod", yytext()); }
+"!"     { return addToken(sym.not, "not", yytext()); }
+"."     { return addToken(sym.dot, "dot", yytext()); }
+","     { return addToken(sym.comma, "comma", yytext()); }
 
 // Key Words
 "print"     { return addToken(sym.imprimir, "imprimir", yytext()); }
@@ -78,13 +97,30 @@ str_lex = ({normal_char} | {escape_char})*
 "else"      { return addToken(sym.kwElse,    "kwElse", yytext()); }
 "for"       { return addToken(sym.kwFor,     "kwFor", yytext()); }
 "break"     { return addToken(sym.kwBreak,   "kwBreak", yytext()); }
+"var"       { return addToken(sym.kwVar,     "kwVar", yytext()); }
+"continue"  { return addToken(sym.kwContinue, "kwContinue", yytext()); }
+"fmt"       { return addToken(sym.kwFmt,     "kwFmt", yytext()); }
+"func"      { return addToken(sym.kwFunc,    "kwFunc", yytext()); }
+"main"      { return addToken(sym.kwMain,    "kwMain", yytext()); }
+"Println"   { return addToken(sym.kwPrintln, "kwPrintln", yytext()); }
+"int"       { return addToken(sym.kwInt,     "kwInt", yytext()); }
+"float64"   { return addToken(sym.kwFloat64, "kwFloat64", yytext()); }
+"string"    { return addToken(sym.kwString,  "kwString", yytext()); }
+"bool"      { return addToken(sym.kwBool,    "kwBool", yytext()); }
+"rune"      { return addToken(sym.kwRune,    "kwRune", yytext()); }
+"strconv"   { return addToken(sym.kwStrconv, "kwStrconv", yytext()); }
+"reflect"   { return addToken(sym.kwReflect, "kwReflect", yytext()); }
+"Atoi"      { return addToken(sym.kwAtoi,    "kwAtoi", yytext()); }
+"ParseFloat" { return addToken(sym.kwParseFloat, "kwParseFloat", yytext()); }
+"TypeOf"    { return addToken(sym.kwTypeOf,  "kwTypeOf", yytext()); }
 
 // ID - String
-{letter}({letter}|{digit})* { return addToken(sym.id, "id", yytext()); }
+{identifier}                { return addToken(sym.id, "id", yytext()); }
 \"{str_lex}\"               { return addToken(sym.string, "string", yytext()); }
 
 // Ignorar
 {whitespace}    {/* pass */}
+{Comment}       {/* pass */}
 
 // Error
 .   { errors.add(new GoliteError("Lexico", "Caracter no reconocido: " + yytext(), yyline, yycolumn)); }

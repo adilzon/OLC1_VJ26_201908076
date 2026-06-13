@@ -36,46 +36,96 @@ terminal scol, assign, allocate;
 terminal String id;
 terminal imprimir, kwTrue, kwFalse, kwIf, kwElse;
 terminal kwFor, kwBreak;
-terminal lt;
+terminal lt, gte, lte, gt, equal, notequal, mod, and, or, not;
+terminal plusAssign, minusAssign, dot;
+terminal kwVar, kwContinue, kwFmt, kwFunc, kwMain, kwPrintln;
+terminal kwInt, kwFloat64, kwString, kwBool, kwRune;
+terminal kwStrconv, kwReflect, kwAtoi, kwParseFloat, kwTypeOf;
+terminal plusPlus, minusMinus;
+terminal comma;
 
 nonterminal Statments INICIO;
 nonterminal Statments INSTRUCCIONES;
 nonterminal ASTNode INSTRUCCION;
 nonterminal ASTNode EXPRESION;
 nonterminal ElifNodes ELIF;
+nonterminal TIPO;
+nonterminal ASTNode SIMPLE_STATEMENT;
+nonterminal java.util.List<ASTNode> LISTA_EXPRESIONES;
 
-precedence left lt;
+precedence left or;
+precedence left and;
+precedence left equal, notequal;
+precedence left lt, gt, lte, gte;
 precedence left plus, minus;
-precedence left times, slash;
-precedence right UMENOS;
+precedence left times, slash, mod;
+precedence right not, UMENOS;
 
 start with INICIO;
 
 // Gramatica
 
-INICIO ::= INSTRUCCIONES:i   {: RESULT = i; :}
+INICIO ::= INSTRUCCIONES:i                                                  {: RESULT = i; :}
+         | kwFunc kwMain lparen rparen lbrace INSTRUCCIONES:i rbrace        {: RESULT = i; :}
 ;
 
 INSTRUCCIONES ::= INSTRUCCIONES:is INSTRUCCION:i     {: is.add(i); RESULT = is; :}
                 | INSTRUCCION:i                      {: RESULT = new Statments(i); :}
 ;
 
-INSTRUCCION ::= imprimir lparen EXPRESION:e rparen scol                     {: RESULT = new Imprimir(e); :}
-              | imprimir lparen EXPRESION:e rparen                          {: RESULT = new Imprimir(e); :}
-              | id:n assign EXPRESION:e scol                                {: RESULT = new Assign(n, e, nleft, nright); :}
-              | id:n assign EXPRESION:e                                     {: RESULT = new Assign(n, e, nleft, nright); :}
-              | id:i allocate EXPRESION:e scol                              {: RESULT = new Allocate(i, e, ileft, iright); :}
-              | id:i allocate EXPRESION:e                                   {: RESULT = new Allocate(i, e, ileft, iright); :}
+INSTRUCCION ::= imprimir lparen LISTA_EXPRESIONES:e rparen scol             {: RESULT = new Imprimir(e); :}
+              | imprimir lparen LISTA_EXPRESIONES:e rparen                  {: RESULT = new Imprimir(e); :}
+              | kwFmt dot kwPrintln lparen LISTA_EXPRESIONES:e rparen scol  {: RESULT = new Imprimir(e); :}
+              | kwFmt dot kwPrintln lparen LISTA_EXPRESIONES:e rparen       {: RESULT = new Imprimir(e); :}
+              | SIMPLE_STATEMENT:s scol                                     {: RESULT = s; :}
+              | SIMPLE_STATEMENT:s                                          {: RESULT = s; :}
               | kwIf EXPRESION:c lbrace INSTRUCCIONES:b rbrace              {: RESULT = new IfNode(c, b); :}
               | kwIf EXPRESION:c lbrace INSTRUCCIONES:b rbrace ELIF:el      {: RESULT = new IfNode(c, b, el); :}
+              | kwIf EXPRESION:c lbrace INSTRUCCIONES:b rbrace kwElse lbrace INSTRUCCIONES:eb rbrace
+                {: RESULT = new IfNode(c, b, new ElifNodes(new ElifNode(new BoolLiteral(true, cleft, cright), eb))); :}
+              | kwIf EXPRESION:c lbrace INSTRUCCIONES:b rbrace ELIF:el kwElse lbrace INSTRUCCIONES:eb rbrace
+                {: el.add(new ElifNode(new BoolLiteral(true, cleft, cright), eb)); RESULT = new IfNode(c, b, el); :}
               | kwFor EXPRESION:e lbrace INSTRUCCIONES:i rbrace             {: RESULT = new WhileFor(e, i); :}
+              | kwFor SIMPLE_STATEMENT:init scol EXPRESION:c scol SIMPLE_STATEMENT:post lbrace INSTRUCCIONES:b rbrace
+                {: RESULT = new ForClasico(init, c, post, b); :}
               | kwBreak:b scol                                              {: RESULT = new Breakstm(bleft, bright ); :}
               | kwBreak:b                                                   {: RESULT = new Breakstm(bleft, bright ); :}
+              | kwContinue:c scol                                           {: RESULT = new Continuestm(cleft, cright); :}
+              | kwContinue:c                                                {: RESULT = new Continuestm(cleft, cright); :}
+              | kwVar id:n kwInt scol                                       {: RESULT = new Assign(n, new Integers(0, nleft, nright), nleft, nright); :}
+              | kwVar id:n kwInt                                            {: RESULT = new Assign(n, new Integers(0, nleft, nright), nleft, nright); :}
+              | kwVar id:n kwFloat64 scol                                   {: RESULT = new Assign(n, new Decimal(0.0, nleft, nright), nleft, nright); :}
+              | kwVar id:n kwFloat64                                        {: RESULT = new Assign(n, new Decimal(0.0, nleft, nright), nleft, nright); :}
+              | kwVar id:n kwString scol                                    {: RESULT = new Assign(n, new StringLiteral("\"\"", nleft, nright), nleft, nright); :}
+              | kwVar id:n kwString                                         {: RESULT = new Assign(n, new StringLiteral("\"\"", nleft, nright), nleft, nright); :}
+              | kwVar id:n kwBool scol                                      {: RESULT = new Assign(n, new BoolLiteral(false, nleft, nright), nleft, nright); :}
+              | kwVar id:n kwBool                                           {: RESULT = new Assign(n, new BoolLiteral(false, nleft, nright), nleft, nright); :}
+              | kwVar id:n kwRune scol                                      {: RESULT = new Assign(n, new Integers(0, nleft, nright), nleft, nright); :}
+              | kwVar id:n kwRune                                           {: RESULT = new Assign(n, new Integers(0, nleft, nright), nleft, nright); :}
+              | kwVar id:n TIPO allocate EXPRESION:e scol                   {: RESULT = new Assign(n, e, nleft, nright); :}
+              | kwVar id:n TIPO allocate EXPRESION:e                        {: RESULT = new Assign(n, e, nleft, nright); :}
+              | kwVar id:n allocate EXPRESION:e scol                        {: RESULT = new Assign(n, e, nleft, nright); :}
+              | kwVar id:n allocate EXPRESION:e                             {: RESULT = new Assign(n, e, nleft, nright); :}
+              | lbrace INSTRUCCIONES:b rbrace                               {: RESULT = new BlockStm(b); :}
               | error                                                       {: RESULT = null; :}
 ;
 
 ELIF ::= ELIF:el kwElse kwIf EXPRESION:e lbrace INSTRUCCIONES:i rbrace {: el.add(new ElifNode(e, i)); RESULT = el; :}
      |   kwElse kwIf EXPRESION:e lbrace INSTRUCCIONES:i rbrace {: RESULT = new ElifNodes(new ElifNode(e, i)); :}
+;
+
+TIPO ::= kwInt | kwFloat64 | kwString | kwBool | kwRune;
+
+SIMPLE_STATEMENT ::= id:n assign EXPRESION:e                                {: RESULT = new Assign(n, e, nleft, nright); :}
+                   | id:i allocate EXPRESION:e                              {: RESULT = new Allocate(i, e, ileft, iright); :}
+                   | id:i plusAssign EXPRESION:e                            {: RESULT = new Allocate(i, new Add(new VarRef(i, ileft, iright), e), ileft, iright); :}
+                   | id:i minusAssign EXPRESION:e                           {: RESULT = new Allocate(i, new Sub(new VarRef(i, ileft, iright), e), ileft, iright); :}
+                   | id:i plusPlus                                          {: RESULT = new Allocate(i, new Add(new VarRef(i, ileft, iright), new Integers(1, ileft, iright)), ileft, iright); :}
+                   | id:i minusMinus                                        {: RESULT = new Allocate(i, new Sub(new VarRef(i, ileft, iright), new Integers(1, ileft, iright)), ileft, iright); :}
+;
+
+LISTA_EXPRESIONES ::= LISTA_EXPRESIONES:l comma EXPRESION:e                  {: l.add(e); RESULT = l; :}
+                    | EXPRESION:e                                            {: java.util.List<ASTNode> l = new java.util.ArrayList<>(); l.add(e); RESULT = l; :}
 ;
 
 EXPRESION ::= minus EXPRESION:a             {: RESULT = new Negate(a); :}%prec UMENOS
@@ -84,6 +134,18 @@ EXPRESION ::= minus EXPRESION:a             {: RESULT = new Negate(a); :}%prec U
             | EXPRESION:a times EXPRESION:b {: RESULT = new Mul(a, b); :}
             | EXPRESION:a slash EXPRESION:b {: RESULT = new Div(a, b); :}
             | EXPRESION:a lt EXPRESION:b    {: RESULT = new Lt(a, b); :}
+            | EXPRESION:a gt EXPRESION:b    {: RESULT = new Gt(a, b); :}
+            | EXPRESION:a gte EXPRESION:b   {: RESULT = new Gte(a, b); :}
+            | EXPRESION:a lte EXPRESION:b   {: RESULT = new Lte(a, b); :}
+            | EXPRESION:a equal EXPRESION:b {: RESULT = new Equal(a, b); :}
+            | EXPRESION:a notequal EXPRESION:b {: RESULT = new NotEqual(a, b); :}
+            | EXPRESION:a mod EXPRESION:b   {: RESULT = new Mod(a, b); :}
+            | EXPRESION:a and EXPRESION:b   {: RESULT = new And(a, b); :}
+            | EXPRESION:a or EXPRESION:b    {: RESULT = new Or(a, b); :}
+            | not EXPRESION:a               {: RESULT = new Not(a); :}
+            | kwStrconv dot kwAtoi lparen EXPRESION:e rparen                 {: RESULT = new Atoi(e, eleft, eright); :}
+            | kwStrconv dot kwParseFloat lparen EXPRESION:e rparen           {: RESULT = new ParseFloat(e, eleft, eright); :}
+            | kwReflect dot kwTypeOf lparen EXPRESION:e rparen              {: RESULT = new TypeOf(e, eleft, eright); :}
             | lparen EXPRESION:e rparen     {: RESULT = new Paren(e); :}
             | kwTrue:t                      {: RESULT = new BoolLiteral(true,  tleft, tright); :}
             | kwFalse:f                     {: RESULT = new BoolLiteral(false, fleft, fright); :}
