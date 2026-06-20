@@ -8,6 +8,9 @@ import java.awt.event.MouseEvent;
 
 public class GoliteMenuBar extends JMenuBar {
     private final JMenuItem newItem;
+    private final JMenuItem openItem;
+    private final JMenuItem saveItem;
+    private final JMenuItem saveAsItem;
     private final JMenuItem exitItem;
     private final JButton runButton;
     private final JButton cleanButton;
@@ -24,8 +27,15 @@ public class GoliteMenuBar extends JMenuBar {
         JMenu helpMenu = new JMenu("Ayuda");
 
         newItem = new JMenuItem("Nuevo");
+        openItem = new JMenuItem("Abrir");
+        saveItem = new JMenuItem("Guardar");
+        saveAsItem = new JMenuItem("Guardar como...");
         exitItem = new JMenuItem("Salir");
+        
         fileMenu.add(newItem);
+        fileMenu.add(openItem);
+        fileMenu.add(saveItem);
+        fileMenu.add(saveAsItem);
         fileMenu.addSeparator();
         fileMenu.add(exitItem);
 
@@ -49,6 +59,9 @@ public class GoliteMenuBar extends JMenuBar {
     public void onRun(ActionListener l)    { runButton.addActionListener(l); }
     public void onClean(ActionListener l)  { cleanButton.addActionListener(l); }
     public void onNew(ActionListener l)    { newItem.addActionListener(l); }
+    public void onOpen(ActionListener l)   { openItem.addActionListener(l); }
+    public void onSave(ActionListener l)   { saveItem.addActionListener(l); }
+    public void onSaveAs(ActionListener l) { saveAsItem.addActionListener(l); }
     public void onExit(ActionListener l)   { exitItem.addActionListener(l); }
     public void onTokens(ActionListener l) { tokensItem.addActionListener(l); }
     public void onSymbols(ActionListener l) { symbolsItem.addActionListener(l); }
