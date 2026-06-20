@@ -42,4 +42,12 @@ public interface Visitor<T> {
     T visit(TypeOf.Context ctx);
     T visit(BlockStm.Context ctx);
     T visit(ForClasico.Context ctx);
+    T visit(NilLiteral.Context ctx);
+    T visit(RuneLiteral.Context ctx);
+    T visit(SwitchNode.Context ctx);
+    T visit(CaseNode.Context ctx);
+    T visit(ReturnStm.Context ctx);
+    T visit(FunctionDecl.Context ctx);
+    T visit(FunctionCall.Context ctx);
+    T visit(TypeCast.Context ctx);
 }

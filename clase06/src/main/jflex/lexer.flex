@@ -20,7 +20,6 @@ import olc1.golite.reports.Token;
 %column // conteo de columnas
 %unicode // recibir caracteres en formato unicode
 // %debug // Habilitar modo debug para ver el proceso de tokenización
-%ignorecase // ignorar mayusculas y minusculas
 
 %{
     public final List<GoliteError> errors = new ArrayList<>();
@@ -88,8 +87,10 @@ Comment = {LineComment} | {BlockComment}
 "!"     { return addToken(sym.not, "not", yytext()); }
 "."     { return addToken(sym.dot, "dot", yytext()); }
 ","     { return addToken(sym.comma, "comma", yytext()); }
+":"     { return addToken(sym.colon, "colon", yytext()); }
 
 // Key Words
+"nil"       { return addToken(sym.kwNil,     "kwNil", yytext()); }
 "print"     { return addToken(sym.imprimir, "imprimir", yytext()); }
 "true"      { return addToken(sym.kwTrue,    "kwTrue", yytext()); }
 "false"     { return addToken(sym.kwFalse,   "kwFalse", yytext()); }
@@ -113,10 +114,15 @@ Comment = {LineComment} | {BlockComment}
 "Atoi"      { return addToken(sym.kwAtoi,    "kwAtoi", yytext()); }
 "ParseFloat" { return addToken(sym.kwParseFloat, "kwParseFloat", yytext()); }
 "TypeOf"    { return addToken(sym.kwTypeOf,  "kwTypeOf", yytext()); }
+"switch"    { return addToken(sym.kwSwitch,  "kwSwitch", yytext()); }
+"case"      { return addToken(sym.kwCase,    "kwCase", yytext()); }
+"default"   { return addToken(sym.kwDefault, "kwDefault", yytext()); }
+"return"    { return addToken(sym.kwReturn,  "kwReturn", yytext()); }
 
 // ID - String
 {identifier}                { return addToken(sym.id, "id", yytext()); }
 \"{str_lex}\"               { return addToken(sym.string, "string", yytext()); }
+\'([^\'\\\n\r]|\\ [\'\"\\nrt])\' { return addToken(sym.rune_literal, "rune_literal", yytext()); }
 
 // Ignorar
 {whitespace}    {/* pass */}

@@ -136,8 +136,55 @@
             <p class="subtitle">Golite Compiler - Reportes Generados Automáticamente</p>
         </header>
         <div class="card">
-            <div class="empty-state">
-                <p>🎉 ¡Felicidades! No se encontraron errores léxicos, sintácticos o semánticos.</p>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tipo de Error</th>
+                            <th>Descripción</th>
+                            <th>Línea</th>
+                            <th>Columna</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><span class="badge badge-lexico">Lexico</span></td>
+                            <td>Caracter no reconocido: ¬</td>
+                            <td>25</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><span class="badge badge-lexico">Lexico</span></td>
+                            <td>Caracter no reconocido: @</td>
+                            <td>43</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><span class="badge badge-lexico">Lexico</span></td>
+                            <td>Caracter no reconocido: $</td>
+                            <td>232</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><span class="badge badge-sintactico">Sintactico</span></td>
+                            <td>Simbolo inesperado: 1</td>
+                            <td>34</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><span class="badge badge-sintactico">Sintactico</span></td>
+                            <td>Simbolo inesperado: .</td>
+                            <td>235</td>
+                            <td>10</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

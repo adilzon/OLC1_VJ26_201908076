@@ -29,7 +29,7 @@ action code
     String consola = "";
 :}
 
-terminal String string, integer, decimal;
+terminal String string, integer, decimal, rune_literal;
 terminal lparen, rparen, lbrace, rbrace;
 terminal plus, minus, times, slash, UMENOS;
 terminal scol, assign, allocate;
@@ -39,19 +39,24 @@ terminal kwFor, kwBreak;
 terminal lt, gte, lte, gt, equal, notequal, mod, and, or, not;
 terminal plusAssign, minusAssign, dot;
 terminal kwVar, kwContinue, kwFmt, kwFunc, kwMain, kwPrintln;
-terminal kwInt, kwFloat64, kwString, kwBool, kwRune;
+terminal kwInt, kwFloat64, kwString, kwBool, kwRune, kwNil;
 terminal kwStrconv, kwReflect, kwAtoi, kwParseFloat, kwTypeOf;
 terminal plusPlus, minusMinus;
 terminal comma;
+terminal kwSwitch, kwCase, kwDefault, kwReturn;
+terminal colon;
 
 nonterminal Statments INICIO;
 nonterminal Statments INSTRUCCIONES;
 nonterminal ASTNode INSTRUCCION;
 nonterminal ASTNode EXPRESION;
 nonterminal ElifNodes ELIF;
-nonterminal TIPO;
+nonterminal String TIPO;
 nonterminal ASTNode SIMPLE_STATEMENT;
 nonterminal java.util.List<ASTNode> LISTA_EXPRESIONES;
+nonterminal ASTNode CASO;
+nonterminal java.util.List<ASTNode> LISTA_CASOS;
+nonterminal java.util.List<olc1.golite.ast.stm.Param> PARAMETROS;
 
 precedence left or;
 precedence left and;
@@ -60,6 +65,8 @@ precedence left lt, gt, lte, gte;
 precedence left plus, minus;
 precedence left times, slash, mod;
 precedence right not, UMENOS;
+
+
 
 start with INICIO;
 
@@ -75,8 +82,12 @@ INSTRUCCIONES ::= INSTRUCCIONES:is INSTRUCCION:i     {: is.add(i); RESULT = is; 
 
 INSTRUCCION ::= imprimir lparen LISTA_EXPRESIONES:e rparen scol             {: RESULT = new Imprimir(e); :}
               | imprimir lparen LISTA_EXPRESIONES:e rparen                  {: RESULT = new Imprimir(e); :}
+              | imprimir lparen rparen scol                                 {: RESULT = new Imprimir(new java.util.ArrayList<ASTNode>()); :}
+              | imprimir lparen rparen                                      {: RESULT = new Imprimir(new java.util.ArrayList<ASTNode>()); :}
               | kwFmt dot kwPrintln lparen LISTA_EXPRESIONES:e rparen scol  {: RESULT = new Imprimir(e); :}
               | kwFmt dot kwPrintln lparen LISTA_EXPRESIONES:e rparen       {: RESULT = new Imprimir(e); :}
+              | kwFmt dot kwPrintln lparen rparen scol                      {: RESULT = new Imprimir(new java.util.ArrayList<ASTNode>()); :}
+              | kwFmt dot kwPrintln lparen rparen                           {: RESULT = new Imprimir(new java.util.ArrayList<ASTNode>()); :}
               | SIMPLE_STATEMENT:s scol                                     {: RESULT = s; :}
               | SIMPLE_STATEMENT:s                                          {: RESULT = s; :}
               | kwIf EXPRESION:c lbrace INSTRUCCIONES:b rbrace              {: RESULT = new IfNode(c, b); :}
@@ -107,7 +118,32 @@ INSTRUCCION ::= imprimir lparen LISTA_EXPRESIONES:e rparen scol             {: R
               | kwVar id:n allocate EXPRESION:e scol                        {: RESULT = new Assign(n, e, nleft, nright); :}
               | kwVar id:n allocate EXPRESION:e                             {: RESULT = new Assign(n, e, nleft, nright); :}
               | lbrace INSTRUCCIONES:b rbrace                               {: RESULT = new BlockStm(b); :}
+              | kwSwitch EXPRESION:e lbrace LISTA_CASOS:c rbrace            {: RESULT = new SwitchNode(e, c); :}
+              | kwReturn EXPRESION:e scol                                   {: RESULT = new ReturnStm(e, eleft, eright); :}
+              | kwReturn EXPRESION:e                                        {: RESULT = new ReturnStm(e, eleft, eright); :}
+              | kwReturn:r scol                                             {: RESULT = new ReturnStm(null, rleft, rright); :}
+              | kwReturn:r                                                  {: RESULT = new ReturnStm(null, rleft, rright); :}
+              | id:i lparen LISTA_EXPRESIONES:args rparen scol              {: RESULT = new FunctionCall(i, args, ileft, iright); :}
+              | id:i lparen LISTA_EXPRESIONES:args rparen                   {: RESULT = new FunctionCall(i, args, ileft, iright); :}
+              | id:i lparen rparen scol                                     {: RESULT = new FunctionCall(i, new java.util.ArrayList<ASTNode>(), ileft, iright); :}
+              | id:i lparen rparen                                          {: RESULT = new FunctionCall(i, new java.util.ArrayList<ASTNode>(), ileft, iright); :}
+              | kwFunc id:n lparen PARAMETROS:p rparen TIPO:t lbrace INSTRUCCIONES:i rbrace {: RESULT = new FunctionDecl(n, p, t, i, nleft, nright); :}
+              | kwFunc id:n lparen PARAMETROS:p rparen lbrace INSTRUCCIONES:i rbrace        {: RESULT = new FunctionDecl(n, p, "", i, nleft, nright); :}
+              | kwFunc id:n lparen rparen TIPO:t lbrace INSTRUCCIONES:i rbrace {: RESULT = new FunctionDecl(n, new java.util.ArrayList<olc1.golite.ast.stm.Param>(), t, i, nleft, nright); :}
+              | kwFunc id:n lparen rparen lbrace INSTRUCCIONES:i rbrace        {: RESULT = new FunctionDecl(n, new java.util.ArrayList<olc1.golite.ast.stm.Param>(), "", i, nleft, nright); :}
               | error                                                       {: RESULT = null; :}
+;
+
+LISTA_CASOS ::= LISTA_CASOS:l CASO:c                                        {: l.add(c); RESULT = l; :}
+              | CASO:c                                                      {: java.util.List<ASTNode> l = new java.util.ArrayList<>(); l.add(c); RESULT = l; :}
+;
+
+CASO ::= kwCase EXPRESION:e colon INSTRUCCIONES:i                           {: RESULT = new CaseNode(e, i); :}
+       | kwDefault colon INSTRUCCIONES:i                                    {: RESULT = new CaseNode(null, i); :}
+;
+
+PARAMETROS ::= PARAMETROS:p comma id:n TIPO:t                               {: p.add(new olc1.golite.ast.stm.Param(n, t)); RESULT = p; :}
+             | id:n TIPO:t                                                  {: java.util.List<olc1.golite.ast.stm.Param> p = new java.util.ArrayList<>(); p.add(new olc1.golite.ast.stm.Param(n, t)); RESULT = p; :}
 ;
 
 ELIF ::= ELIF:el kwElse kwIf EXPRESION:e lbrace INSTRUCCIONES:i rbrace {: el.add(new ElifNode(e, i)); RESULT = el; :}
@@ -153,4 +189,13 @@ EXPRESION ::= minus EXPRESION:a             {: RESULT = new Negate(a); :}%prec U
             | integer:e                     {: RESULT = new Integers(new Integer(e), eleft, eright); :}
             | decimal:e                     {: RESULT = new Decimal(new Double(e),   eleft, eright); :}
             | string:s                      {: RESULT = new StringLiteral(s, sleft, sright); :}
+            | rune_literal:r                {: RESULT = new RuneLiteral(r, rleft, rright); :}
+            | kwNil:n                       {: RESULT = new NilLiteral(nleft, nright); :}
+            | id:i lparen LISTA_EXPRESIONES:args rparen {: RESULT = new FunctionCall(i, args, ileft, iright); :}
+            | id:i lparen rparen                        {: RESULT = new FunctionCall(i, new java.util.ArrayList<ASTNode>(), ileft, iright); :}
+            | kwInt lparen EXPRESION:e rparen           {: RESULT = new TypeCast("int", e, eleft, eright); :}
+            | kwFloat64 lparen EXPRESION:e rparen       {: RESULT = new TypeCast("float64", e, eleft, eright); :}
+            | kwString lparen EXPRESION:e rparen        {: RESULT = new TypeCast("string", e, eleft, eright); :}
+            | kwBool lparen EXPRESION:e rparen          {: RESULT = new TypeCast("bool", e, eleft, eright); :}
+            | kwRune lparen EXPRESION:e rparen          {: RESULT = new TypeCast("rune", e, eleft, eright); :}
 ;

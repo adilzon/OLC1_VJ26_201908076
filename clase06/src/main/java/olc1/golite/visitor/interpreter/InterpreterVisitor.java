@@ -24,6 +24,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     public final List<Symbol> symbols = new ArrayList<>();
 
     public ValueWrapper Visit(ASTNode node) {
+
         return node.accept(this);
     }
 
@@ -42,18 +43,26 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
-        // Aquí manejo tanto la suma aritmética para enteros y decimales, 
-        // como la concatenación de strings si ambos operandos resultan ser cadenas.
-        if (left instanceof IntValue l && right instanceof IntValue r) {
-            return new IntValue(l.value() + r.value(), l.line(), l.column());
+        // int + int
+        if (left instanceof IntValue li && right instanceof IntValue ri) {
+            return new IntValue(li.value() + ri.value(), li.line(), li.column());
         }
-        if (left instanceof DecimalValue l && right instanceof DecimalValue r) {
-            return new DecimalValue(l.value() + r.value(), l.line(), l.column());
+        // decimal + decimal
+        if (left instanceof DecimalValue ld && right instanceof DecimalValue rd) {
+            return new DecimalValue(ld.value() + rd.value(), ld.line(), ld.column());
         }
+        // mixed int and decimal -> decimal
+        if (left instanceof IntValue li && right instanceof DecimalValue rd) {
+            return new DecimalValue(li.value() + rd.value(), li.line(), li.column());
+        }
+        if (left instanceof DecimalValue ld && right instanceof IntValue ri) {
+            return new DecimalValue(ld.value() + ri.value(), ld.line(), ld.column());
+        }
+        // string concatenation
         if (left instanceof StringValue l && right instanceof StringValue r) {
             return new StringValue("\"" + l.toString() + r.toString() + "\"", l.line(), l.column());
         }
-        
+
         this.errors.add(new GoliteError("Semantico", "Tipos incompatibles para suma: " + left.getTypeName() + " y " + right.getTypeName(), left.line(), left.column()));
         return left;
     }
@@ -63,11 +72,20 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
-        if (left instanceof IntValue l && right instanceof IntValue r) {
-            return new IntValue(l.value() - r.value(), l.line(), l.column());
+        // int - int
+        if (left instanceof IntValue li && right instanceof IntValue ri) {
+            return new IntValue(li.value() - ri.value(), li.line(), li.column());
         }
-        if (left instanceof DecimalValue l && right instanceof DecimalValue r) {
-            return new DecimalValue(l.value() - r.value(), l.line(), l.column());
+        // decimal - decimal
+        if (left instanceof DecimalValue ld && right instanceof DecimalValue rd) {
+            return new DecimalValue(ld.value() - rd.value(), ld.line(), ld.column());
+        }
+        // mixed int and decimal -> decimal
+        if (left instanceof IntValue li && right instanceof DecimalValue rd) {
+            return new DecimalValue(li.value() - rd.value(), li.line(), li.column());
+        }
+        if (left instanceof DecimalValue ld && right instanceof IntValue ri) {
+            return new DecimalValue(ld.value() - ri.value(), ld.line(), ld.column());
         }
         this.errors.add(new GoliteError("Semantico", "Tipos incompatibles para resta: " + left.getTypeName() + " y " + right.getTypeName(), left.line(), left.column()));
         return left;
@@ -78,11 +96,20 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
-        if (left instanceof IntValue l && right instanceof IntValue r) {
-            return new IntValue(l.value() * r.value(), l.line(), l.column());
+        // int * int
+        if (left instanceof IntValue li && right instanceof IntValue ri) {
+            return new IntValue(li.value() * ri.value(), li.line(), li.column());
         }
-        if (left instanceof DecimalValue l && right instanceof DecimalValue r) {
-            return new DecimalValue(l.value() * r.value(), l.line(), l.column());
+        // decimal * decimal
+        if (left instanceof DecimalValue ld && right instanceof DecimalValue rd) {
+            return new DecimalValue(ld.value() * rd.value(), ld.line(), rd.column());
+        }
+        // mixed int and decimal -> decimal
+        if (left instanceof IntValue li && right instanceof DecimalValue rd) {
+            return new DecimalValue(li.value() * rd.value(), li.line(), li.column());
+        }
+        if (left instanceof DecimalValue ld && right instanceof IntValue ri) {
+            return new DecimalValue(ld.value() * ri.value(), ld.line(), ri.column());
         }
         this.errors.add(new GoliteError("Semantico", "Tipos incompatibles para multiplicacion: " + left.getTypeName() + " y " + right.getTypeName(), left.line(), left.column()));
         return left;
@@ -93,21 +120,36 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
-        // Control de división por cero: si detecto que el divisor es cero,
-        // agrego un error semántico y devuelvo un valor por defecto (0 o 0.0) para continuar la ejecución.
-        if (left instanceof IntValue l && right instanceof IntValue r) {
-            if (r.value() == 0) {
-                this.errors.add(new GoliteError("Semantico", "Division por cero", r.line(), r.column()));
-                return new IntValue(0, l.line(), l.column());
+        // int / int
+        if (left instanceof IntValue li && right instanceof IntValue ri) {
+            if (ri.value() == 0) {
+                this.errors.add(new GoliteError("Semantico", "Division por cero", ri.line(), ri.column()));
+                return new IntValue(0, li.line(), li.column());
             }
-            return new IntValue(l.value() / r.value(), l.line(), l.column());
+            return new IntValue(li.value() / ri.value(), li.line(), li.column());
         }
-        if (left instanceof DecimalValue l && right instanceof DecimalValue r) {
-            if (r.value() == 0.0) {
-                this.errors.add(new GoliteError("Semantico", "Division por cero", r.line(), r.column()));
-                return new DecimalValue(0.0, l.line(), l.column());
+        // decimal / decimal
+        if (left instanceof DecimalValue ld && right instanceof DecimalValue rd) {
+            if (rd.value() == 0.0) {
+                this.errors.add(new GoliteError("Semantico", "Division por cero", rd.line(), rd.column()));
+                return new DecimalValue(0.0, ld.line(), ld.column());
             }
-            return new DecimalValue(l.value() / r.value(), l.line(), l.column());
+            return new DecimalValue(ld.value() / rd.value(), ld.line(), ld.column());
+        }
+        // mixed int and decimal -> decimal
+        if (left instanceof IntValue li && right instanceof DecimalValue rd) {
+            if (rd.value() == 0.0) {
+                this.errors.add(new GoliteError("Semantico", "Division por cero", rd.line(), rd.column()));
+                return new DecimalValue(0.0, li.line(), li.column());
+            }
+            return new DecimalValue(li.value() / rd.value(), li.line(), li.column());
+        }
+        if (left instanceof DecimalValue ld && right instanceof IntValue ri) {
+            if (ri.value() == 0) {
+                this.errors.add(new GoliteError("Semantico", "Division por cero", ri.line(), ri.column()));
+                return new DecimalValue(0.0, ld.line(), ld.column());
+            }
+            return new DecimalValue(ld.value() / ri.value(), ld.line(), ld.column());
         }
         this.errors.add(new GoliteError("Semantico", "Tipos incompatibles para division: " + left.getTypeName() + " y " + right.getTypeName(), left.line(), left.column()));
         return left;
@@ -118,18 +160,29 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
-        if (left instanceof IntValue l && right instanceof IntValue r) {
-            return new BoolValue(l.value() < r.value(), l.line(), l.column());
+        if (left instanceof IntValue li && right instanceof IntValue ri) {
+            return new BoolValue(li.value() < ri.value(), li.line(), li.column());
         }
-        if (left instanceof DecimalValue l && right instanceof DecimalValue r) {
-            return new BoolValue(l.value() < r.value(), l.line(), l.column());
+        if (left instanceof DecimalValue ld && right instanceof DecimalValue rd) {
+            return new BoolValue(ld.value() < rd.value(), ld.line(), rd.column());
+        }
+        // mixed int and decimal
+        if (left instanceof IntValue li && right instanceof DecimalValue rd) {
+            return new BoolValue(li.value() < rd.value(), li.line(), rd.column());
+        }
+        if (left instanceof DecimalValue ld && right instanceof IntValue ri) {
+            return new BoolValue(ld.value() < ri.value(), ld.line(), ri.column());
         }
         if (left instanceof StringValue l && right instanceof StringValue r) {
             return new BoolValue(l.toString().compareTo(r.toString()) < 0, l.line(), l.column());
         }
+        if (left instanceof RuneValue l && right instanceof RuneValue r) {
+            return new BoolValue(l.value() < r.value(), l.line(), l.column());
+        }
         this.errors.add(new GoliteError("Semantico", "Tipos incompatibles para comparacion <: " + left.getTypeName() + " y " + right.getTypeName(), left.line(), left.column()));
         return new BoolValue(false, left.line(), left.column());
     }
+
 
     @Override
     public ValueWrapper visit(Negate.Context ctx) {
@@ -360,65 +413,105 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
-        if (left instanceof IntValue l && right instanceof IntValue r) {
-            return new BoolValue(l.value() > r.value(), l.line(), l.column());
+        if (left instanceof IntValue li && right instanceof IntValue ri) {
+            return new BoolValue(li.value() > ri.value(), li.line(), li.column());
         }
-        if (left instanceof DecimalValue l && right instanceof DecimalValue r) {
-            return new BoolValue(l.value() > r.value(), l.line(), l.column());
+        if (left instanceof DecimalValue ld && right instanceof DecimalValue rd) {
+            return new BoolValue(ld.value() > rd.value(), ld.line(), rd.column());
+        }
+        // mixed int and decimal
+        if (left instanceof IntValue li && right instanceof DecimalValue rd) {
+            return new BoolValue(li.value() > rd.value(), li.line(), rd.column());
+        }
+        if (left instanceof DecimalValue ld && right instanceof IntValue ri) {
+            return new BoolValue(ld.value() > ri.value(), ld.line(), ri.column());
         }
         if (left instanceof StringValue l && right instanceof StringValue r) {
             return new BoolValue(l.toString().compareTo(r.toString()) > 0, l.line(), l.column());
         }
+        if (left instanceof RuneValue l && right instanceof RuneValue r) {
+            return new BoolValue(l.value() > r.value(), l.line(), l.column());
+        }
         this.errors.add(new GoliteError("Semantico", "Tipos incompatibles para comparacion >: " + left.getTypeName() + " y " + right.getTypeName(), left.line(), left.column()));
         return new BoolValue(false, left.line(), left.column());
     }
+
 
     @Override
     public ValueWrapper visit(Gte.Context ctx) {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
-        if (left instanceof IntValue l && right instanceof IntValue r) {
-            return new BoolValue(l.value() >= r.value(), l.line(), l.column());
+        if (left instanceof IntValue li && right instanceof IntValue ri) {
+            return new BoolValue(li.value() >= ri.value(), li.line(), li.column());
         }
-        if (left instanceof DecimalValue l && right instanceof DecimalValue r) {
-            return new BoolValue(l.value() >= r.value(), l.line(), l.column());
+        if (left instanceof DecimalValue ld && right instanceof DecimalValue rd) {
+            return new BoolValue(ld.value() >= rd.value(), ld.line(), rd.column());
+        }
+        // mixed int and decimal
+        if (left instanceof IntValue li && right instanceof DecimalValue rd) {
+            return new BoolValue(li.value() >= rd.value(), li.line(), rd.column());
+        }
+        if (left instanceof DecimalValue ld && right instanceof IntValue ri) {
+            return new BoolValue(ld.value() >= ri.value(), ld.line(), ri.column());
         }
         if (left instanceof StringValue l && right instanceof StringValue r) {
             return new BoolValue(l.toString().compareTo(r.toString()) >= 0, l.line(), l.column());
         }
+        if (left instanceof RuneValue l && right instanceof RuneValue r) {
+            return new BoolValue(l.value() >= r.value(), l.line(), l.column());
+        }
         this.errors.add(new GoliteError("Semantico", "Tipos incompatibles para comparacion >=: " + left.getTypeName() + " y " + right.getTypeName(), left.line(), left.column()));
         return new BoolValue(false, left.line(), left.column());
     }
+
 
     @Override
     public ValueWrapper visit(Lte.Context ctx) {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
-        if (left instanceof IntValue l && right instanceof IntValue r) {
-            return new BoolValue(l.value() <= r.value(), l.line(), l.column());
+        if (left instanceof IntValue li && right instanceof IntValue ri) {
+            return new BoolValue(li.value() <= ri.value(), li.line(), li.column());
         }
-        if (left instanceof DecimalValue l && right instanceof DecimalValue r) {
-            return new BoolValue(l.value() <= r.value(), l.line(), l.column());
+        if (left instanceof DecimalValue ld && right instanceof DecimalValue rd) {
+            return new BoolValue(ld.value() <= rd.value(), ld.line(), rd.column());
+        }
+        // mixed int and decimal
+        if (left instanceof IntValue li && right instanceof DecimalValue rd) {
+            return new BoolValue(li.value() <= rd.value(), li.line(), rd.column());
+        }
+        if (left instanceof DecimalValue ld && right instanceof IntValue ri) {
+            return new BoolValue(ld.value() <= ri.value(), ld.line(), ri.column());
         }
         if (left instanceof StringValue l && right instanceof StringValue r) {
             return new BoolValue(l.toString().compareTo(r.toString()) <= 0, l.line(), l.column());
         }
+        if (left instanceof RuneValue l && right instanceof RuneValue r) {
+            return new BoolValue(l.value() <= r.value(), l.line(), l.column());
+        }
         this.errors.add(new GoliteError("Semantico", "Tipos incompatibles para comparacion <=: " + left.getTypeName() + " y " + right.getTypeName(), left.line(), left.column()));
         return new BoolValue(false, left.line(), left.column());
     }
+
 
     @Override
     public ValueWrapper visit(Equal.Context ctx) {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
-        if (left instanceof IntValue l && right instanceof IntValue r) {
-            return new BoolValue(l.value() == r.value(), l.line(), l.column());
+        if (left instanceof IntValue li && right instanceof IntValue ri) {
+            return new BoolValue(li.value() == ri.value(), li.line(), li.column());
         }
-        if (left instanceof DecimalValue l && right instanceof DecimalValue r) {
-            return new BoolValue(l.value() == r.value(), l.line(), l.column());
+        if (left instanceof DecimalValue ld && right instanceof DecimalValue rd) {
+            return new BoolValue(ld.value() == rd.value(), ld.line(), rd.column());
+        }
+        // mixed int and decimal
+        if (left instanceof IntValue li && right instanceof DecimalValue rd) {
+            return new BoolValue(li.value() == rd.value(), li.line(), rd.column());
+        }
+        if (left instanceof DecimalValue ld && right instanceof IntValue ri) {
+            return new BoolValue(ld.value() == ri.value(), ld.line(), ri.column());
         }
         if (left instanceof StringValue l && right instanceof StringValue r) {
             return new BoolValue(l.value().equals(r.value()), l.line(), l.column());
@@ -426,20 +519,31 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         if (left instanceof BoolValue l && right instanceof BoolValue r) {
             return new BoolValue(l.value() == r.value(), l.line(), l.column());
         }
+        if (left instanceof RuneValue l && right instanceof RuneValue r) {
+            return new BoolValue(l.value() == r.value(), l.line(), l.column());
+        }
         this.errors.add(new GoliteError("Semantico", "Tipos incompatibles para comparacion ==: " + left.getTypeName() + " y " + right.getTypeName(), left.line(), left.column()));
         return new BoolValue(false, left.line(), left.column());
     }
+
 
     @Override
     public ValueWrapper visit(NotEqual.Context ctx) {
         ValueWrapper left  = Visit(ctx.left);
         ValueWrapper right = Visit(ctx.right);
 
-        if (left instanceof IntValue l && right instanceof IntValue r) {
-            return new BoolValue(l.value() != r.value(), l.line(), l.column());
+        if (left instanceof IntValue li && right instanceof IntValue ri) {
+            return new BoolValue(li.value() != ri.value(), li.line(), li.column());
         }
-        if (left instanceof DecimalValue l && right instanceof DecimalValue r) {
-            return new BoolValue(l.value() != r.value(), l.line(), l.column());
+        if (left instanceof DecimalValue ld && right instanceof DecimalValue rd) {
+            return new BoolValue(ld.value() != rd.value(), ld.line(), rd.column());
+        }
+        // mixed int and decimal
+        if (left instanceof IntValue li && right instanceof DecimalValue rd) {
+            return new BoolValue(li.value() != rd.value(), li.line(), rd.column());
+        }
+        if (left instanceof DecimalValue ld && right instanceof IntValue ri) {
+            return new BoolValue(ld.value() != ri.value(), ld.line(), ri.column());
         }
         if (left instanceof StringValue l && right instanceof StringValue r) {
             return new BoolValue(!l.value().equals(r.value()), l.line(), l.column());
@@ -447,9 +551,13 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         if (left instanceof BoolValue l && right instanceof BoolValue r) {
             return new BoolValue(l.value() != r.value(), l.line(), l.column());
         }
+        if (left instanceof RuneValue l && right instanceof RuneValue r) {
+            return new BoolValue(l.value() != r.value(), l.line(), l.column());
+        }
         this.errors.add(new GoliteError("Semantico", "Tipos incompatibles para comparacion !=: " + left.getTypeName() + " y " + right.getTypeName(), left.line(), left.column()));
         return new BoolValue(false, left.line(), left.column());
     }
+
 
     @Override
     public ValueWrapper visit(Mod.Context ctx) {
@@ -559,6 +667,25 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         return new StringValue("\"" + typeName + "\"", ctx.line, ctx.column);
     }
 
+    // Nil literal visitor
+    @Override
+    public ValueWrapper visit(NilLiteral.Context ctx) {
+        return new NilValue(ctx.line, ctx.column);
+    }
+
+    // Rune literal visitor
+    @Override
+    public ValueWrapper visit(RuneLiteral.Context ctx) {
+        String raw = ctx.value;
+        if (raw.length() >= 2 && raw.charAt(0) == '\'' && raw.charAt(raw.length() - 1) == '\'') {
+            raw = raw.substring(1, raw.length() - 1);
+        }
+        raw = raw.replace("\\\\", "\\").replace("\\n", "\n").replace("\\t", "\t").replace("\\r", "\r");
+        char ch = raw.isEmpty() ? '\0' : raw.charAt(0);
+        return new RuneValue(ch, ctx.line, ctx.column);
+    }
+
+
     @Override
     public ValueWrapper visit(BlockStm.Context ctx) {
         Enviroment parentEnv = this.environment;
@@ -615,6 +742,36 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         }
 
         this.environment = parentEnv;
+        return defaultVoid;
+    }
+
+    @Override
+    public ValueWrapper visit(SwitchNode.Context ctx) {
+        return defaultVoid;
+    }
+
+    @Override
+    public ValueWrapper visit(CaseNode.Context ctx) {
+        return defaultVoid;
+    }
+
+    @Override
+    public ValueWrapper visit(ReturnStm.Context ctx) {
+        return defaultVoid;
+    }
+
+    @Override
+    public ValueWrapper visit(FunctionDecl.Context ctx) {
+        return defaultVoid;
+    }
+
+    @Override
+    public ValueWrapper visit(FunctionCall.Context ctx) {
+        return defaultVoid;
+    }
+
+    @Override
+    public ValueWrapper visit(TypeCast.Context ctx) {
         return defaultVoid;
     }
 }
