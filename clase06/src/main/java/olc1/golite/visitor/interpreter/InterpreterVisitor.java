@@ -762,6 +762,11 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
 
     @Override
     public ValueWrapper visit(FunctionDecl.Context ctx) {
+        if ("main".equals(ctx.id)) {
+            if (ctx.instrucciones != null) {
+                Visit(ctx.instrucciones);
+            }
+        }
         return defaultVoid;
     }
 

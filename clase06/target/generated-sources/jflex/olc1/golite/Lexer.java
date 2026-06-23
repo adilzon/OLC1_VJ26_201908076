@@ -116,13 +116,14 @@ public class Lexer implements java_cup.runtime.Scanner {
     "\1\44\1\45\1\0\1\46\15\23\1\47\1\50\1\23"+
     "\1\51\1\52\1\23\1\53\11\23\1\54\1\2\1\55"+
     "\4\23\1\56\1\23\1\57\2\23\1\60\2\23\1\61"+
-    "\1\62\4\23\1\63\3\23\1\64\1\65\4\23\1\66"+
-    "\2\23\1\67\1\23\1\70\1\71\7\23\1\72\1\73"+
-    "\4\23\1\74\1\23\1\75\1\76\1\23\1\77\1\23"+
-    "\1\100\1\101\1\102\1\103\1\23\1\104\1\23\1\105";
+    "\1\62\4\23\1\63\4\23\1\64\1\65\4\23\1\66"+
+    "\2\23\1\67\1\23\1\70\1\71\10\23\1\72\1\73"+
+    "\4\23\1\74\1\23\1\75\1\76\1\77\1\23\1\100"+
+    "\1\23\1\101\1\102\1\103\1\104\1\23\1\105\1\23"+
+    "\1\106";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[193];
+    int [] result = new int[196];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -166,15 +167,15 @@ public class Lexer implements java_cup.runtime.Scanner {
     "\0\73\0\u03b0\0\u15e5\0\u1620\0\u165b\0\u1696\0\u03b0\0\u16d1"+
     "\0\u03b0\0\u170c\0\u1747\0\u03b0\0\u1782\0\u17bd\0\u03b0\0\u03b0"+
     "\0\u17f8\0\u1833\0\u186e\0\u18a9\0\u03b0\0\u18e4\0\u191f\0\u195a"+
-    "\0\u03b0\0\u03b0\0\u1995\0\u19d0\0\u1a0b\0\u1a46\0\u03b0\0\u1a81"+
-    "\0\u1abc\0\u03b0\0\u1af7\0\u03b0\0\u03b0\0\u1b32\0\u1b6d\0\u1ba8"+
-    "\0\u1be3\0\u1c1e\0\u1c59\0\u1c94\0\u03b0\0\u03b0\0\u1ccf\0\u1d0a"+
-    "\0\u1d45\0\u1d80\0\u03b0\0\u1dbb\0\u03b0\0\u03b0\0\u1df6\0\u03b0"+
-    "\0\u1e31\0\u03b0\0\u03b0\0\u03b0\0\u03b0\0\u1e6c\0\u03b0\0\u1ea7"+
-    "\0\u03b0";
+    "\0\u1995\0\u03b0\0\u03b0\0\u19d0\0\u1a0b\0\u1a46\0\u1a81\0\u03b0"+
+    "\0\u1abc\0\u1af7\0\u03b0\0\u1b32\0\u03b0\0\u03b0\0\u1b6d\0\u1ba8"+
+    "\0\u1be3\0\u1c1e\0\u1c59\0\u1c94\0\u1ccf\0\u1d0a\0\u03b0\0\u03b0"+
+    "\0\u1d45\0\u1d80\0\u1dbb\0\u1df6\0\u03b0\0\u1e31\0\u03b0\0\u03b0"+
+    "\0\u03b0\0\u1e6c\0\u03b0\0\u1ea7\0\u03b0\0\u03b0\0\u03b0\0\u03b0"+
+    "\0\u1ee2\0\u03b0\0\u1f1d\0\u03b0";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[193];
+    int [] result = new int[196];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -285,51 +286,54 @@ public class Lexer implements java_cup.runtime.Scanner {
     "\3\30\5\0\6\30\3\0\22\30\1\224\3\30\24\0"+
     "\3\30\5\0\6\30\3\0\4\30\1\225\21\30\24\0"+
     "\3\30\5\0\6\30\3\0\2\30\1\226\5\30\1\227"+
-    "\15\30\24\0\3\30\5\0\6\30\3\0\21\30\1\230"+
-    "\4\30\24\0\3\30\5\0\6\30\3\0\4\30\1\231"+
-    "\21\30\24\0\3\30\5\0\6\30\3\0\4\30\1\232"+
-    "\21\30\24\0\3\30\5\0\6\30\3\0\4\30\1\233"+
-    "\21\30\24\0\3\30\5\0\6\30\3\0\21\30\1\234"+
-    "\4\30\24\0\3\30\5\0\3\30\1\235\2\30\3\0"+
-    "\26\30\24\0\3\30\5\0\6\30\3\0\14\30\1\236"+
-    "\11\30\24\0\3\30\5\0\6\30\3\0\11\30\1\237"+
-    "\14\30\24\0\3\30\5\0\6\30\3\0\10\30\1\240"+
-    "\15\30\24\0\3\30\5\0\6\30\3\0\22\30\1\241"+
-    "\3\30\24\0\3\30\5\0\6\30\3\0\4\30\1\242"+
-    "\21\30\24\0\3\30\5\0\6\30\3\0\21\30\1\243"+
-    "\4\30\24\0\3\30\5\0\6\30\3\0\21\30\1\244"+
-    "\4\30\24\0\3\30\5\0\6\30\3\0\4\30\1\245"+
-    "\21\30\24\0\3\30\5\0\6\30\3\0\4\30\1\246"+
-    "\21\30\24\0\3\30\5\0\6\30\3\0\17\30\1\247"+
-    "\6\30\24\0\3\30\5\0\6\30\3\0\15\30\1\250"+
-    "\10\30\24\0\3\30\5\0\6\30\3\0\14\30\1\251"+
-    "\11\30\24\0\3\30\5\0\6\30\3\0\2\30\1\252"+
-    "\23\30\24\0\3\30\5\0\2\30\1\253\3\30\3\0"+
-    "\26\30\24\0\3\30\5\0\6\30\3\0\12\30\1\254"+
-    "\13\30\24\0\3\30\5\0\6\30\3\0\5\30\1\255"+
-    "\20\30\24\0\3\30\5\0\6\30\3\0\3\30\1\256"+
-    "\22\30\24\0\3\30\5\0\6\30\3\0\14\30\1\257"+
-    "\11\30\24\0\3\30\5\0\6\30\3\0\12\30\1\260"+
-    "\13\30\24\0\2\30\1\261\5\0\6\30\3\0\26\30"+
-    "\24\0\3\30\5\0\6\30\3\0\2\30\1\262\23\30"+
-    "\24\0\3\30\5\0\6\30\3\0\14\30\1\263\11\30"+
-    "\24\0\3\30\5\0\6\30\3\0\14\30\1\264\11\30"+
-    "\24\0\3\30\5\0\6\30\3\0\6\30\1\265\17\30"+
-    "\24\0\3\30\5\0\6\30\3\0\7\30\1\266\16\30"+
-    "\24\0\3\30\5\0\6\30\3\0\12\30\1\267\13\30"+
-    "\24\0\3\30\5\0\6\30\3\0\14\30\1\270\11\30"+
-    "\24\0\3\30\5\0\6\30\3\0\22\30\1\271\3\30"+
-    "\24\0\3\30\5\0\6\30\3\0\21\30\1\272\4\30"+
-    "\24\0\1\30\1\273\1\30\5\0\6\30\3\0\26\30"+
-    "\24\0\3\30\5\0\6\30\3\0\21\30\1\274\4\30"+
-    "\24\0\3\30\5\0\6\30\3\0\23\30\1\275\2\30"+
-    "\24\0\3\30\5\0\6\30\3\0\15\30\1\276\10\30"+
-    "\24\0\3\30\5\0\6\30\3\0\4\30\1\277\21\30"+
-    "\24\0\3\30\5\0\6\30\3\0\1\300\25\30\24\0"+
-    "\3\30\5\0\6\30\3\0\21\30\1\301\4\30\3\0";
+    "\11\30\1\230\3\30\24\0\3\30\5\0\6\30\3\0"+
+    "\21\30\1\231\4\30\24\0\3\30\5\0\6\30\3\0"+
+    "\4\30\1\232\21\30\24\0\3\30\5\0\6\30\3\0"+
+    "\4\30\1\233\21\30\24\0\3\30\5\0\6\30\3\0"+
+    "\4\30\1\234\21\30\24\0\3\30\5\0\6\30\3\0"+
+    "\21\30\1\235\4\30\24\0\3\30\5\0\3\30\1\236"+
+    "\2\30\3\0\26\30\24\0\3\30\5\0\6\30\3\0"+
+    "\14\30\1\237\11\30\24\0\3\30\5\0\6\30\3\0"+
+    "\11\30\1\240\14\30\24\0\3\30\5\0\6\30\3\0"+
+    "\10\30\1\241\15\30\24\0\3\30\5\0\6\30\3\0"+
+    "\22\30\1\242\3\30\24\0\3\30\5\0\6\30\3\0"+
+    "\4\30\1\243\21\30\24\0\3\30\5\0\6\30\3\0"+
+    "\21\30\1\244\4\30\24\0\3\30\5\0\6\30\3\0"+
+    "\21\30\1\245\4\30\24\0\3\30\5\0\6\30\3\0"+
+    "\4\30\1\246\21\30\24\0\3\30\5\0\6\30\3\0"+
+    "\4\30\1\247\21\30\24\0\3\30\5\0\6\30\3\0"+
+    "\17\30\1\250\6\30\24\0\3\30\5\0\6\30\3\0"+
+    "\15\30\1\251\10\30\24\0\3\30\5\0\6\30\3\0"+
+    "\14\30\1\252\11\30\24\0\3\30\5\0\6\30\3\0"+
+    "\2\30\1\253\23\30\24\0\3\30\5\0\6\30\3\0"+
+    "\2\30\1\254\23\30\24\0\3\30\5\0\2\30\1\255"+
+    "\3\30\3\0\26\30\24\0\3\30\5\0\6\30\3\0"+
+    "\12\30\1\256\13\30\24\0\3\30\5\0\6\30\3\0"+
+    "\5\30\1\257\20\30\24\0\3\30\5\0\6\30\3\0"+
+    "\3\30\1\260\22\30\24\0\3\30\5\0\6\30\3\0"+
+    "\14\30\1\261\11\30\24\0\3\30\5\0\6\30\3\0"+
+    "\12\30\1\262\13\30\24\0\2\30\1\263\5\0\6\30"+
+    "\3\0\26\30\24\0\3\30\5\0\6\30\3\0\2\30"+
+    "\1\264\23\30\24\0\3\30\5\0\6\30\3\0\14\30"+
+    "\1\265\11\30\24\0\3\30\5\0\6\30\3\0\14\30"+
+    "\1\266\11\30\24\0\3\30\5\0\6\30\3\0\6\30"+
+    "\1\267\17\30\24\0\3\30\5\0\6\30\3\0\21\30"+
+    "\1\270\4\30\24\0\3\30\5\0\6\30\3\0\7\30"+
+    "\1\271\16\30\24\0\3\30\5\0\6\30\3\0\12\30"+
+    "\1\272\13\30\24\0\3\30\5\0\6\30\3\0\14\30"+
+    "\1\273\11\30\24\0\3\30\5\0\6\30\3\0\22\30"+
+    "\1\274\3\30\24\0\3\30\5\0\6\30\3\0\21\30"+
+    "\1\275\4\30\24\0\1\30\1\276\1\30\5\0\6\30"+
+    "\3\0\26\30\24\0\3\30\5\0\6\30\3\0\21\30"+
+    "\1\277\4\30\24\0\3\30\5\0\6\30\3\0\23\30"+
+    "\1\300\2\30\24\0\3\30\5\0\6\30\3\0\15\30"+
+    "\1\301\10\30\24\0\3\30\5\0\6\30\3\0\4\30"+
+    "\1\302\21\30\24\0\3\30\5\0\6\30\3\0\1\303"+
+    "\25\30\24\0\3\30\5\0\6\30\3\0\21\30\1\304"+
+    "\4\30\3\0";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[7906];
+    int [] result = new int[8024];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -376,10 +380,10 @@ public class Lexer implements java_cup.runtime.Scanner {
     "\1\1\1\11\3\1\1\11\7\1\2\11\17\1\1\11"+
     "\1\1\2\11\1\0\1\11\1\0\1\11\2\0\4\11"+
     "\1\0\1\1\1\0\4\11\36\1\2\11\1\0\37\1"+
-    "\1\11\100\1";
+    "\1\11\103\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[193];
+    int [] result = new int[196];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -895,347 +899,352 @@ public class Lexer implements java_cup.runtime.Scanner {
             { errors.add(new GoliteError("Lexico", "Caracter no reconocido: " + yytext(), yyline, yycolumn));
             }
           // fall through
-          case 70: break;
+          case 71: break;
           case 2:
             { /* pass */
             }
           // fall through
-          case 71: break;
+          case 72: break;
           case 3:
             { return addToken(sym.not, "not", yytext());
             }
           // fall through
-          case 72: break;
+          case 73: break;
           case 4:
             { return addToken(sym.mod, "mod", yytext());
             }
           // fall through
-          case 73: break;
+          case 74: break;
           case 5:
             { return addToken(sym.lparen, "lparen", yytext());
             }
           // fall through
-          case 74: break;
+          case 75: break;
           case 6:
             { return addToken(sym.rparen, "rparen", yytext());
             }
           // fall through
-          case 75: break;
+          case 76: break;
           case 7:
             { return addToken(sym.times, "times", yytext());
             }
           // fall through
-          case 76: break;
+          case 77: break;
           case 8:
             { return addToken(sym.plus, "plus", yytext());
             }
           // fall through
-          case 77: break;
+          case 78: break;
           case 9:
             { return addToken(sym.comma, "comma", yytext());
             }
           // fall through
-          case 78: break;
+          case 79: break;
           case 10:
             { return addToken(sym.minus, "minus", yytext());
             }
           // fall through
-          case 79: break;
+          case 80: break;
           case 11:
             { return addToken(sym.dot, "dot", yytext());
             }
           // fall through
-          case 80: break;
+          case 81: break;
           case 12:
             { return addToken(sym.slash, "slash", yytext());
             }
           // fall through
-          case 81: break;
+          case 82: break;
           case 13:
             { return addToken(sym.integer, "integer", yytext());
             }
           // fall through
-          case 82: break;
+          case 83: break;
           case 14:
             { return addToken(sym.colon, "colon", yytext());
             }
           // fall through
-          case 83: break;
+          case 84: break;
           case 15:
             { return addToken(sym.scol, "scol", yytext());
             }
           // fall through
-          case 84: break;
+          case 85: break;
           case 16:
             { return addToken(sym.lt, "lt", yytext());
             }
           // fall through
-          case 85: break;
+          case 86: break;
           case 17:
             { return addToken(sym.allocate, "allocate", yytext());
             }
           // fall through
-          case 86: break;
+          case 87: break;
           case 18:
             { return addToken(sym.gt, "gt", yytext());
             }
           // fall through
-          case 87: break;
+          case 88: break;
           case 19:
             { return addToken(sym.id, "id", yytext());
             }
           // fall through
-          case 88: break;
+          case 89: break;
           case 20:
             { return addToken(sym.lbrack, "lbrack", yytext());
             }
           // fall through
-          case 89: break;
+          case 90: break;
           case 21:
             { return addToken(sym.rbrack, "rbrack", yytext());
             }
           // fall through
-          case 90: break;
+          case 91: break;
           case 22:
             { return addToken(sym.lbrace, "lbrace", yytext());
             }
           // fall through
-          case 91: break;
+          case 92: break;
           case 23:
             { return addToken(sym.rbrace, "rbrace", yytext());
             }
           // fall through
-          case 92: break;
+          case 93: break;
           case 24:
             { return addToken(sym.notequal, "notequal", yytext());
             }
           // fall through
-          case 93: break;
+          case 94: break;
           case 25:
             { return addToken(sym.string, "string", yytext());
             }
           // fall through
-          case 94: break;
+          case 95: break;
           case 26:
             { return addToken(sym.and, "and", yytext());
             }
           // fall through
-          case 95: break;
+          case 96: break;
           case 27:
             { return addToken(sym.plusPlus, "plusPlus", yytext());
             }
           // fall through
-          case 96: break;
+          case 97: break;
           case 28:
             { return addToken(sym.plusAssign, "plusAssign", yytext());
             }
           // fall through
-          case 97: break;
+          case 98: break;
           case 29:
             { return addToken(sym.minusMinus, "minusMinus", yytext());
             }
           // fall through
-          case 98: break;
+          case 99: break;
           case 30:
             { return addToken(sym.minusAssign, "minusAssign", yytext());
             }
           // fall through
-          case 99: break;
+          case 100: break;
           case 31:
             { return addToken(sym.assign, "assign", yytext());
             }
           // fall through
-          case 100: break;
+          case 101: break;
           case 32:
             { return addToken(sym.lte, "lte", yytext());
             }
           // fall through
-          case 101: break;
+          case 102: break;
           case 33:
             { return addToken(sym.equal, "equal", yytext());
             }
           // fall through
-          case 102: break;
+          case 103: break;
           case 34:
             { return addToken(sym.gte, "gte", yytext());
             }
           // fall through
-          case 103: break;
+          case 104: break;
           case 35:
             { return addToken(sym.kwIf,      "kwIf", yytext());
             }
           // fall through
-          case 104: break;
+          case 105: break;
           case 36:
             { return addToken(sym.or, "or", yytext());
             }
           // fall through
-          case 105: break;
+          case 106: break;
           case 37:
             { return addToken(sym.rune_literal, "rune_literal", yytext());
             }
           // fall through
-          case 106: break;
+          case 107: break;
           case 38:
             { return addToken(sym.decimal, "decimal", yytext());
             }
           // fall through
-          case 107: break;
+          case 108: break;
           case 39:
             { return addToken(sym.kwFmt,     "kwFmt", yytext());
             }
           // fall through
-          case 108: break;
+          case 109: break;
           case 40:
             { return addToken(sym.kwFor,     "kwFor", yytext());
             }
           // fall through
-          case 109: break;
+          case 110: break;
           case 41:
             { return addToken(sym.kwInt,     "kwInt", yytext());
             }
           // fall through
-          case 110: break;
+          case 111: break;
           case 42:
             { return addToken(sym.kwLen,     "kwLen", yytext());
             }
           // fall through
-          case 111: break;
+          case 112: break;
           case 43:
             { return addToken(sym.kwNil,     "kwNil", yytext());
             }
           // fall through
-          case 112: break;
+          case 113: break;
           case 44:
             { return addToken(sym.kwVar,     "kwVar", yytext());
             }
           // fall through
-          case 113: break;
+          case 114: break;
           case 45:
             { return addToken(sym.kwAtoi,    "kwAtoi", yytext());
             }
           // fall through
-          case 114: break;
+          case 115: break;
           case 46:
             { return addToken(sym.kwBool,    "kwBool", yytext());
             }
           // fall through
-          case 115: break;
+          case 116: break;
           case 47:
             { return addToken(sym.kwCase,    "kwCase", yytext());
             }
           // fall through
-          case 116: break;
+          case 117: break;
           case 48:
             { return addToken(sym.kwElse,    "kwElse", yytext());
             }
           // fall through
-          case 117: break;
+          case 118: break;
           case 49:
             { return addToken(sym.kwFunc,    "kwFunc", yytext());
             }
           // fall through
-          case 118: break;
+          case 119: break;
           case 50:
             { return addToken(sym.kwMain,    "kwMain", yytext());
             }
           // fall through
-          case 119: break;
+          case 120: break;
           case 51:
             { return addToken(sym.kwRune,    "kwRune", yytext());
             }
           // fall through
-          case 120: break;
+          case 121: break;
           case 52:
             { return addToken(sym.kwTrue,    "kwTrue", yytext());
             }
           // fall through
-          case 121: break;
+          case 122: break;
           case 53:
             { return addToken(sym.kwType,    "kwType", yytext());
             }
           // fall through
-          case 122: break;
+          case 123: break;
           case 54:
             { return addToken(sym.kwBreak,   "kwBreak", yytext());
             }
           // fall through
-          case 123: break;
+          case 124: break;
           case 55:
             { return addToken(sym.kwFalse,   "kwFalse", yytext());
             }
           // fall through
-          case 124: break;
+          case 125: break;
           case 56:
             { return addToken(sym.imprimir, "imprimir", yytext());
             }
           // fall through
-          case 125: break;
+          case 126: break;
           case 57:
             { return addToken(sym.kwRange,   "kwRange", yytext());
             }
           // fall through
-          case 126: break;
+          case 127: break;
           case 58:
             { return addToken(sym.kwTypeOf,  "kwTypeOf", yytext());
             }
           // fall through
-          case 127: break;
+          case 128: break;
           case 59:
             { return addToken(sym.kwAppend,  "kwAppend", yytext());
             }
           // fall through
-          case 128: break;
+          case 129: break;
           case 60:
             { return addToken(sym.kwReturn,  "kwReturn", yytext());
             }
           // fall through
-          case 129: break;
+          case 130: break;
           case 61:
             { return addToken(sym.kwString,  "kwString", yytext());
             }
           // fall through
-          case 130: break;
-          case 62:
-            { return addToken(sym.kwSwitch,  "kwSwitch", yytext());
-            }
-          // fall through
           case 131: break;
-          case 63:
-            { return addToken(sym.kwPrintln, "kwPrintln", yytext());
+          case 62:
+            { return addToken(sym.kwStruct,  "kwStruct", yytext());
             }
           // fall through
           case 132: break;
-          case 64:
-            { return addToken(sym.kwDefault, "kwDefault", yytext());
+          case 63:
+            { return addToken(sym.kwSwitch,  "kwSwitch", yytext());
             }
           // fall through
           case 133: break;
-          case 65:
-            { return addToken(sym.kwFloat64, "kwFloat64", yytext());
+          case 64:
+            { return addToken(sym.kwPrintln, "kwPrintln", yytext());
             }
           // fall through
           case 134: break;
-          case 66:
-            { return addToken(sym.kwReflect, "kwReflect", yytext());
+          case 65:
+            { return addToken(sym.kwDefault, "kwDefault", yytext());
             }
           // fall through
           case 135: break;
-          case 67:
-            { return addToken(sym.kwStrconv, "kwStrconv", yytext());
+          case 66:
+            { return addToken(sym.kwFloat64, "kwFloat64", yytext());
             }
           // fall through
           case 136: break;
-          case 68:
-            { return addToken(sym.kwContinue, "kwContinue", yytext());
+          case 67:
+            { return addToken(sym.kwReflect, "kwReflect", yytext());
             }
           // fall through
           case 137: break;
-          case 69:
-            { return addToken(sym.kwParseFloat, "kwParseFloat", yytext());
+          case 68:
+            { return addToken(sym.kwStrconv, "kwStrconv", yytext());
             }
           // fall through
           case 138: break;
+          case 69:
+            { return addToken(sym.kwContinue, "kwContinue", yytext());
+            }
+          // fall through
+          case 139: break;
+          case 70:
+            { return addToken(sym.kwParseFloat, "kwParseFloat", yytext());
+            }
+          // fall through
+          case 140: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

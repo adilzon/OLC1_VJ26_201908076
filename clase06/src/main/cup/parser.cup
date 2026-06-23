@@ -44,6 +44,8 @@ terminal kwStrconv, kwReflect, kwAtoi, kwParseFloat, kwTypeOf;
 terminal plusPlus, minusMinus;
 terminal comma;
 terminal kwSwitch, kwCase, kwDefault, kwReturn, kwType, kwAppend, kwLen, kwRange;
+terminal FUNC, TYPE, SWITCH, CASE, DEFAULT, RETURN, APPEND, LEN, RANGE;
+terminal kwStruct;
 terminal colon;
 
 nonterminal Statments INICIO;
@@ -56,7 +58,16 @@ nonterminal ASTNode SIMPLE_STATEMENT;
 nonterminal java.util.List<ASTNode> LISTA_EXPRESIONES;
 nonterminal ASTNode CASO;
 nonterminal java.util.List<ASTNode> LISTA_CASOS;
-nonterminal java.util.List<olc1.golite.ast.stm.Param> PARAMETROS;
+nonterminal Statments declaration_list;
+nonterminal ASTNode declaration;
+nonterminal ASTNode struct_declaration;
+nonterminal java.util.List<Object> struct_fields;
+nonterminal Object struct_field;
+nonterminal ASTNode function_declaration;
+nonterminal java.util.List<olc1.golite.ast.stm.Param> param_list;
+nonterminal olc1.golite.ast.stm.Param param;
+nonterminal String type_or_void;
+nonterminal String function_name;
 
 precedence left or;
 precedence left and;
@@ -72,9 +83,15 @@ start with INICIO;
 
 // Gramatica
 
-INICIO ::= INSTRUCCIONES:i                                                  {: RESULT = i; :}
-         | kwFunc kwMain lparen rparen lbrace INSTRUCCIONES:i rbrace        {: RESULT = i; :}
+INICIO ::= declaration_list:dl                                              {: RESULT = dl; :}
 ;
+
+declaration_list ::= declaration_list:dl declaration:d                      {: dl.add(d); RESULT = dl; :}
+                   | declaration:d                                          {: RESULT = new Statments(d); :}
+                   ;
+
+declaration ::= INSTRUCCION:i                                               {: RESULT = i; :}
+              ;
 
 INSTRUCCIONES ::= INSTRUCCIONES:is INSTRUCCION:i     {: is.add(i); RESULT = is; :}
                 | INSTRUCCION:i                      {: RESULT = new Statments(i); :}
@@ -127,10 +144,8 @@ INSTRUCCION ::= imprimir lparen LISTA_EXPRESIONES:e rparen scol             {: R
               | id:i lparen LISTA_EXPRESIONES:args rparen                   {: RESULT = new FunctionCall(i, args, ileft, iright); :}
               | id:i lparen rparen scol                                     {: RESULT = new FunctionCall(i, new java.util.ArrayList<ASTNode>(), ileft, iright); :}
               | id:i lparen rparen                                          {: RESULT = new FunctionCall(i, new java.util.ArrayList<ASTNode>(), ileft, iright); :}
-              | kwFunc id:n lparen PARAMETROS:p rparen TIPO:t lbrace INSTRUCCIONES:i rbrace {: RESULT = new FunctionDecl(n, p, t, i, nleft, nright); :}
-              | kwFunc id:n lparen PARAMETROS:p rparen lbrace INSTRUCCIONES:i rbrace        {: RESULT = new FunctionDecl(n, p, "", i, nleft, nright); :}
-              | kwFunc id:n lparen rparen TIPO:t lbrace INSTRUCCIONES:i rbrace {: RESULT = new FunctionDecl(n, new java.util.ArrayList<olc1.golite.ast.stm.Param>(), t, i, nleft, nright); :}
-              | kwFunc id:n lparen rparen lbrace INSTRUCCIONES:i rbrace        {: RESULT = new FunctionDecl(n, new java.util.ArrayList<olc1.golite.ast.stm.Param>(), "", i, nleft, nright); :}
+              | function_declaration:f                                      {: RESULT = f; :}
+              | struct_declaration:s                                        {: RESULT = s; :}
               | error                                                       {: RESULT = null; :}
 ;
 
@@ -142,9 +157,6 @@ CASO ::= kwCase EXPRESION:e colon INSTRUCCIONES:i                           {: R
        | kwDefault colon INSTRUCCIONES:i                                    {: RESULT = new CaseNode(null, i); :}
 ;
 
-PARAMETROS ::= PARAMETROS:p comma id:n TIPO:t                               {: p.add(new olc1.golite.ast.stm.Param(n, t)); RESULT = p; :}
-             | id:n TIPO:t                                                  {: java.util.List<olc1.golite.ast.stm.Param> p = new java.util.ArrayList<>(); p.add(new olc1.golite.ast.stm.Param(n, t)); RESULT = p; :}
-;
 
 ELIF ::= ELIF:el kwElse kwIf EXPRESION:e lbrace INSTRUCCIONES:i rbrace {: el.add(new ElifNode(e, i)); RESULT = el; :}
      |   kwElse kwIf EXPRESION:e lbrace INSTRUCCIONES:i rbrace {: RESULT = new ElifNodes(new ElifNode(e, i)); :}
@@ -199,3 +211,37 @@ EXPRESION ::= minus EXPRESION:a             {: RESULT = new Negate(a); :}%prec U
             | kwBool lparen EXPRESION:e rparen          {: RESULT = new TypeCast("bool", e, eleft, eright); :}
             | kwRune lparen EXPRESION:e rparen          {: RESULT = new TypeCast("rune", e, eleft, eright); :}
 ;
+
+struct_declaration ::= kwType id:n kwStruct lbrace struct_fields:f rbrace    {: RESULT = null; :}
+                     ;
+
+struct_fields ::= struct_fields:s struct_field:f                            {: s.add(f); RESULT = s; :}
+                | struct_field:f                                            {: java.util.List<Object> l = new java.util.ArrayList<>(); l.add(f); RESULT = l; :}
+                ;
+
+struct_field ::= id:i TIPO:t scol                                           {: RESULT = null; :}
+               | id:i id:t scol                                             {: RESULT = null; :}
+               ;
+
+function_name ::= id:i                                                      {: RESULT = i; :}
+                | kwMain:m                                                  {: RESULT = "main"; :}
+                ;
+
+function_declaration ::= kwFunc function_name:n lparen param_list:p rparen type_or_void:t lbrace INSTRUCCIONES:i rbrace
+                         {: RESULT = new FunctionDecl(n, p, t, i, nleft, nright); :}
+                       ;
+
+param_list ::= param_list:p comma param:pr                                  {: p.add(pr); RESULT = p; :}
+             | param:pr                                                      {: java.util.List<olc1.golite.ast.stm.Param> p = new java.util.ArrayList<>(); p.add(pr); RESULT = p; :}
+             | /* vacío */                                                  {: RESULT = new java.util.ArrayList<olc1.golite.ast.stm.Param>(); :}
+             ;
+
+param ::= id:n TIPO:t                                                       {: RESULT = new olc1.golite.ast.stm.Param(n, t); :}
+        | id:n id:t                                                         {: RESULT = new olc1.golite.ast.stm.Param(n, t); :}
+        ;
+
+type_or_void ::= TIPO:t                                                     {: RESULT = t; :}
+               | id:t                                                       {: RESULT = t; :}
+               | /* vacío */                                                {: RESULT = ""; :}
+               ;
+

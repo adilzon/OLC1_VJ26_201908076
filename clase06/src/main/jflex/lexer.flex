@@ -124,6 +124,7 @@ Comment = {LineComment} | {BlockComment}
 "append"    { return addToken(sym.kwAppend,  "kwAppend", yytext()); }
 "len"       { return addToken(sym.kwLen,     "kwLen", yytext()); }
 "range"     { return addToken(sym.kwRange,   "kwRange", yytext()); }
+"struct"    { return addToken(sym.kwStruct,  "kwStruct", yytext()); }
 
 // ID - String
 {identifier}                { return addToken(sym.id, "id", yytext()); }

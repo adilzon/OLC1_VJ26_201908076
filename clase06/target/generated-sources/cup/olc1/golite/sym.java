@@ -8,76 +8,86 @@ package olc1.golite;
 /** CUP generated interface containing symbol constants. */
 public interface sym {
   /* terminals */
-  public static final int slash = 15;
-  public static final int rune_literal = 5;
+  public static final int LEN = 76;
+  public static final int integer = 3;
+  public static final int kwFloat64 = 48;
+  public static final int mod = 34;
+  public static final int APPEND = 75;
+  public static final int kwFunc = 44;
+  public static final int kwString = 49;
+  public static final int TYPE = 70;
+  public static final int kwStrconv = 53;
   public static final int kwFor = 26;
+  public static final int FUNC = 69;
+  public static final int allocate = 19;
+  public static final int minus = 13;
   public static final int minusAssign = 39;
+  public static final int kwAppend = 66;
+  public static final int kwInt = 47;
+  public static final int dot = 40;
+  public static final int lte = 30;
+  public static final int rune_literal = 5;
+  public static final int imprimir = 21;
+  public static final int colon = 79;
+  public static final int kwFalse = 23;
+  public static final int decimal = 4;
+  public static final int scol = 17;
+  public static final int kwRune = 51;
+  public static final int kwTrue = 22;
+  public static final int kwTypeOf = 57;
+  public static final int string = 2;
+  public static final int or = 36;
+  public static final int kwStruct = 78;
+  public static final int gte = 29;
+  public static final int id = 20;
+  public static final int kwFmt = 43;
+  public static final int times = 14;
+  public static final int kwElse = 25;
+  public static final int minusMinus = 59;
+  public static final int kwPrintln = 46;
+  public static final int SWITCH = 71;
+  public static final int kwParseFloat = 56;
+  public static final int RETURN = 74;
+  public static final int kwBreak = 27;
+  public static final int and = 35;
+  public static final int notequal = 33;
+  public static final int kwLen = 67;
+  public static final int kwReflect = 54;
+  public static final int kwMain = 45;
+  public static final int comma = 60;
+  public static final int rbrack = 11;
+  public static final int plusPlus = 58;
+  public static final int EOF = 0;
+  public static final int DEFAULT = 73;
+  public static final int rbrace = 9;
+  public static final int rparen = 7;
+  public static final int gt = 31;
+  public static final int kwIf = 24;
+  public static final int kwSwitch = 61;
   public static final int lbrack = 10;
   public static final int kwReturn = 64;
-  public static final int plusAssign = 38;
-  public static final int plus = 12;
-  public static final int kwDefault = 63;
-  public static final int mod = 34;
-  public static final int imprimir = 21;
   public static final int lbrace = 8;
-  public static final int kwNil = 52;
-  public static final int rbrack = 11;
-  public static final int minus = 13;
-  public static final int gte = 29;
-  public static final int notequal = 33;
-  public static final int gt = 31;
-  public static final int rbrace = 9;
-  public static final int kwSwitch = 61;
-  public static final int kwFalse = 23;
-  public static final int kwIf = 24;
-  public static final int comma = 60;
-  public static final int string = 2;
-  public static final int kwCase = 62;
-  public static final int kwTypeOf = 57;
-  public static final int kwParseFloat = 56;
-  public static final int scol = 17;
-  public static final int equal = 32;
-  public static final int kwReflect = 54;
-  public static final int kwStrconv = 53;
-  public static final int kwString = 49;
-  public static final int UMENOS = 16;
-  public static final int EOF = 0;
-  public static final int kwType = 65;
-  public static final int minusMinus = 59;
-  public static final int kwBool = 50;
-  public static final int kwPrintln = 46;
-  public static final int error = 1;
-  public static final int lt = 28;
-  public static final int times = 14;
-  public static final int kwAtoi = 55;
-  public static final int kwContinue = 42;
-  public static final int or = 36;
-  public static final int lte = 30;
-  public static final int colon = 69;
   public static final int lparen = 6;
-  public static final int kwMain = 45;
-  public static final int kwRange = 68;
-  public static final int kwFloat64 = 48;
-  public static final int kwLen = 67;
-  public static final int integer = 3;
-  public static final int kwFmt = 43;
-  public static final int rparen = 7;
-  public static final int id = 20;
-  public static final int kwTrue = 22;
-  public static final int allocate = 19;
-  public static final int kwVar = 41;
-  public static final int kwRune = 51;
-  public static final int not = 37;
-  public static final int and = 35;
+  public static final int kwAtoi = 55;
+  public static final int error = 1;
+  public static final int kwDefault = 63;
+  public static final int kwCase = 62;
+  public static final int plusAssign = 38;
+  public static final int UMENOS = 16;
   public static final int assign = 18;
-  public static final int kwAppend = 66;
-  public static final int kwElse = 25;
-  public static final int plusPlus = 58;
-  public static final int kwFunc = 44;
-  public static final int kwBreak = 27;
-  public static final int decimal = 4;
-  public static final int dot = 40;
-  public static final int kwInt = 47;
+  public static final int lt = 28;
+  public static final int CASE = 72;
+  public static final int kwRange = 68;
+  public static final int kwNil = 52;
+  public static final int slash = 15;
+  public static final int kwVar = 41;
+  public static final int RANGE = 77;
+  public static final int not = 37;
+  public static final int kwBool = 50;
+  public static final int kwContinue = 42;
+  public static final int equal = 32;
+  public static final int plus = 12;
+  public static final int kwType = 65;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -148,6 +158,16 @@ public interface sym {
   "kwAppend",
   "kwLen",
   "kwRange",
+  "FUNC",
+  "TYPE",
+  "SWITCH",
+  "CASE",
+  "DEFAULT",
+  "RETURN",
+  "APPEND",
+  "LEN",
+  "RANGE",
+  "kwStruct",
   "colon"
   };
 }
