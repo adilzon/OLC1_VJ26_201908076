@@ -44,7 +44,10 @@ C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\Statments.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\SwitchNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\WhileFor.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\lexer\Lexer.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\lexer\TokenType.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\Main.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\parser\Parser.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\reports\GoliteError.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\reports\HtmlReportGenerator.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\reports\Symbol.java
