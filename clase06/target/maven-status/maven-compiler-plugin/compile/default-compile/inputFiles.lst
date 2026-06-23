@@ -66,7 +66,9 @@ C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\views\GoliteMenuBar.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\views\MainPanel.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\Enviroment.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\FunctionSymbol.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\InterpreterVisitor.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\StructSymbol.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\transfer\BreakException.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\transfer\ContinueException.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\BoolValue.java

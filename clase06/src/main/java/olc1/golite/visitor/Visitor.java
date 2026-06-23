@@ -50,4 +50,5 @@ public interface Visitor<T> {
     T visit(FunctionDecl.Context ctx);
     T visit(FunctionCall.Context ctx);
     T visit(TypeCast.Context ctx);
+    T visit(FunctionDeclarationNode.Context ctx);
 }

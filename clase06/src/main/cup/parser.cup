@@ -60,12 +60,12 @@ nonterminal ASTNode CASO;
 nonterminal java.util.List<ASTNode> LISTA_CASOS;
 nonterminal Statments declaration_list;
 nonterminal ASTNode declaration;
-nonterminal ASTNode struct_declaration;
-nonterminal java.util.List<Object> struct_fields;
-nonterminal Object struct_field;
-nonterminal ASTNode function_declaration;
-nonterminal java.util.List<olc1.golite.ast.stm.Param> param_list;
-nonterminal olc1.golite.ast.stm.Param param;
+nonterminal StructDeclarationNode struct_declaration;
+nonterminal java.util.List<StructFieldNode> struct_fields;
+nonterminal StructFieldNode struct_field;
+nonterminal FunctionDeclarationNode function_declaration;
+nonterminal java.util.List<ParameterNode> param_list;
+nonterminal ParameterNode param;
 nonterminal String type_or_void;
 nonterminal String function_name;
 
@@ -212,15 +212,15 @@ EXPRESION ::= minus EXPRESION:a             {: RESULT = new Negate(a); :}%prec U
             | kwRune lparen EXPRESION:e rparen          {: RESULT = new TypeCast("rune", e, eleft, eright); :}
 ;
 
-struct_declaration ::= kwType id:n kwStruct lbrace struct_fields:f rbrace    {: RESULT = null; :}
+struct_declaration ::= kwType id:n kwStruct lbrace struct_fields:f rbrace    {: RESULT = new StructDeclarationNode(n, f); :}
                      ;
 
 struct_fields ::= struct_fields:s struct_field:f                            {: s.add(f); RESULT = s; :}
-                | struct_field:f                                            {: java.util.List<Object> l = new java.util.ArrayList<>(); l.add(f); RESULT = l; :}
+                | struct_field:f                                            {: java.util.List<StructFieldNode> l = new java.util.ArrayList<>(); l.add(f); RESULT = l; :}
                 ;
 
-struct_field ::= id:i TIPO:t scol                                           {: RESULT = null; :}
-               | id:i id:t scol                                             {: RESULT = null; :}
+struct_field ::= id:i TIPO:t scol                                           {: RESULT = new StructFieldNode(i, t); :}
+               | id:i id:t scol                                             {: RESULT = new StructFieldNode(i, t); :}
                ;
 
 function_name ::= id:i                                                      {: RESULT = i; :}
@@ -228,20 +228,20 @@ function_name ::= id:i                                                      {: R
                 ;
 
 function_declaration ::= kwFunc function_name:n lparen param_list:p rparen type_or_void:t lbrace INSTRUCCIONES:i rbrace
-                         {: RESULT = new FunctionDecl(n, p, t, i, nleft, nright); :}
+                         {: RESULT = new FunctionDeclarationNode(n, p, t, i); :}
                        ;
 
 param_list ::= param_list:p comma param:pr                                  {: p.add(pr); RESULT = p; :}
-             | param:pr                                                      {: java.util.List<olc1.golite.ast.stm.Param> p = new java.util.ArrayList<>(); p.add(pr); RESULT = p; :}
-             | /* vacío */                                                  {: RESULT = new java.util.ArrayList<olc1.golite.ast.stm.Param>(); :}
+             | param:pr                                                      {: java.util.List<ParameterNode> p = new java.util.ArrayList<>(); p.add(pr); RESULT = p; :}
+             | /* vacío */                                                  {: RESULT = new java.util.ArrayList<ParameterNode>(); :}
              ;
 
-param ::= id:n TIPO:t                                                       {: RESULT = new olc1.golite.ast.stm.Param(n, t); :}
-        | id:n id:t                                                         {: RESULT = new olc1.golite.ast.stm.Param(n, t); :}
+param ::= id:n TIPO:t                                                       {: RESULT = new ParameterNode(n, t); :}
+        | id:n id:t                                                         {: RESULT = new ParameterNode(n, t); :}
         ;
 
 type_or_void ::= TIPO:t                                                     {: RESULT = t; :}
                | id:t                                                       {: RESULT = t; :}
-               | /* vacío */                                                {: RESULT = ""; :}
+               | /* vacío */                                                {: RESULT = "void"; :}
                ;
 

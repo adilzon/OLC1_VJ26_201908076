@@ -779,4 +779,14 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     public ValueWrapper visit(TypeCast.Context ctx) {
         return defaultVoid;
     }
+
+    @Override
+    public ValueWrapper visit(FunctionDeclarationNode.Context ctx) {
+        if ("main".equals(ctx.name)) {
+            if (ctx.body != null) {
+                Visit(ctx.body);
+            }
+        }
+        return defaultVoid;
+    }
 }

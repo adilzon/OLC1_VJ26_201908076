@@ -1631,7 +1631,7 @@ class CUP$parser$actions {
               ASTNode RESULT =null;
 		int fleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int fright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		ASTNode f = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		FunctionDeclarationNode f = (FunctionDeclarationNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 RESULT = f; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("INSTRUCCION",2, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1643,7 +1643,7 @@ class CUP$parser$actions {
               ASTNode RESULT =null;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		ASTNode s = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		StructDeclarationNode s = (StructDeclarationNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 RESULT = s; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("INSTRUCCION",2, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2354,14 +2354,14 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 107: // struct_declaration ::= kwType id kwStruct lbrace struct_fields rbrace 
             {
-              ASTNode RESULT =null;
+              StructDeclarationNode RESULT =null;
 		int nleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
 		int nright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
 		String n = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
 		int fleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int fright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		java.util.List<Object> f = (java.util.List<Object>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = null; 
+		java.util.List<StructFieldNode> f = (java.util.List<StructFieldNode>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		 RESULT = new StructDeclarationNode(n, f); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("struct_declaration",12, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2369,13 +2369,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 108: // struct_fields ::= struct_fields struct_field 
             {
-              java.util.List<Object> RESULT =null;
+              java.util.List<StructFieldNode> RESULT =null;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		java.util.List<Object> s = (java.util.List<Object>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		java.util.List<StructFieldNode> s = (java.util.List<StructFieldNode>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int fleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int fright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object f = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		StructFieldNode f = (StructFieldNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 s.add(f); RESULT = s; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("struct_fields",13, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2384,11 +2384,11 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 109: // struct_fields ::= struct_field 
             {
-              java.util.List<Object> RESULT =null;
+              java.util.List<StructFieldNode> RESULT =null;
 		int fleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int fright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object f = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 java.util.List<Object> l = new java.util.ArrayList<>(); l.add(f); RESULT = l; 
+		StructFieldNode f = (StructFieldNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 java.util.List<StructFieldNode> l = new java.util.ArrayList<>(); l.add(f); RESULT = l; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("struct_fields",13, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2396,14 +2396,14 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 110: // struct_field ::= id TIPO scol 
             {
-              Object RESULT =null;
+              StructFieldNode RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
 		String i = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int tleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = null; 
+		 RESULT = new StructFieldNode(i, t); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("struct_field",14, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2411,14 +2411,14 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 111: // struct_field ::= id id scol 
             {
-              Object RESULT =null;
+              StructFieldNode RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
 		String i = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int tleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = null; 
+		 RESULT = new StructFieldNode(i, t); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("struct_field",14, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2450,20 +2450,20 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 114: // function_declaration ::= kwFunc function_name lparen param_list rparen type_or_void lbrace INSTRUCCIONES rbrace 
             {
-              ASTNode RESULT =null;
+              FunctionDeclarationNode RESULT =null;
 		int nleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-7)).left;
 		int nright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-7)).right;
 		String n = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-7)).value;
 		int pleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).left;
 		int pright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).right;
-		java.util.List<olc1.golite.ast.stm.Param> p = (java.util.List<olc1.golite.ast.stm.Param>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
+		java.util.List<ParameterNode> p = (java.util.List<ParameterNode>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
 		int tleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		Statments i = (Statments)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = new FunctionDecl(n, p, t, i, nleft, nright); 
+		 RESULT = new FunctionDeclarationNode(n, p, t, i); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("function_declaration",15, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-8)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2471,13 +2471,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 115: // param_list ::= param_list comma param 
             {
-              java.util.List<olc1.golite.ast.stm.Param> RESULT =null;
+              java.util.List<ParameterNode> RESULT =null;
 		int pleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int pright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		java.util.List<olc1.golite.ast.stm.Param> p = (java.util.List<olc1.golite.ast.stm.Param>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		java.util.List<ParameterNode> p = (java.util.List<ParameterNode>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int prleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int prright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		olc1.golite.ast.stm.Param pr = (olc1.golite.ast.stm.Param)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ParameterNode pr = (ParameterNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 p.add(pr); RESULT = p; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("param_list",16, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2486,11 +2486,11 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 116: // param_list ::= param 
             {
-              java.util.List<olc1.golite.ast.stm.Param> RESULT =null;
+              java.util.List<ParameterNode> RESULT =null;
 		int prleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int prright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		olc1.golite.ast.stm.Param pr = (olc1.golite.ast.stm.Param)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 java.util.List<olc1.golite.ast.stm.Param> p = new java.util.ArrayList<>(); p.add(pr); RESULT = p; 
+		ParameterNode pr = (ParameterNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 java.util.List<ParameterNode> p = new java.util.ArrayList<>(); p.add(pr); RESULT = p; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("param_list",16, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2498,8 +2498,8 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 117: // param_list ::= 
             {
-              java.util.List<olc1.golite.ast.stm.Param> RESULT =null;
-		 RESULT = new java.util.ArrayList<olc1.golite.ast.stm.Param>(); 
+              java.util.List<ParameterNode> RESULT =null;
+		 RESULT = new java.util.ArrayList<ParameterNode>(); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("param_list",16, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2507,14 +2507,14 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 118: // param ::= id TIPO 
             {
-              olc1.golite.ast.stm.Param RESULT =null;
+              ParameterNode RESULT =null;
 		int nleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int nright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		String n = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int tleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = new olc1.golite.ast.stm.Param(n, t); 
+		 RESULT = new ParameterNode(n, t); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("param",17, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2522,14 +2522,14 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 119: // param ::= id id 
             {
-              olc1.golite.ast.stm.Param RESULT =null;
+              ParameterNode RESULT =null;
 		int nleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int nright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		String n = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int tleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = new olc1.golite.ast.stm.Param(n, t); 
+		 RESULT = new ParameterNode(n, t); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("param",17, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2562,7 +2562,7 @@ class CUP$parser$actions {
           case 122: // type_or_void ::= 
             {
               String RESULT =null;
-		 RESULT = ""; 
+		 RESULT = "void"; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("type_or_void",18, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;

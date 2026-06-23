@@ -17,8 +17,22 @@ public class FunctionDeclarationNode implements ASTNode {
         this.body = body;
     }
 
+    public static class Context {
+        public final String name;
+        public final List<ParameterNode> parameters;
+        public final String returnType;
+        public final ASTNode body;
+
+        public Context(FunctionDeclarationNode node) {
+            this.name = node.name;
+            this.parameters = node.parameters;
+            this.returnType = node.returnType;
+            this.body = node.body;
+        }
+    }
+
     @Override
     public <T> T accept(Visitor<T> visitor) {
-        return null;
+        return visitor.visit(new Context(this));
     }
 }

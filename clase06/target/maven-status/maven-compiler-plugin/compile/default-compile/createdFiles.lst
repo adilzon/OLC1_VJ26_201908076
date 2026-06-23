@@ -15,6 +15,7 @@ olc1\golite\ast\stm\ElifNode.class
 olc1\golite\ast\stm\ForClasico.class
 olc1\golite\ast\stm\CaseNode$Context.class
 olc1\golite\ast\stm\ReturnNode.class
+olc1\golite\visitor\interpreter\StructSymbol.class
 olc1\golite\ast\exp\Atoi.class
 olc1\golite\visitor\Visitor.class
 olc1\golite\ast\stm\Breakstm$Context.class
@@ -27,6 +28,7 @@ olc1\golite\views\GoliteMenuBar$1.class
 olc1\golite\ast\stm\Statments.class
 olc1\golite\ast\exp\TypeOf.class
 olc1\golite\ast\exp\ParseFloat.class
+olc1\golite\ast\stm\FunctionDeclarationNode$Context.class
 olc1\golite\ast\exp\VarRef$Context.class
 olc1\golite\ast\exp\TypeCast.class
 olc1\golite\ast\exp\Sub.class
@@ -40,6 +42,7 @@ olc1\golite\ast\exp\NotEqual.class
 olc1\golite\ast\exp\BoolLiteral.class
 olc1\golite\ast\exp\FunctionCall$Context.class
 olc1\golite\ast\exp\ParseFloat$Context.class
+olc1\golite\visitor\interpreter\FunctionSymbol.class
 olc1\golite\ast\stm\CaseNode.class
 olc1\golite\reports\Token.class
 olc1\golite\ast\exp\Gt.class
