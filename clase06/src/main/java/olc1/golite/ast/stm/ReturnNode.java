@@ -10,8 +10,15 @@ public class ReturnNode implements ASTNode {
         this.expression = expression;
     }
 
+    public static class Context {
+        public final ASTNode expression;
+        public Context(ReturnNode node) {
+            this.expression = node.expression;
+        }
+    }
+
     @Override
     public <T> T accept(Visitor<T> visitor) {
-        return null;
+        return visitor.visit(new Context(this));
     }
 }

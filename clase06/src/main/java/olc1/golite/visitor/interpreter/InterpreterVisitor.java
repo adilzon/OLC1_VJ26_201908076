@@ -782,10 +782,29 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
 
     @Override
     public ValueWrapper visit(FunctionDeclarationNode.Context ctx) {
+        if (environment.lookupFunction(ctx.name) != null) {
+            this.errors.add(new GoliteError("Semantico", "Funcion '" + ctx.name + "' ya declarada", 1, 1));
+        } else {
+            environment.insertFunction(ctx.name, ctx.returnType, ctx.parameters);
+        }
+
         if ("main".equals(ctx.name)) {
+            Enviroment previousEnv = this.environment;
+            this.environment = new Enviroment(previousEnv, "Funcion main");
+            
             if (ctx.body != null) {
                 Visit(ctx.body);
             }
+            
+            this.environment = previousEnv;
+        }
+        return defaultVoid;
+    }
+
+    @Override
+    public ValueWrapper visit(ReturnNode.Context ctx) {
+        if (ctx.expression != null) {
+            return Visit(ctx.expression);
         }
         return defaultVoid;
     }

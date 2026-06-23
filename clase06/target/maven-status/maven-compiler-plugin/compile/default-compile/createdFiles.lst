@@ -13,6 +13,7 @@ olc1\golite\ast\exp\Add.class
 olc1\golite\views\GoliteFrame$1.class
 olc1\golite\ast\stm\ElifNode.class
 olc1\golite\ast\stm\ForClasico.class
+olc1\golite\ast\stm\ReturnNode$Context.class
 olc1\golite\ast\stm\CaseNode$Context.class
 olc1\golite\ast\stm\ReturnNode.class
 olc1\golite\visitor\interpreter\StructSymbol.class
