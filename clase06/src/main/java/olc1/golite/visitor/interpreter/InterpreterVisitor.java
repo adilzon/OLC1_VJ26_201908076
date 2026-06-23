@@ -757,7 +757,11 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
 
     @Override
     public ValueWrapper visit(ReturnStm.Context ctx) {
-        return defaultVoid;
+        ValueWrapper retVal = defaultVoid;
+        if (ctx.expresion != null) {
+            retVal = Visit(ctx.expresion);
+        }
+        throw new ReturnException(retVal);
     }
 
     @Override
@@ -772,7 +776,68 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
 
     @Override
     public ValueWrapper visit(FunctionCall.Context ctx) {
-        return defaultVoid;
+        // 1. Buscar la función en la tabla de símbolos (environment)
+        FunctionSymbol func = environment.lookupFunction(ctx.id);
+        
+        if (func == null) {
+            this.errors.add(new GoliteError("Semantico", "Funcion '" + ctx.id + "' no declarada", ctx.line, ctx.column));
+            return defaultVoid;
+        }
+
+        // 2. Verificar cantidad de argumentos
+        if (ctx.argumentos.size() != func.parameters.size()) {
+            this.errors.add(new GoliteError("Semantico", "Cantidad incorrecta de argumentos en llamada a " + ctx.id + ". Se esperaban: " + func.parameters.size() + ", obtenido: " + ctx.argumentos.size(), ctx.line, ctx.column));
+            return defaultVoid;
+        }
+
+        // 3. Evaluar los argumentos en el ámbito actual
+        List<ValueWrapper> evaluatedArgs = new ArrayList<>();
+        for (ASTNode arg : ctx.argumentos) {
+            evaluatedArgs.add(Visit(arg));
+        }
+
+        // Imprimir debug en consola
+        System.out.println("[DEBUG] Llamando funcion: " + ctx.id);
+
+        // 4. Buscar el entorno global
+        Enviroment globalEnv = this.environment;
+        while (globalEnv.getParent() != null) {
+            globalEnv = globalEnv.getParent();
+        }
+
+        // 5. Crear el nuevo entorno local para la llamada (lexical scoping)
+        Enviroment funcEnv = new Enviroment(globalEnv, "Funcion " + ctx.id);
+
+        // 6. Registrar parámetros como variables locales
+        for (int i = 0; i < func.parameters.size(); i++) {
+            ParameterNode param = func.parameters.get(i);
+            ValueWrapper val = evaluatedArgs.get(i);
+            funcEnv.declare(param.name, val);
+            
+            // Registrar en la lista de símbolos del reporte
+            String typeName = val.getTypeName();
+            if ("decimal".equals(typeName)) {
+                typeName = "float64";
+            }
+            this.symbols.add(new Symbol(param.name, "Variable", typeName, funcEnv.getScopeName(), ctx.line, ctx.column));
+        }
+
+        // 7. Guardar entorno del invocador y ejecutar cuerpo
+        Enviroment callerEnv = this.environment;
+        this.environment = funcEnv;
+        ValueWrapper resultValue = defaultVoid;
+
+        try {
+            if (func.body != null) {
+                Visit(func.body);
+            }
+        } catch (ReturnException e) {
+            resultValue = e.getValue();
+        } finally {
+            this.environment = callerEnv;
+        }
+
+        return resultValue;
     }
 
     @Override
@@ -785,7 +850,7 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         if (environment.lookupFunction(ctx.name) != null) {
             this.errors.add(new GoliteError("Semantico", "Funcion '" + ctx.name + "' ya declarada", 1, 1));
         } else {
-            environment.insertFunction(ctx.name, ctx.returnType, ctx.parameters);
+            environment.insertFunction(ctx.name, ctx.returnType, ctx.parameters, ctx.body);
         }
 
         if ("main".equals(ctx.name)) {
@@ -803,9 +868,10 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
 
     @Override
     public ValueWrapper visit(ReturnNode.Context ctx) {
+        ValueWrapper retVal = defaultVoid;
         if (ctx.expression != null) {
-            return Visit(ctx.expression);
+            retVal = Visit(ctx.expression);
         }
-        return defaultVoid;
+        throw new ReturnException(retVal);
     }
 }

@@ -67,6 +67,7 @@ olc1\golite\ast\exp\Paren$Context.class
 olc1\golite\ast\exp\And$Context.class
 olc1\golite\ast\stm\ReturnStm.class
 olc1\golite\ast\stm\Imprimir.class
+olc1\golite\visitor\interpreter\transfer\ReturnException.class
 olc1\golite\ast\stm\ElifNodes$Context.class
 olc1\golite\ast\exp\Equal.class
 olc1\golite\ast\exp\Mul.class

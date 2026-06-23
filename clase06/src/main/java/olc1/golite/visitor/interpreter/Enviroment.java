@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.List;
 import olc1.golite.ast.stm.ParameterNode;
 import olc1.golite.ast.stm.StructFieldNode;
+import olc1.golite.ast.ASTNode;
 
 import olc1.golite.visitor.interpreter.value.ValueWrapper;
 
@@ -54,6 +55,11 @@ public class Enviroment {
         }
     }
 
+    public Enviroment getParent() {
+        return parent;
+    }
+
+
     // Registro una nueva variable únicamente en el nivel actual del entorno.
     // Si ya existe en este nivel específico, lanzo una excepción para evitar re-declaraciones.
     public ValueWrapper declare(String name, ValueWrapper value) {
@@ -90,8 +96,8 @@ public class Enviroment {
     }
 
     // Registrar una función
-    public void insertFunction(String name, String returnType, List<ParameterNode> params) {
-        functions.put(name, new FunctionSymbol(name, returnType, params));
+    public void insertFunction(String name, String returnType, List<ParameterNode> params, ASTNode body) {
+        functions.put(name, new FunctionSymbol(name, returnType, params, body));
     }
 
     // Buscar una función

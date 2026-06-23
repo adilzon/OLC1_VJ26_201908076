@@ -19,7 +19,7 @@ public class TestReports {
 
         // --- PRUEBA 1: PROGRAMA VALIDO SINTACTICAMENTE CON ANALISIS SEMANTICO Y SIMBOLOS ---
         System.out.println("\n--- PRUEBA 1: Analisis Semantico y Simbolos ---");
-                String code1 = "func main() {\n" +
+        String code1 = "func main() {\n" +
                        "    // 1. Concatenacion de strings\n" +
                        "    s1 := \"Hola \";\n" +
                        "    s2 := \"Mundo!\";\n" +
@@ -44,6 +44,8 @@ public class TestReports {
                        "    x = 20.5;\n" + // Error: int = decimal
                        "    invalidAdd := 10 + 20.5;\n" + // Error: int + decimal
                        "}\n";
+
+
 
         Lexer lexer1 = null;
         parser parser1 = null;
