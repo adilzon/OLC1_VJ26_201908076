@@ -30,7 +30,7 @@ action code
 :}
 
 terminal String string, integer, decimal, rune_literal;
-terminal lparen, rparen, lbrace, rbrace;
+terminal lparen, rparen, lbrace, rbrace, lbrack, rbrack;
 terminal plus, minus, times, slash, UMENOS;
 terminal scol, assign, allocate;
 terminal String id;
@@ -43,7 +43,7 @@ terminal kwInt, kwFloat64, kwString, kwBool, kwRune, kwNil;
 terminal kwStrconv, kwReflect, kwAtoi, kwParseFloat, kwTypeOf;
 terminal plusPlus, minusMinus;
 terminal comma;
-terminal kwSwitch, kwCase, kwDefault, kwReturn;
+terminal kwSwitch, kwCase, kwDefault, kwReturn, kwType, kwAppend, kwLen, kwRange;
 terminal colon;
 
 nonterminal Statments INICIO;

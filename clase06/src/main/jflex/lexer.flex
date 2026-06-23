@@ -88,6 +88,8 @@ Comment = {LineComment} | {BlockComment}
 "."     { return addToken(sym.dot, "dot", yytext()); }
 ","     { return addToken(sym.comma, "comma", yytext()); }
 ":"     { return addToken(sym.colon, "colon", yytext()); }
+"["     { return addToken(sym.lbrack, "lbrack", yytext()); }
+"]"     { return addToken(sym.rbrack, "rbrack", yytext()); }
 
 // Key Words
 "nil"       { return addToken(sym.kwNil,     "kwNil", yytext()); }
@@ -118,6 +120,10 @@ Comment = {LineComment} | {BlockComment}
 "case"      { return addToken(sym.kwCase,    "kwCase", yytext()); }
 "default"   { return addToken(sym.kwDefault, "kwDefault", yytext()); }
 "return"    { return addToken(sym.kwReturn,  "kwReturn", yytext()); }
+"type"      { return addToken(sym.kwType,    "kwType", yytext()); }
+"append"    { return addToken(sym.kwAppend,  "kwAppend", yytext()); }
+"len"       { return addToken(sym.kwLen,     "kwLen", yytext()); }
+"range"     { return addToken(sym.kwRange,   "kwRange", yytext()); }
 
 // ID - String
 {identifier}                { return addToken(sym.id, "id", yytext()); }
