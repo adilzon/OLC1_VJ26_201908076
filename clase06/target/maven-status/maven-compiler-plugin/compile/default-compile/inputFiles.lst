@@ -11,6 +11,7 @@ C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\FunctionCall.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Gt.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Gte.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\IndexAccessNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Integers.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\LenNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Lt.java
@@ -77,6 +78,7 @@ C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\IntValue.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\NilValue.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\RuneValue.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\SliceValue.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\StringValue.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\ValueWrapper.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\VoidValue.java

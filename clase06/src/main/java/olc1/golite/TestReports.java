@@ -117,24 +117,17 @@ public class TestReports {
             System.out.println("Prueba 2 finalizo (con excepciones esperadas): " + ex.getMessage());
         }
 
-        // --- PRUEBA 3: SWITCH-CASE ---
-        System.out.println("\n--- PRUEBA 3: Sentencia Switch-Case ---");
+        // --- PRUEBA 3: SLICES ---
+        System.out.println("\n--- PRUEBA 3: Slices ---");
         String code3 = "func main() {\n" +
-                       "    var opcion int = 2;\n" +
-                       "    switch (opcion) {\n" +
-                       "        case 1:\n" +
-                       "            fmt.Println(\"Opción 1 seleccionada\");\n" +
-                       "            break;\n" +
-                       "        case 2:\n" +
-                       "            fmt.Println(\"Opción 2 seleccionada\");\n" +
-                       "            break;\n" +
-                       "        case 3:\n" +
-                       "            fmt.Println(\"Opción 3 seleccionada\");\n" +
-                       "            break;\n" +
-                       "        default:\n" +
-                       "            fmt.Println(\"Opción no válida\");\n" +
-                       "    }\n" +
-                       "    fmt.Println(\"Fin del switch\");\n" +
+                       "    numeros := []int{10, 20, 30};\n" +
+                       "    fmt.Println(\"Len inicial:\", len(numeros));\n" +
+                       "    \n" +
+                       "    numeros = append(numeros, 40);\n" +
+                       "    numeros = append(numeros, 50);\n" +
+                       "    \n" +
+                       "    fmt.Println(\"Len después de append:\", len(numeros));\n" +
+                       "    fmt.Println(\"Último elemento:\", numeros[4]);\n" +
                        "}\n";
 
         Lexer lexer3 = null;

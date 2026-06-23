@@ -162,7 +162,12 @@ ELIF ::= ELIF:el kwElse kwIf EXPRESION:e lbrace INSTRUCCIONES:i rbrace {: el.add
      |   kwElse kwIf EXPRESION:e lbrace INSTRUCCIONES:i rbrace {: RESULT = new ElifNodes(new ElifNode(e, i)); :}
 ;
 
-TIPO ::= kwInt | kwFloat64 | kwString | kwBool | kwRune;
+TIPO ::= kwInt      {: RESULT = "int"; :}
+       | kwFloat64  {: RESULT = "float64"; :}
+       | kwString   {: RESULT = "string"; :}
+       | kwBool     {: RESULT = "bool"; :}
+       | kwRune     {: RESULT = "rune"; :}
+       ;
 
 SIMPLE_STATEMENT ::= id:n assign EXPRESION:e                                {: RESULT = new Assign(n, e, nleft, nright); :}
                    | id:i allocate EXPRESION:e                              {: RESULT = new Allocate(i, e, ileft, iright); :}
@@ -210,6 +215,14 @@ EXPRESION ::= minus EXPRESION:a             {: RESULT = new Negate(a); :}%prec U
             | kwString lparen EXPRESION:e rparen        {: RESULT = new TypeCast("string", e, eleft, eright); :}
             | kwBool lparen EXPRESION:e rparen          {: RESULT = new TypeCast("bool", e, eleft, eright); :}
             | kwRune lparen EXPRESION:e rparen          {: RESULT = new TypeCast("rune", e, eleft, eright); :}
+            | lbrack rbrack TIPO:t lbrace LISTA_EXPRESIONES:l rbrace        {: RESULT = new SliceLiteralNode(l, t); :}
+            | lbrack rbrack TIPO:t lbrace rbrace                            {: RESULT = new SliceLiteralNode(new java.util.ArrayList<ASTNode>(), t); :}
+            | lbrack rbrack id:t lbrace LISTA_EXPRESIONES:l rbrace          {: RESULT = new SliceLiteralNode(l, t); :}
+            | lbrack rbrack id:t lbrace rbrace                              {: RESULT = new SliceLiteralNode(new java.util.ArrayList<ASTNode>(), t); :}
+            | id:i dot kwAppend lparen EXPRESION:e rparen                  {: RESULT = new AppendNode(new VarRef(i, ileft, iright), e); :}
+            | kwAppend lparen EXPRESION:s comma EXPRESION:e rparen          {: RESULT = new AppendNode(s, e); :}
+            | kwLen lparen EXPRESION:e rparen                               {: RESULT = new LenNode(e); :}
+            | EXPRESION:e lbrack EXPRESION:i rbrack                         {: RESULT = new IndexAccessNode(e, i); :}
 ;
 
 struct_declaration ::= kwType id:n kwStruct lbrace struct_fields:f rbrace    {: RESULT = new StructDeclarationNode(n, f); :}

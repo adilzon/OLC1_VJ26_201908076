@@ -3,22 +3,22 @@ package olc1.golite.ast.exp;
 import olc1.golite.ast.ASTNode;
 import olc1.golite.visitor.Visitor;
 
-public class AppendNode implements ASTNode {
+public class IndexAccessNode implements ASTNode {
     public final ASTNode slice;
-    public final ASTNode element;
+    public final ASTNode index;
 
-    public AppendNode(ASTNode slice, ASTNode element) {
+    public IndexAccessNode(ASTNode slice, ASTNode index) {
         this.slice = slice;
-        this.element = element;
+        this.index = index;
     }
 
     public static class Context {
         public final ASTNode slice;
-        public final ASTNode element;
+        public final ASTNode index;
 
-        public Context(AppendNode node) {
+        public Context(IndexAccessNode node) {
             this.slice = node.slice;
-            this.element = node.element;
+            this.index = node.index;
         }
     }
 

@@ -940,6 +940,76 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         return this.returnValue;
     }
 
+    @Override
+    public ValueWrapper visit(AppendNode.Context ctx) {
+        ValueWrapper sliceObj = Visit(ctx.slice);
+        if (!(sliceObj instanceof SliceValue sv)) {
+            this.errors.add(new GoliteError("Semantico", "append solo se puede usar con slices, obtenido: " + sliceObj.getTypeName(), sliceObj.line(), sliceObj.column()));
+            return defaultVoid;
+        }
+
+        ValueWrapper newValue = Visit(ctx.element);
+        
+        // Verificación de tipo para el nuevo valor
+        if (!sv.elementType().equals(newValue.getTypeName())) {
+            this.errors.add(new GoliteError("Semantico", "Tipo incompatible en append. Se esperaba: " + sv.elementType() + ", obtenido: " + newValue.getTypeName(), newValue.line(), newValue.column()));
+            return sv;
+        }
+        
+        sv.value().add(newValue);
+        return sv;
+    }
+
+    @Override
+    public ValueWrapper visit(LenNode.Context ctx) {
+        ValueWrapper val = Visit(ctx.expression);
+        if (val instanceof SliceValue sv) {
+            return new IntValue(sv.value().size(), val.line(), val.column());
+        } else {
+            this.errors.add(new GoliteError("Semantico", "len() solo se puede aplicar a slices, obtenido: " + val.getTypeName(), val.line(), val.column()));
+            return new IntValue(0, val.line(), val.column());
+        }
+    }
+
+    @Override
+    public ValueWrapper visit(SliceLiteralNode.Context ctx) {
+        List<ValueWrapper> list = new ArrayList<>();
+        int line = -1;
+        int col = -1;
+        for (ASTNode node : ctx.elements) {
+            ValueWrapper val = Visit(node);
+            if (line == -1) {
+                line = val.line();
+                col = val.column();
+            }
+            list.add(val);
+        }
+        return new SliceValue(list, ctx.elementType, line, col);
+    }
+
+    @Override
+    public ValueWrapper visit(IndexAccessNode.Context ctx) {
+        ValueWrapper sliceObj = Visit(ctx.slice);
+        if (!(sliceObj instanceof SliceValue sv)) {
+            this.errors.add(new GoliteError("Semantico", "Acceso por indice solo se puede aplicar a slices, obtenido: " + sliceObj.getTypeName(), sliceObj.line(), sliceObj.column()));
+            return defaultVoid;
+        }
+
+        ValueWrapper indexObj = Visit(ctx.index);
+        if (!(indexObj instanceof IntValue iv)) {
+            this.errors.add(new GoliteError("Semantico", "El indice debe ser de tipo int, obtenido: " + indexObj.getTypeName(), indexObj.line(), indexObj.column()));
+            return defaultVoid;
+        }
+
+        int indexVal = iv.value();
+        if (indexVal < 0 || indexVal >= sv.value().size()) {
+            this.errors.add(new GoliteError("Semantico", "Indice fuera de rango: " + indexVal + " para slice de longitud " + sv.value().size(), iv.line(), iv.column()));
+            return defaultVoid;
+        }
+
+        return sv.value().get(indexVal);
+    }
+
     private boolean areEqual(ValueWrapper left, ValueWrapper right) {
         if (left instanceof IntValue li && right instanceof IntValue ri) {
             return li.value() == ri.value();

@@ -52,4 +52,8 @@ public interface Visitor<T> {
     T visit(TypeCast.Context ctx);
     T visit(FunctionDeclarationNode.Context ctx);
     T visit(ReturnNode.Context ctx);
+    T visit(AppendNode.Context ctx);
+    T visit(LenNode.Context ctx);
+    T visit(SliceLiteralNode.Context ctx);
+    T visit(IndexAccessNode.Context ctx);
 }
