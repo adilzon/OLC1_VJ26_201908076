@@ -120,14 +120,14 @@ public class TestReports {
         // --- PRUEBA 3: SLICES ---
         System.out.println("\n--- PRUEBA 3: Slices ---");
         String code3 = "func main() {\n" +
-                       "    numeros := []int{10, 20, 30};\n" +
-                       "    fmt.Println(\"Len inicial:\", len(numeros));\n" +
+                       "    numeros := []int{10, 20, 30, 40};\n" +
+                       "    fmt.Println(\"Original:\", numeros[1]);\n" +
                        "    \n" +
-                       "    numeros = append(numeros, 40);\n" +
+                       "    numeros[2] = 99;\n" +
+                       "    fmt.Println(\"Después de asignación:\", numeros[2]);\n" +
+                       "    \n" +
                        "    numeros = append(numeros, 50);\n" +
-                       "    \n" +
-                       "    fmt.Println(\"Len después de append:\", len(numeros));\n" +
-                       "    fmt.Println(\"Último elemento:\", numeros[4]);\n" +
+                       "    fmt.Println(\"Después de append:\", len(numeros));\n" +
                        "}\n";
 
         Lexer lexer3 = null;

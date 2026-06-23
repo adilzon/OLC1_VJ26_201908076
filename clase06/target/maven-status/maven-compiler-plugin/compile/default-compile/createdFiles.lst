@@ -9,6 +9,7 @@ olc1\golite\ast\exp\Mul$Context.class
 olc1\golite\ast\exp\StringLiteral$Context.class
 olc1\golite\ast\exp\BoolLiteral$Context.class
 olc1\golite\ast\exp\Mod$Context.class
+olc1\golite\ast\stm\IndexAssignNode.class
 olc1\golite\ast\exp\Add.class
 olc1\golite\views\GoliteFrame$1.class
 olc1\golite\ast\stm\ElifNode.class
@@ -26,6 +27,7 @@ olc1\golite\ast\exp\RuneLiteral.class
 olc1\golite\parser$CUP$parser$actions.class
 olc1\golite\ast\exp\Lt.class
 olc1\golite\ast\exp\NotEqual$Context.class
+olc1\golite\ast\stm\IndexAssignNode$Context.class
 olc1\golite\ast\exp\TypeOf$Context.class
 olc1\golite\views\GoliteMenuBar$1.class
 olc1\golite\ast\exp\LenNode$Context.class

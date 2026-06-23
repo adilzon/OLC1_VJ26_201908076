@@ -175,6 +175,8 @@ SIMPLE_STATEMENT ::= id:n assign EXPRESION:e                                {: R
                    | id:i minusAssign EXPRESION:e                           {: RESULT = new Allocate(i, new Sub(new VarRef(i, ileft, iright), e), ileft, iright); :}
                    | id:i plusPlus                                          {: RESULT = new Allocate(i, new Add(new VarRef(i, ileft, iright), new Integers(1, ileft, iright)), ileft, iright); :}
                    | id:i minusMinus                                        {: RESULT = new Allocate(i, new Sub(new VarRef(i, ileft, iright), new Integers(1, ileft, iright)), ileft, iright); :}
+                   | EXPRESION:e1 lbrack EXPRESION:e2 rbrack allocate EXPRESION:e3
+                                                                            {: RESULT = new IndexAssignNode(e1, e2, e3); :}
 ;
 
 LISTA_EXPRESIONES ::= LISTA_EXPRESIONES:l comma EXPRESION:e                  {: l.add(e); RESULT = l; :}

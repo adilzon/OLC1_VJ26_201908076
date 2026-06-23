@@ -1010,6 +1010,38 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         return sv.value().get(indexVal);
     }
 
+    @Override
+    public ValueWrapper visit(IndexAssignNode.Context ctx) {
+        ValueWrapper sliceObj = Visit(ctx.slice);
+        if (!(sliceObj instanceof SliceValue sv)) {
+            this.errors.add(new GoliteError("Semantico", "Solo se puede asignar en slices, obtenido: " + sliceObj.getTypeName(), sliceObj.line(), sliceObj.column()));
+            return defaultVoid;
+        }
+
+        ValueWrapper indexObj = Visit(ctx.index);
+        if (!(indexObj instanceof IntValue iv)) {
+            this.errors.add(new GoliteError("Semantico", "El indice debe ser de tipo int, obtenido: " + indexObj.getTypeName(), indexObj.line(), indexObj.column()));
+            return defaultVoid;
+        }
+
+        int indexVal = iv.value();
+        if (indexVal < 0 || indexVal >= sv.value().size()) {
+            this.errors.add(new GoliteError("Semantico", "Indice fuera de rango en asignacion: " + indexVal + " para slice de longitud " + sv.value().size(), iv.line(), iv.column()));
+            return defaultVoid;
+        }
+
+        ValueWrapper valueObj = Visit(ctx.value);
+        
+        // Verificación de tipo
+        if (!sv.elementType().equals(valueObj.getTypeName())) {
+            this.errors.add(new GoliteError("Semantico", "Tipo incompatible en asignacion a indice. Se esperaba: " + sv.elementType() + ", obtenido: " + valueObj.getTypeName(), valueObj.line(), valueObj.column()));
+            return defaultVoid;
+        }
+
+        sv.value().set(indexVal, valueObj);
+        return valueObj;
+    }
+
     private boolean areEqual(ValueWrapper left, ValueWrapper right) {
         if (left instanceof IntValue li && right instanceof IntValue ri) {
             return li.value() == ri.value();

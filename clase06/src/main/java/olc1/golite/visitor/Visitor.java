@@ -56,4 +56,5 @@ public interface Visitor<T> {
     T visit(LenNode.Context ctx);
     T visit(SliceLiteralNode.Context ctx);
     T visit(IndexAccessNode.Context ctx);
+    T visit(IndexAssignNode.Context ctx);
 }
