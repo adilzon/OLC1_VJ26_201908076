@@ -13,6 +13,15 @@ public class SwitchNode implements ASTNode {
         this.casos = casos;
     }
 
+    public ASTNode getExpresion() {
+        return expresion;
+    }
+
+    public List<ASTNode> getCasos() {
+        return casos;
+    }
+
+
     public static class Context {
         public final ASTNode expresion;
         public final List<ASTNode> casos;

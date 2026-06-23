@@ -49,6 +49,14 @@ public class TestReports {
 
 
 
+
+
+
+
+
+
+
+
         Lexer lexer1 = null;
         parser parser1 = null;
         InterpreterVisitor interpreter1 = null;
@@ -107,6 +115,49 @@ public class TestReports {
             }
         } catch (Exception ex) {
             System.out.println("Prueba 2 finalizo (con excepciones esperadas): " + ex.getMessage());
+        }
+
+        // --- PRUEBA 3: SWITCH-CASE ---
+        System.out.println("\n--- PRUEBA 3: Sentencia Switch-Case ---");
+        String code3 = "func main() {\n" +
+                       "    var opcion int = 2;\n" +
+                       "    switch (opcion) {\n" +
+                       "        case 1:\n" +
+                       "            fmt.Println(\"Opción 1 seleccionada\");\n" +
+                       "            break;\n" +
+                       "        case 2:\n" +
+                       "            fmt.Println(\"Opción 2 seleccionada\");\n" +
+                       "            break;\n" +
+                       "        case 3:\n" +
+                       "            fmt.Println(\"Opción 3 seleccionada\");\n" +
+                       "            break;\n" +
+                       "        default:\n" +
+                       "            fmt.Println(\"Opción no válida\");\n" +
+                       "    }\n" +
+                       "    fmt.Println(\"Fin del switch\");\n" +
+                       "}\n";
+
+        Lexer lexer3 = null;
+        parser parser3 = null;
+        InterpreterVisitor interpreter3 = null;
+
+        try {
+            lexer3 = new Lexer(new BufferedReader(new StringReader(code3)));
+            parser3 = new parser(lexer3);
+
+            ASTNode ast3 = (ASTNode) parser3.parse().value;
+            interpreter3 = new InterpreterVisitor();
+            
+            if (ast3 != null) {
+                interpreter3.Visit(ast3);
+            }
+
+            System.out.println("Prueba 3 completada.");
+            System.out.println("- Salida consola:");
+            System.out.print(interpreter3.output);
+        } catch (Exception ex) {
+            System.err.println("Error en Prueba 3: " + ex.getMessage());
+            ex.printStackTrace();
         }
 
         // --- CONSOLIDACION Y GENERACION DE REPORTES ---

@@ -22,6 +22,8 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     private Enviroment environment = new Enviroment();
     public final List<GoliteError> errors = new ArrayList<>();
     public final List<Symbol> symbols = new ArrayList<>();
+    private ValueWrapper returnValue = null;
+    private boolean returning = false;
 
     public ValueWrapper Visit(ASTNode node) {
 
@@ -214,7 +216,26 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     @Override
     public ValueWrapper visit(Statments.Context ctx) {
         for (ASTNode statment : ctx.statements) {
+            if (this.returning) {
+                break;
+            }
             Visit(statment);
+        }
+
+        // Si estamos en el ámbito raíz (Global) y existe la función main, la ejecutamos después de procesar todo.
+        if (this.environment.getParent() == null) {
+            FunctionSymbol mainFunc = this.environment.lookupFunction("main");
+            if (mainFunc != null) {
+                Enviroment mainEnv = new Enviroment(this.environment, "Funcion main");
+                Enviroment callerEnv = this.environment;
+                this.environment = mainEnv;
+
+                if (mainFunc.body != null) {
+                    Visit(mainFunc.body);
+                }
+
+                this.environment = callerEnv;
+            }
         }
 
         return defaultVoid;
@@ -385,6 +406,10 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
                 break;
             } catch (ContinueException e) {
                 // Ignoro la excepción del continue para saltar directamente a la siguiente condición
+            }
+            
+            if (this.returning) {
+                break;
             }
            
             condition = Visit(ctx.condition);
@@ -730,6 +755,10 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
                 this.environment = bodyEnv;
             }
 
+            if (this.returning) {
+                break;
+            }
+
             if (ctx.post != null) {
                 Visit(ctx.post);
             }
@@ -747,21 +776,58 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
 
     @Override
     public ValueWrapper visit(SwitchNode.Context ctx) {
+        ValueWrapper switchVal = Visit(ctx.expresion);
+        
+        CaseNode defaultCase = null;
+        boolean matched = false;
+
+        try {
+            for (ASTNode node : ctx.casos) {
+                if (this.returning) {
+                    break;
+                }
+                if (node instanceof CaseNode caseNode) {
+                    if (caseNode.getCondicion() == null) {
+                        defaultCase = caseNode;
+                        continue;
+                    }
+
+                    ValueWrapper caseVal = Visit(caseNode.getCondicion());
+                    if (areEqual(switchVal, caseVal)) {
+                        matched = true;
+                        Visit(caseNode);
+                        break;
+                    }
+                }
+            }
+
+            if (!matched && defaultCase != null && !this.returning) {
+                Visit(defaultCase);
+            }
+        } catch (BreakException e) {
+            // Un break dentro de un switch termina la ejecución del switch
+        }
+
         return defaultVoid;
     }
 
     @Override
     public ValueWrapper visit(CaseNode.Context ctx) {
+        if (ctx.instrucciones != null) {
+            Visit(ctx.instrucciones);
+        }
         return defaultVoid;
     }
 
     @Override
     public ValueWrapper visit(ReturnStm.Context ctx) {
-        ValueWrapper retVal = defaultVoid;
         if (ctx.expresion != null) {
-            retVal = Visit(ctx.expresion);
+            this.returnValue = Visit(ctx.expresion);
+        } else {
+            this.returnValue = defaultVoid;
         }
-        throw new ReturnException(retVal);
+        this.returning = true;
+        return this.returnValue;
     }
 
     @Override
@@ -796,10 +862,8 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
             evaluatedArgs.add(Visit(arg));
         }
 
-        // Imprimir debug en consola
-        System.out.println("[DEBUG] Llamando funcion: " + ctx.id);
-
         // 4. Buscar el entorno global
+
         Enviroment globalEnv = this.environment;
         while (globalEnv.getParent() != null) {
             globalEnv = globalEnv.getParent();
@@ -822,20 +886,30 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
             this.symbols.add(new Symbol(param.name, "Variable", typeName, funcEnv.getScopeName(), ctx.line, ctx.column));
         }
 
+        // Guardar estado de retorno previo (para soportar recursión y llamadas anidadas)
+        ValueWrapper oldReturnValue = this.returnValue;
+        boolean oldReturning = this.returning;
+
+        // Reiniciar variables de retorno para esta llamada
+        this.returnValue = defaultVoid;
+        this.returning = false;
+
         // 7. Guardar entorno del invocador y ejecutar cuerpo
         Enviroment callerEnv = this.environment;
         this.environment = funcEnv;
-        ValueWrapper resultValue = defaultVoid;
 
-        try {
-            if (func.body != null) {
-                Visit(func.body);
-            }
-        } catch (ReturnException e) {
-            resultValue = e.getValue();
-        } finally {
-            this.environment = callerEnv;
+        if (func.body != null) {
+            Visit(func.body);
         }
+
+        this.environment = callerEnv;
+
+        // Capturar resultado e indicar que ya no estamos retornando en el llamador
+        ValueWrapper resultValue = this.returnValue;
+
+        // Restaurar estado de retorno previo
+        this.returnValue = oldReturnValue;
+        this.returning = oldReturning;
 
         return resultValue;
     }
@@ -852,26 +926,39 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         } else {
             environment.insertFunction(ctx.name, ctx.returnType, ctx.parameters, ctx.body);
         }
-
-        if ("main".equals(ctx.name)) {
-            Enviroment previousEnv = this.environment;
-            this.environment = new Enviroment(previousEnv, "Funcion main");
-            
-            if (ctx.body != null) {
-                Visit(ctx.body);
-            }
-            
-            this.environment = previousEnv;
-        }
         return defaultVoid;
     }
 
     @Override
     public ValueWrapper visit(ReturnNode.Context ctx) {
-        ValueWrapper retVal = defaultVoid;
         if (ctx.expression != null) {
-            retVal = Visit(ctx.expression);
+            this.returnValue = Visit(ctx.expression);
+        } else {
+            this.returnValue = defaultVoid;
         }
-        throw new ReturnException(retVal);
+        this.returning = true;
+        return this.returnValue;
+    }
+
+    private boolean areEqual(ValueWrapper left, ValueWrapper right) {
+        if (left instanceof IntValue li && right instanceof IntValue ri) {
+            return li.value() == ri.value();
+        }
+        if (left instanceof DecimalValue ld && right instanceof DecimalValue rd) {
+            return ld.value() == rd.value();
+        }
+        if (left instanceof StringValue l && right instanceof StringValue r) {
+            return l.value().equals(r.value());
+        }
+        if (left instanceof BoolValue l && right instanceof BoolValue r) {
+            return l.value() == r.value();
+        }
+        if (left instanceof RuneValue l && right instanceof RuneValue r) {
+            return l.value() == r.value();
+        }
+        if (left instanceof NilValue && right instanceof NilValue) {
+            return true;
+        }
+        return false;
     }
 }

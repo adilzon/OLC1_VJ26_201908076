@@ -12,6 +12,15 @@ public class CaseNode implements ASTNode {
         this.instrucciones = instrucciones;
     }
 
+    public ASTNode getCondicion() {
+        return condicion;
+    }
+
+    public ASTNode getInstrucciones() {
+        return instrucciones;
+    }
+
+
     public static class Context {
         public final ASTNode condicion;
         public final ASTNode instrucciones;
