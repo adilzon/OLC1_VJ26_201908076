@@ -14,6 +14,7 @@ olc1\golite\views\GoliteFrame$1.class
 olc1\golite\ast\stm\ElifNode.class
 olc1\golite\ast\stm\ForClasico.class
 olc1\golite\ast\stm\CaseNode$Context.class
+olc1\golite\ast\stm\ReturnNode.class
 olc1\golite\ast\exp\Atoi.class
 olc1\golite\visitor\Visitor.class
 olc1\golite\ast\stm\Breakstm$Context.class
@@ -42,6 +43,7 @@ olc1\golite\ast\exp\ParseFloat$Context.class
 olc1\golite\ast\stm\CaseNode.class
 olc1\golite\reports\Token.class
 olc1\golite\ast\exp\Gt.class
+olc1\golite\ast\stm\FunctionDeclarationNode.class
 olc1\golite\visitor\interpreter\value\StringValue.class
 olc1\golite\ast\exp\Paren.class
 olc1\golite\ast\exp\NilLiteral.class
@@ -65,6 +67,7 @@ olc1\golite\ast\stm\ElifNodes$Context.class
 olc1\golite\ast\exp\Equal.class
 olc1\golite\ast\exp\Mul.class
 olc1\golite\reports\GoliteError.class
+olc1\golite\ast\stm\ParameterNode.class
 olc1\golite\views\GoliteFrame$2.class
 olc1\golite\ast\stm\SwitchNode$Context.class
 olc1\golite\ast\exp\Decimal.class
@@ -92,6 +95,8 @@ olc1\golite\Lexer.class
 olc1\golite\lexer\Lexer.class
 olc1\golite\ast\exp\NilLiteral$Context.class
 olc1\golite\ast\exp\Gte$Context.class
+olc1\golite\ast\exp\LenNode.class
+olc1\golite\ast\exp\AppendNode.class
 olc1\golite\visitor\interpreter\value\RuneValue.class
 olc1\golite\ast\stm\WhileFor.class
 olc1\golite\ast\exp\Or.class
@@ -105,15 +110,18 @@ olc1\golite\ast\stm\Continuestm.class
 olc1\golite\ast\stm\Statments$Context.class
 olc1\golite\views\GoliteMenuBar.class
 olc1\golite\views\MainPanel.class
+olc1\golite\ast\exp\SliceLiteralNode.class
 olc1\golite\visitor\interpreter\value\ValueWrapper.class
 olc1\golite\TestReports.class
 olc1\golite\ast\stm\Breakstm.class
 olc1\golite\ast\exp\Decimal$Context.class
+olc1\golite\ast\stm\StructDeclarationNode.class
 olc1\golite\views\GoliteFrame.class
 olc1\golite\ast\stm\ElifNodes.class
 olc1\golite\ast\exp\Add$Context.class
 olc1\golite\ast\stm\Assign$Context.class
 olc1\golite\ast\stm\Assign.class
+olc1\golite\ast\stm\StructFieldNode.class
 olc1\golite\ast\stm\IfNode.class
 olc1\golite\ast\exp\Gt$Context.class
 olc1\golite\reports\HtmlReportGenerator.class
