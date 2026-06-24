@@ -1042,6 +1042,210 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         return valueObj;
     }
 
+    @Override
+    public ValueWrapper visit(StructLiteralNode.Context ctx) {
+        System.out.println("[DEBUG] Creando struct: " + ctx.structName);
+        StructSymbol structDef = this.environment.lookupStruct(ctx.structName);
+        if (structDef == null) {
+            this.errors.add(new GoliteError("Semantico", "Struct no declarado: " + ctx.structName, -1, -1));
+            return defaultVoid;
+        }
+
+        Map<String, ValueWrapper> fieldValues = new HashMap<>();
+        // Inicializar campos por defecto
+        for (Map.Entry<String, String> entry : structDef.fields.entrySet()) {
+            fieldValues.put(entry.getKey(), getDefaultValue(entry.getValue()));
+        }
+
+        int line = -1;
+        int col = -1;
+        for (int i = 0; i < ctx.fieldNames.size(); i++) {
+            String name = ctx.fieldNames.get(i);
+            if (!structDef.fields.containsKey(name)) {
+                this.errors.add(new GoliteError("Semantico", "Campo '" + name + "' no pertenece al struct " + ctx.structName, -1, -1));
+                continue;
+            }
+            ValueWrapper val = Visit(ctx.values.get(i));
+            if (line == -1) {
+                line = val.line();
+                col = val.column();
+            }
+            // Validar compatibilidad de tipo
+            String expectedType = structDef.fields.get(name);
+            if (!expectedType.equals(val.getTypeName())) {
+                this.errors.add(new GoliteError("Semantico", "Tipo incompatible para el campo '" + name + "'. Se esperaba " + expectedType + ", obtenido: " + val.getTypeName(), val.line(), val.column()));
+            }
+            fieldValues.put(name, val);
+        }
+        
+        return new StructInstanceValue(ctx.structName, fieldValues, line, col);
+    }
+
+    @Override
+    public ValueWrapper visit(StructDeclarationNode.Context ctx) {
+        this.environment.insertStruct(ctx.name, ctx.fields);
+        return defaultVoid;
+    }
+
+    @Override
+    public ValueWrapper visit(FieldAccessNode.Context ctx) {
+        ValueWrapper structObj = Visit(ctx.structExpr);
+        if (!(structObj instanceof StructInstanceValue siv)) {
+            this.errors.add(new GoliteError("Semantico", "No se puede acceder a campo en tipo no-struct, obtenido: " + structObj.getTypeName(), structObj.line(), structObj.column()));
+            return defaultVoid;
+        }
+
+        if (!siv.fields().containsKey(ctx.fieldName)) {
+            this.errors.add(new GoliteError("Semantico", "Campo '" + ctx.fieldName + "' no existe en el struct " + siv.structName(), siv.line(), siv.column()));
+            return defaultVoid;
+        }
+
+        return siv.fields().get(ctx.fieldName);
+    }
+
+    @Override
+    public ValueWrapper visit(FieldAssignNode.Context ctx) {
+        ValueWrapper structObj = Visit(ctx.structExpr);
+        if (!(structObj instanceof StructInstanceValue siv)) {
+            this.errors.add(new GoliteError("Semantico", "Solo se puede asignar campos en structs, obtenido: " + structObj.getTypeName(), structObj.line(), structObj.column()));
+            return defaultVoid;
+        }
+
+        if (!siv.fields().containsKey(ctx.fieldName)) {
+            this.errors.add(new GoliteError("Semantico", "Campo '" + ctx.fieldName + "' no existe en el struct " + siv.structName(), siv.line(), siv.column()));
+            return defaultVoid;
+        }
+
+        ValueWrapper valueObj = Visit(ctx.value);
+        
+        // Verificación de tipo
+        StructSymbol structDef = this.environment.lookupStruct(siv.structName());
+        if (structDef != null) {
+            String expectedType = structDef.fields.get(ctx.fieldName);
+            if (expectedType != null && !expectedType.equals(valueObj.getTypeName())) {
+                this.errors.add(new GoliteError("Semantico", "Tipo incompatible en asignacion de campo. Se esperaba: " + expectedType + ", obtenido: " + valueObj.getTypeName(), valueObj.line(), valueObj.column()));
+            }
+        }
+
+        siv.fields().put(ctx.fieldName, valueObj);
+        return valueObj;
+    }
+
+    @Override
+    public ValueWrapper visit(MethodDeclarationNode.Context ctx) {
+        StructSymbol structDef = this.environment.lookupStruct(ctx.receiverType);
+        if (structDef == null) {
+            this.errors.add(new GoliteError("Semantico", "Struct no declarado: " + ctx.receiverType + " para el metodo " + ctx.name, 1, 1));
+        } else {
+            if (structDef.methods.containsKey(ctx.name)) {
+                this.errors.add(new GoliteError("Semantico", "Metodo '" + ctx.name + "' ya declarado para el struct " + ctx.receiverType, 1, 1));
+            } else {
+                structDef.methods.put(ctx.name, new MethodSymbol(ctx.receiverName, ctx.receiverType, ctx.name, ctx.returnType, ctx.parameters, ctx.body));
+            }
+        }
+        return defaultVoid;
+    }
+
+    @Override
+    public ValueWrapper visit(MethodCallNode.Context ctx) {
+        // 1. Evaluar el receptor
+        ValueWrapper targetVal = Visit(ctx.target);
+        if (!(targetVal instanceof StructInstanceValue siv)) {
+            this.errors.add(new GoliteError("Semantico", "No se puede llamar a metodo en un tipo no-struct, obtenido: " + targetVal.getTypeName(), targetVal.line(), targetVal.column()));
+            return defaultVoid;
+        }
+
+        // 2. Buscar definicion del struct
+        StructSymbol structDef = this.environment.lookupStruct(siv.structName());
+        if (structDef == null) {
+            this.errors.add(new GoliteError("Semantico", "Struct no declarado: " + siv.structName(), ctx.line, ctx.column));
+            return defaultVoid;
+        }
+
+        // 3. Buscar el metodo en el struct
+        MethodSymbol method = structDef.methods.get(ctx.methodName);
+        if (method == null) {
+            this.errors.add(new GoliteError("Semantico", "Metodo '" + ctx.methodName + "' no definido en struct " + siv.structName(), ctx.line, ctx.column));
+            return defaultVoid;
+        }
+
+        // 4. Verificar cantidad de argumentos
+        if (ctx.arguments.size() != method.parameters.size()) {
+            this.errors.add(new GoliteError("Semantico", "Cantidad incorrecta de argumentos en llamada a metodo " + ctx.methodName + ". Se esperaban: " + method.parameters.size() + ", obtenido: " + ctx.arguments.size(), ctx.line, ctx.column));
+            return defaultVoid;
+        }
+
+        // 5. Evaluar los argumentos en el ambito actual
+        List<ValueWrapper> evaluatedArgs = new ArrayList<>();
+        for (ASTNode arg : ctx.arguments) {
+            evaluatedArgs.add(Visit(arg));
+        }
+
+        // 6. Buscar el ambito global (lexical scoping)
+        Enviroment globalEnv = this.environment;
+        while (globalEnv.getParent() != null) {
+            globalEnv = globalEnv.getParent();
+        }
+
+        // 7. Crear el entorno local para la ejecucion del metodo
+        Enviroment methodEnv = new Enviroment(globalEnv, "Metodo " + siv.structName() + "." + ctx.methodName);
+
+        // 8. Declarar el receptor como variable local
+        methodEnv.declare(method.receiverName, siv);
+        this.symbols.add(new Symbol(method.receiverName, "Variable", siv.getTypeName(), methodEnv.getScopeName(), ctx.line, ctx.column));
+
+        // 9. Registrar parametros como variables locales
+        for (int i = 0; i < method.parameters.size(); i++) {
+            ParameterNode param = method.parameters.get(i);
+            ValueWrapper val = evaluatedArgs.get(i);
+            methodEnv.declare(param.name, val);
+            
+            String typeName = val.getTypeName();
+            if ("decimal".equals(typeName)) {
+                typeName = "float64";
+            }
+            this.symbols.add(new Symbol(param.name, "Variable", typeName, methodEnv.getScopeName(), ctx.line, ctx.column));
+        }
+
+        // 10. Guardar estado de retorno previo
+        ValueWrapper oldReturnValue = this.returnValue;
+        boolean oldReturning = this.returning;
+
+        // Reiniciar variables de retorno
+        this.returnValue = defaultVoid;
+        this.returning = false;
+
+        // 11. Guardar entorno del invocador y ejecutar cuerpo
+        Enviroment callerEnv = this.environment;
+        this.environment = methodEnv;
+
+        if (method.body != null) {
+            Visit(method.body);
+        }
+
+        this.environment = callerEnv;
+
+        // Capturar resultado
+        ValueWrapper resultValue = this.returnValue;
+
+        // Restaurar estado de retorno previo
+        this.returnValue = oldReturnValue;
+        this.returning = oldReturning;
+
+        return resultValue;
+    }
+
+    private ValueWrapper getDefaultValue(String type) {
+        return switch (type) {
+            case "int" -> new IntValue(0, -1, -1);
+            case "float64" -> new DecimalValue(0.0, -1, -1);
+            case "string" -> new StringValue("\"\"", -1, -1);
+            case "bool" -> new BoolValue(false, -1, -1);
+            case "rune" -> new RuneValue('\0', -1, -1);
+            default -> new NilValue(-1, -1);
+        };
+    }
+
     private boolean areEqual(ValueWrapper left, ValueWrapper right) {
         if (left instanceof IntValue li && right instanceof IntValue ri) {
             return li.value() == ri.value();

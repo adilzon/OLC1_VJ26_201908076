@@ -57,4 +57,10 @@ public interface Visitor<T> {
     T visit(SliceLiteralNode.Context ctx);
     T visit(IndexAccessNode.Context ctx);
     T visit(IndexAssignNode.Context ctx);
+    T visit(StructLiteralNode.Context ctx);
+    T visit(StructDeclarationNode.Context ctx);
+    T visit(FieldAccessNode.Context ctx);
+    T visit(FieldAssignNode.Context ctx);
+    T visit(MethodDeclarationNode.Context ctx);
+    T visit(MethodCallNode.Context ctx);
 }

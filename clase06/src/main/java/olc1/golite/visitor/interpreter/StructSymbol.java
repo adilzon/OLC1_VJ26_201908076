@@ -6,9 +6,11 @@ import java.util.Map;
 public class StructSymbol {
     public String name;
     public Map<String, String> fields;   // nombreCampo -> tipo
+    public Map<String, MethodSymbol> methods; // nombreMetodo -> MethodSymbol
 
     public StructSymbol(String name) {
         this.name = name;
         this.fields = new HashMap<>();
+        this.methods = new HashMap<>();
     }
 }

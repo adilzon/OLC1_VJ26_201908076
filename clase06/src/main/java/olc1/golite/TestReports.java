@@ -117,17 +117,28 @@ public class TestReports {
             System.out.println("Prueba 2 finalizo (con excepciones esperadas): " + ex.getMessage());
         }
 
-        // --- PRUEBA 3: SLICES ---
-        System.out.println("\n--- PRUEBA 3: Slices ---");
-        String code3 = "func main() {\n" +
-                       "    numeros := []int{10, 20, 30, 40};\n" +
-                       "    fmt.Println(\"Original:\", numeros[1]);\n" +
+        // --- PRUEBA 3: STRUCTS ---
+        System.out.println("\n--- PRUEBA 3: Structs ---");
+        String code3 = "type Persona struct {\n" +
+                       "    Nombre string;\n" +
+                       "    Edad   int;\n" +
+                       "}\n" +
+                       "\n" +
+                       "func (p Persona) saludar() {\n" +
+                       "    fmt.Println(\"Hola, soy\", p.Nombre);\n" +
+                       "}\n" +
+                       "\n" +
+                       "func (p Persona) esAdulto() bool {\n" +
+                       "    return p.Edad >= 18;\n" +
+                       "}\n" +
+                       "\n" +
+                       "func main() {\n" +
+                       "    p := Persona{Nombre: \"Luis\", Edad: 25};\n" +
+                       "    p.saludar();\n" +
                        "    \n" +
-                       "    numeros[2] = 99;\n" +
-                       "    fmt.Println(\"Después de asignación:\", numeros[2]);\n" +
-                       "    \n" +
-                       "    numeros = append(numeros, 50);\n" +
-                       "    fmt.Println(\"Después de append:\", len(numeros));\n" +
+                       "    if p.esAdulto() {\n" +
+                       "        fmt.Println(\"Es adulto\");\n" +
+                       "    }\n" +
                        "}\n";
 
         Lexer lexer3 = null;
@@ -146,6 +157,18 @@ public class TestReports {
             }
 
             System.out.println("Prueba 3 completada.");
+            System.out.println("- Errores lexicos: " + lexer3.errors.size());
+            for (var err : lexer3.errors) {
+                System.out.printf("  [Error Lexico] %s, Pos: %d:%d\n", err.getDescription(), err.getLine(), err.getColumn());
+            }
+            System.out.println("- Errores sintacticos: " + parser3.errors.size());
+            for (var err : parser3.errors) {
+                System.out.printf("  [Error Sintactico] %s, Pos: %d:%d\n", err.getDescription(), err.getLine(), err.getColumn());
+            }
+            System.out.println("- Errores semanticos: " + interpreter3.errors.size());
+            for (var err : interpreter3.errors) {
+                System.out.printf("  [Error Semantico] %s, Pos: %d:%d\n", err.getDescription(), err.getLine(), err.getColumn());
+            }
             System.out.println("- Salida consola:");
             System.out.print(interpreter3.output);
         } catch (Exception ex) {

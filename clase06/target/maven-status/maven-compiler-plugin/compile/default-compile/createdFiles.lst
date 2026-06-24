@@ -7,6 +7,7 @@ olc1\golite\ast\exp\TypeCast$Context.class
 olc1\golite\ast\exp\VarRef.class
 olc1\golite\ast\exp\Mul$Context.class
 olc1\golite\ast\exp\StringLiteral$Context.class
+olc1\golite\ast\stm\MethodDeclarationNode.class
 olc1\golite\ast\exp\BoolLiteral$Context.class
 olc1\golite\ast\exp\Mod$Context.class
 olc1\golite\ast\stm\IndexAssignNode.class
@@ -21,6 +22,7 @@ olc1\golite\visitor\interpreter\StructSymbol.class
 olc1\golite\ast\exp\Atoi.class
 olc1\golite\ast\exp\AppendNode$Context.class
 olc1\golite\visitor\Visitor.class
+olc1\golite\visitor\interpreter\value\StructInstanceValue.class
 olc1\golite\ast\exp\SliceLiteralNode$Context.class
 olc1\golite\ast\stm\Breakstm$Context.class
 olc1\golite\ast\exp\RuneLiteral.class
@@ -28,13 +30,16 @@ olc1\golite\parser$CUP$parser$actions.class
 olc1\golite\ast\exp\Lt.class
 olc1\golite\ast\exp\NotEqual$Context.class
 olc1\golite\ast\stm\IndexAssignNode$Context.class
+olc1\golite\ast\exp\MethodCallNode$Context.class
 olc1\golite\ast\exp\TypeOf$Context.class
 olc1\golite\views\GoliteMenuBar$1.class
+olc1\golite\ast\exp\FieldAccessNode.class
 olc1\golite\ast\exp\LenNode$Context.class
 olc1\golite\ast\stm\Statments.class
 olc1\golite\ast\exp\TypeOf.class
 olc1\golite\ast\exp\ParseFloat.class
 olc1\golite\ast\stm\FunctionDeclarationNode$Context.class
+olc1\golite\ast\exp\FieldInit.class
 olc1\golite\ast\exp\VarRef$Context.class
 olc1\golite\ast\exp\TypeCast.class
 olc1\golite\ast\exp\Sub.class
@@ -44,11 +49,13 @@ olc1\golite\visitor\interpreter\transfer\BreakException.class
 olc1\golite\ast\stm\BlockStm$Context.class
 olc1\golite\visitor\interpreter\value\DecimalValue.class
 olc1\golite\visitor\interpreter\value\SliceValue.class
+olc1\golite\ast\stm\MethodDeclarationNode$Context.class
 olc1\golite\ast\stm\WhileFor$Context.class
 olc1\golite\ast\exp\NotEqual.class
 olc1\golite\ast\exp\BoolLiteral.class
 olc1\golite\ast\exp\FunctionCall$Context.class
 olc1\golite\ast\exp\ParseFloat$Context.class
+olc1\golite\ast\stm\FieldAssignNode$Context.class
 olc1\golite\visitor\interpreter\FunctionSymbol.class
 olc1\golite\ast\stm\CaseNode.class
 olc1\golite\reports\Token.class
@@ -59,9 +66,11 @@ olc1\golite\ast\exp\Paren.class
 olc1\golite\ast\exp\NilLiteral.class
 olc1\golite\ast\exp\FunctionCall.class
 olc1\golite\ast\stm\SwitchNode.class
+olc1\golite\ast\exp\MethodCallNode.class
 olc1\golite\ast\exp\Lte.class
 olc1\golite\ast\exp\Integers$Context.class
 olc1\golite\ast\stm\IfNode$Context.class
+olc1\golite\ast\exp\FieldAccessNode$Context.class
 olc1\golite\ast\exp\Gte.class
 olc1\golite\ast\exp\Lte$Context.class
 olc1\golite\ast\exp\Or$Context.class
@@ -79,6 +88,7 @@ olc1\golite\ast\exp\Equal.class
 olc1\golite\ast\exp\Mul.class
 olc1\golite\reports\GoliteError.class
 olc1\golite\ast\stm\ParameterNode.class
+olc1\golite\ast\exp\StructLiteralNode$Context.class
 olc1\golite\views\GoliteFrame$2.class
 olc1\golite\ast\stm\SwitchNode$Context.class
 olc1\golite\ast\exp\Decimal.class
@@ -96,7 +106,9 @@ olc1\golite\ast\exp\Div.class
 olc1\golite\sym.class
 olc1\golite\ast\exp\Allocate$Context.class
 olc1\golite\ast\exp\Equal$Context.class
+olc1\golite\ast\stm\StructDeclarationNode$Context.class
 olc1\golite\ast\exp\Atoi$Context.class
+olc1\golite\visitor\interpreter\MethodSymbol.class
 olc1\golite\parser.class
 olc1\golite\ast\exp\Integers.class
 olc1\golite\ast\exp\IndexAccessNode.class
@@ -104,8 +116,10 @@ olc1\golite\ast\exp\Allocate.class
 olc1\golite\ast\exp\Div$Context.class
 olc1\golite\ast\stm\ForClasico$Context.class
 olc1\golite\Lexer.class
+olc1\golite\ast\stm\FieldAssignNode.class
 olc1\golite\lexer\Lexer.class
 olc1\golite\ast\exp\NilLiteral$Context.class
+olc1\golite\ast\exp\StructLiteralNode.class
 olc1\golite\ast\exp\Gte$Context.class
 olc1\golite\ast\exp\IndexAccessNode$Context.class
 olc1\golite\ast\exp\LenNode.class

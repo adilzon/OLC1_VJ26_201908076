@@ -8,6 +8,8 @@ C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Decimal.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Div.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Equal.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\FieldAccessNode.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\FieldInit.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\FunctionCall.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Gt.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Gte.java
@@ -16,6 +18,7 @@ C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\LenNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Lt.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Lte.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\MethodCallNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Mod.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Mul.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Negate.java
@@ -28,6 +31,7 @@ C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\RuneLiteral.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\SliceLiteralNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\StringLiteral.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\StructLiteralNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\Sub.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\TypeCast.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\exp\TypeOf.java
@@ -39,12 +43,14 @@ C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\Continuestm.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\ElifNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\ElifNodes.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\FieldAssignNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\ForClasico.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\FunctionDecl.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\FunctionDeclarationNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\IfNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\Imprimir.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\IndexAssignNode.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\MethodDeclarationNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\Param.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\ParameterNode.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\ast\stm\ReturnNode.java
@@ -70,6 +76,7 @@ C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\Enviroment.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\FunctionSymbol.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\InterpreterVisitor.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\MethodSymbol.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\StructSymbol.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\transfer\BreakException.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\transfer\ContinueException.java
@@ -81,6 +88,7 @@ C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\RuneValue.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\SliceValue.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\StringValue.java
+C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\StructInstanceValue.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\ValueWrapper.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\interpreter\value\VoidValue.java
 C:\Users\Adilzon_h\Documents\OLC1_VJ26_201908076-1.0.0\clase06\src\main\java\olc1\golite\visitor\Visitor.java
