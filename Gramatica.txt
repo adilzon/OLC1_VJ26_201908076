@@ -1,32 +1,154 @@
-<programa> ::= <instrucciones>
+<programa> ::= <lista_global>
+
+<lista_global> ::= <global> <lista_global>
+                 | <global>
+
+<global> ::= <funcion>
+           | <struct>
+
+<struct> ::= "struct" <identificador> "{"
+                <lista_atributos>
+             "}"
+
+<lista_atributos> ::= <atributo> <lista_atributos>
+                    | <atributo>
+
+<atributo> ::= <tipo> <identificador> ";"
+
+<funcion> ::= "func" <identificador> "(" <parametros> ")" <retorno> <bloque>
+            | "func" "(" <identificador> <identificador> ")" <identificador> "(" <parametros> ")" <retorno> <bloque>
+
+<retorno> ::= <tipo>
+            | ε
+
+<parametros> ::= <lista_parametros>
+               | ε
+
+<lista_parametros> ::= <parametro> "," <lista_parametros>
+                     | <parametro>
+
+<parametro> ::= <identificador> <tipo>
+
+<bloque> ::= "{"
+                <instrucciones>
+            "}"
 
 <instrucciones> ::= <instruccion> <instrucciones>
-                  | <instruccion>
+                  | ε
 
-<instruccion> ::= "print" "(" <expresion> ")" ";"
-                | <identificador> ":=" <expresion> ";"
-                | <identificador> "=" <expresion> ";"
-                | "if" <expresion> "{" <instrucciones> "}"
-                | "if" <expresion> "{" <instrucciones> "}" <elif_list>
-                | "for" <expresion> "{" <instrucciones> "}"
-                | "break" ";"
-                | "break"
+<instruccion> ::= <declaracion>
+                | <asignacion>
+                | <print>
+                | <if>
+                | <switch>
+                | <for>
+                | <return>
+                | <break>
+                | <continue>
+                | <llamada> ";"
+                | <bloque>
+
+<declaracion> ::= "var" <identificador> <tipo>
+                | "var" <identificador> <tipo> "=" <expresion>
+                | <identificador> ":=" <expresion>
+
+<asignacion> ::= <identificador> "=" <expresion>
+               | <identificador> "+=" <expresion>
+               | <identificador> "-=" <expresion>
+
+<print> ::= "fmt" "." "Println" "(" <lista_expresiones> ")"
+
+<lista_expresiones> ::= <expresion> "," <lista_expresiones>
+                      | <expresion>
+                      | ε
+
+<if> ::= "if" <expresion> <bloque>
+       | "if" <expresion> <bloque> "else" <bloque>
+       | "if" <expresion> <bloque> <elif_list>
+
+<elif_list> ::= "else" "if" <expresion> <bloque> <elif_list>
+              | "else" <bloque>
+              | ε
+
+<switch> ::= "switch" <expresion> "{"
+                 <lista_case>
+                 <default>
+             "}"
+
+<lista_case> ::= <case> <lista_case>
+               | <case>
+
+<case> ::= "case" <expresion> ":" <instrucciones>
+
+<default> ::= "default" ":" <instrucciones>
+            | ε
+
+<for> ::= "for" <expresion> <bloque>
+        | "for" <declaracion> ";" <expresion> ";" <asignacion> <bloque>
+        | "for" <identificador> "," <identificador> ":=" "range" <expresion> <bloque>
+
+<return> ::= "return" <expresion> ";"
+           | "return" ";"
+
+<break> ::= "break" ";"
+
+<continue> ::= "continue" ";"
+
+<llamada> ::= <identificador> "(" <argumentos> ")"
+
+<argumentos> ::= <lista_argumentos>
+               | ε
+
+<lista_argumentos> ::= <expresion> "," <lista_argumentos>
+                     | <expresion>
 
 <expresion> ::= <expresion> "+" <expresion>
               | <expresion> "-" <expresion>
               | <expresion> "*" <expresion>
               | <expresion> "/" <expresion>
+              | <expresion> "%" <expresion>
+              | <expresion> "==" <expresion>
+              | <expresion> "!=" <expresion>
               | <expresion> "<" <expresion>
+              | <expresion> "<=" <expresion>
+              | <expresion> ">" <expresion>
+              | <expresion> ">=" <expresion>
+              | <expresion> "&&" <expresion>
+              | <expresion> "||" <expresion>
+              | "!" <expresion>
               | "-" <expresion>
               | "(" <expresion> ")"
+              | <llamada>
+              | <acceso_struct>
+              | <acceso_slice>
+              | <slice_literal>
               | "true"
               | "false"
+              | "nil"
               | <identificador>
               | <entero>
               | <decimal>
               | <cadena>
+              | <rune>
 
-<identificador> ::= letra (letra | digito)*
+<acceso_struct> ::= <identificador> "." <identificador>
+
+<acceso_slice> ::= <identificador> "[" <expresion> "]"
+
+<slice_literal> ::= "[" "]" <tipo> "{"
+                        <lista_expresiones>
+                    "}"
+
+<tipo> ::= "int"
+         | "float64"
+         | "string"
+         | "bool"
+         | "rune"
+         | "[" "]" <tipo>
+         | <identificador>
+
+<identificador> ::= letra (letra | digito | "_")*
 <entero> ::= digito+
 <decimal> ::= digito+ "." digito+
 <cadena> ::= "\"" caracter* "\""
+<rune> ::= "'" caracter "'"
