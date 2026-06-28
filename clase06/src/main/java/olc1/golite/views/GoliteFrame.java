@@ -27,6 +27,7 @@ import olc1.golite.reports.GoliteError;
 import olc1.golite.reports.HtmlReportGenerator;
 import olc1.golite.reports.Symbol;
 import olc1.golite.reports.Token;
+import olc1.golite.visitor.AstJsonVisitor;
 import olc1.golite.visitor.interpreter.InterpreterVisitor;
 
 public class GoliteFrame extends JFrame {
@@ -35,6 +36,7 @@ public class GoliteFrame extends JFrame {
     private Lexer lexer;
     private parser parser;
     InterpreterVisitor interpreter;
+    private ASTNode lastAst = null;
 
     private File currentFile = null;
     private boolean isModified = false;
@@ -248,6 +250,7 @@ public class GoliteFrame extends JFrame {
         menuBar.onTokens(e -> showTokensReport());
         menuBar.onSymbols(e -> showSymbolsReport());
         menuBar.onErrors(e -> showErrorsReport());
+        menuBar.onAst(e -> showAstReport());
         menuBar.onAbout(e -> JOptionPane.showMessageDialog(
                 this,
                 "GolLite\nVersión 1.0.0\nLaboratorio OLC1",
@@ -261,6 +264,7 @@ public class GoliteFrame extends JFrame {
             parser = new parser(lexer);
 
             ASTNode ast = (ASTNode) parser.parse().value;
+            lastAst = ast;  // Guardar el AST para el reporte
             interpreter = new InterpreterVisitor();
             
             if (ast != null && lexer.errors.isEmpty() && parser.errors.isEmpty()) {
@@ -373,6 +377,23 @@ public class GoliteFrame extends JFrame {
             openInBrowser(reportFile);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al generar tabla de símbolos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void showAstReport() {
+        if (lastAst == null) {
+            JOptionPane.showMessageDialog(this, "Aún no se ha realizado ningún análisis.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            AstJsonVisitor astVisitor = new AstJsonVisitor();
+            String json = lastAst.accept(astVisitor);
+            File reportFile = new File("reports/reporte_ast.html");
+            HtmlReportGenerator.generateAstReport(reportFile, json);
+            openInBrowser(reportFile);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al generar reporte de AST: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

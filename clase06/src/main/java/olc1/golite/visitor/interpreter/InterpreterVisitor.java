@@ -13,6 +13,7 @@ import olc1.golite.reports.Symbol;
 import olc1.golite.visitor.Visitor;
 import olc1.golite.visitor.interpreter.value.*;
 import olc1.golite.visitor.interpreter.transfer.*;
+import olc1.golite.visitor.interpreter.transfer.SemanticException;
 
 // Decidí utilizar el patrón de diseño Visitor para recorrer el árbol de sintaxis abstracta (AST)
 // de forma limpia, separando por completo la estructura sintáctica de la lógica de evaluación.
@@ -26,8 +27,19 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     private boolean returning = false;
 
     public ValueWrapper Visit(ASTNode node) {
-
-        return node.accept(this);
+        // Captura cualquier SemanticException lanzada por los visitors hijos.
+        // Esto permite registrar el error semántico y continuar con el siguiente nodo del AST
+        // en lugar de colapsar toda la ejecución.
+        try {
+            return node.accept(this);
+        } catch (SemanticException e) {
+            this.errors.add(new GoliteError(
+                "Semantico",
+                e.getMessage(),
+                e.getLine(),
+                e.getColumn()));
+            return defaultVoid;
+        }
     }
 
     @Override
@@ -898,11 +910,21 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         Enviroment callerEnv = this.environment;
         this.environment = funcEnv;
 
-        if (func.body != null) {
-            Visit(func.body);
+        // Protegemos la ejecucion del cuerpo de la funcion con try-catch para capturar
+        // errores semanticos no recuperables que puedan surgir dentro del cuerpo.
+        try {
+            if (func.body != null) {
+                Visit(func.body);
+            }
+        } catch (SemanticException e) {
+            this.errors.add(new GoliteError(
+                "Semantico",
+                "Error en funcion '" + ctx.id + "': " + e.getMessage(),
+                e.getLine(),
+                e.getColumn()));
+        } finally {
+            this.environment = callerEnv;
         }
-
-        this.environment = callerEnv;
 
         // Capturar resultado e indicar que ya no estamos retornando en el llamador
         ValueWrapper resultValue = this.returnValue;
@@ -925,6 +947,10 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
             this.errors.add(new GoliteError("Semantico", "Funcion '" + ctx.name + "' ya declarada", 1, 1));
         } else {
             environment.insertFunction(ctx.name, ctx.returnType, ctx.parameters, ctx.body);
+            // Registrar la funcion en la tabla de simbolos para el reporte
+            String returnType = (ctx.returnType == null || ctx.returnType.isEmpty()) ? "void" : ctx.returnType;
+            String scopeName = environment.getScopeName();
+            this.symbols.add(new Symbol(ctx.name, "Funcion", returnType, scopeName, -1, -1));
         }
         return defaultVoid;
     }
@@ -1084,6 +1110,9 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
     @Override
     public ValueWrapper visit(StructDeclarationNode.Context ctx) {
         this.environment.insertStruct(ctx.name, ctx.fields);
+        // Registrar el struct en la tabla de simbolos para el reporte
+        String scopeName = environment.getScopeName();
+        this.symbols.add(new Symbol(ctx.name, "Struct", "struct", scopeName, -1, -1));
         return defaultVoid;
     }
 
@@ -1141,6 +1170,10 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
                 this.errors.add(new GoliteError("Semantico", "Metodo '" + ctx.name + "' ya declarado para el struct " + ctx.receiverType, 1, 1));
             } else {
                 structDef.methods.put(ctx.name, new MethodSymbol(ctx.receiverName, ctx.receiverType, ctx.name, ctx.returnType, ctx.parameters, ctx.body));
+                // Registrar el metodo en la tabla de simbolos para el reporte
+                String returnType = (ctx.returnType == null || ctx.returnType.isEmpty()) ? "void" : ctx.returnType;
+                String scopeName = ctx.receiverType;
+                this.symbols.add(new Symbol(ctx.receiverType + "." + ctx.name, "Metodo", returnType, scopeName, -1, -1));
             }
         }
         return defaultVoid;
@@ -1219,11 +1252,21 @@ public class InterpreterVisitor implements Visitor<ValueWrapper> {
         Enviroment callerEnv = this.environment;
         this.environment = methodEnv;
 
-        if (method.body != null) {
-            Visit(method.body);
+        // Protegemos la ejecucion del cuerpo del metodo con try-catch para capturar
+        // errores semanticos no recuperables que puedan surgir dentro del cuerpo.
+        try {
+            if (method.body != null) {
+                Visit(method.body);
+            }
+        } catch (SemanticException e) {
+            this.errors.add(new GoliteError(
+                "Semantico",
+                "Error en metodo '" + siv.structName() + "." + ctx.methodName + "': " + e.getMessage(),
+                e.getLine(),
+                e.getColumn()));
+        } finally {
+            this.environment = callerEnv;
         }
-
-        this.environment = callerEnv;
 
         // Capturar resultado
         ValueWrapper resultValue = this.returnValue;

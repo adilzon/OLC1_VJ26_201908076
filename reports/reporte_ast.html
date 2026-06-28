@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de AST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #151b2c;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent: #6366f1;
+            --accent2: #a855f7;
+            --border-color: #242f47;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 2.5rem 1.5rem;
+            min-height: 100vh;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { margin-bottom: 2rem; text-align: center; }
+        h1 {
+            font-size: 2.25rem; font-weight: 700;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle { color: var(--text-muted); font-size: 1rem; }
+        .hint { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem; }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+            overflow: hidden;
+            padding: 1.5rem;
+        }
+        #tree-container {
+            width: 100%; overflow: auto;
+            background: #0e1420;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            min-height: 500px;
+        }
+        svg { display: block; }
+        .node circle {
+            fill: #1e293b;
+            stroke: #6366f1;
+            stroke-width: 2px;
+            cursor: pointer;
+            transition: fill 0.2s, r 0.2s;
+        }
+        .node circle:hover { fill: #6366f1; }
+        .node.collapsed circle { fill: #a855f7; stroke: #a855f7; }
+        .node text {
+            font-family: 'Plus Jakarta Sans', monospace;
+            font-size: 11px;
+            fill: #f3f4f6;
+            pointer-events: none;
+        }
+        .link {
+            fill: none;
+            stroke: #2d3f5e;
+            stroke-width: 1.5px;
+        }
+        .controls {
+            display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap;
+        }
+        .btn {
+            padding: 0.4rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: #1e293b;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: #6366f1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Reporte de AST</h1>
+            <p class="subtitle">Golite Compiler - Reportes Generados Automáticamente</p>
+            <p class="hint">Haz clic en un nodo para colapsar/expandir sus hijos. Usa la rueda del mouse para hacer zoom.</p>
+        </header>
+        <div class="card">
+            <div class="controls">
+                <button class="btn" onclick="expandAll()">Expandir todo</button>
+                <button class="btn" onclick="collapseAll()">Colapsar todo</button>
+                <button class="btn" onclick="resetView()">Centrar vista</button>
+            </div>
+            <div id="tree-container"></div>
+        </div>
+    </div>
+    <script>
+    const astData = {"name":"Statments","children":[{"name":"Assign :=","children":[{"name":"ID: invalido"},{"name":"Int: 5"}]},{"name":"Assign :=","children":[{"name":"ID: x"},{"name":"Int: 3"}]},{"name":"fmt.Println","children":[{"name":"VarRef: noExiste"}]},{"name":"Assign :=","children":[{"name":"ID: entero"},{"name":"String: \\\"esto es un string\\\""}]},{"name":"Assign :=","children":[{"name":"ID: y"},{"name":"Int: 10"}]},{"name":"Assign =","children":[{"name":"ID: y"},{"name":"Float64: 3.14"}]},{"name":"Assign :=","children":[{"name":"ID: a"},{"name":"Int: 10"}]},{"name":"Assign :=","children":[{"name":"ID: b"},{"name":"Int: 0"}]},{"name":"Assign :=","children":[{"name":"ID: divCero"},{"name":"/","children":[{"name":"VarRef: a"},{"name":"VarRef: b"}]}]},{"name":"fmt.Println","children":[{"name":"VarRef: divCero"}]},{"name":"Assign :=","children":[{"name":"ID: modCero"},{"name":"%","children":[{"name":"VarRef: a"},{"name":"VarRef: b"}]}]},{"name":"fmt.Println","children":[{"name":"VarRef: modCero"}]},{"name":"Assign :=","children":[{"name":"ID: cad"},{"name":"String: \\\"hola\\\""}]},{"name":"Assign :=","children":[{"name":"ID: num"},{"name":"Int: 5"}]},{"name":"Assign :=","children":[{"name":"ID: invalido"},{"name":"-","children":[{"name":"VarRef: cad"},{"name":"VarRef: num"}]}]},{"name":"fmt.Println","children":[{"name":"VarRef: invalido"}]},{"name":"Assign :=","children":[{"name":"ID: f"},{"name":"Float64: 3.14"}]},{"name":"Assign :=","children":[{"name":"ID: modFloat"},{"name":"%","children":[{"name":"Int: 10"},{"name":"VarRef: f"}]}]},{"name":"fmt.Println","children":[{"name":"VarRef: modFloat"}]},{"name":"Assign :=","children":[{"name":"ID: texto"},{"name":"String: \\\"GoLite\\\""}]},{"name":"Assign :=","children":[{"name":"ID: numero"},{"name":"Int: 42"}]},{"name":"Assign :=","children":[{"name":"ID: entero2"},{"name":"Int: 1"}]},{"name":"If","children":[{"name":"Condición","children":[{"name":"&&","children":[{"name":"VarRef: entero2"},{"name":"Bool: true"}]}]},{"name":"Cuerpo","children":[{"name":"Statments","children":[{"name":"fmt.Println","children":[{"name":"String: \\\"logico invalido\\\""}]}]}]}]},{"name":"break"},{"name":"continue"},{"name":"Block","children":[{"name":"Statments","children":[{"name":"Assign :=","children":[{"name":"ID: local"},{"name":"Int: 100"}]},{"name":"fmt.Println","children":[{"name":"String: \\\"local existe aqui:\\\""},{"name":"VarRef: local"}]}]}]},{"name":"fmt.Println","children":[{"name":"VarRef: local"}]},{"name":"Assign :=","children":[{"name":"ID: noEntero"},{"name":"strconv.Atoi","children":[{"name":"String: \\\"3.14\\\""}]}]},{"name":"fmt.Println","children":[{"name":"VarRef: noEntero"}]},{"name":"Assign :=","children":[{"name":"ID: noNumero"},{"name":"strconv.Atoi","children":[{"name":"String: \\\"abc\\\""}]}]},{"name":"fmt.Println","children":[{"name":"VarRef: noNumero"}]},{"name":"Assign :=","children":[{"name":"ID: intVar"},{"name":"Int: 10"}]},{"name":"Assign =","children":[{"name":"ID: intVar"},{"name":"+","children":[{"name":"VarRef: intVar"},{"name":"Float64: 3.14"}]}]},{"name":"Assign :=","children":[{"name":"ID: strVar"},{"name":"String: \\\"texto\\\""}]},{"name":"Assign :=","children":[{"name":"ID: negStr"},{"name":"Negate(-)","children":[{"name":"VarRef: strVar"}]}]},{"name":"fmt.Println","children":[{"name":"VarRef: negStr"}]},{"name":"Assign :=","children":[{"name":"ID: duplicada"},{"name":"Int: 1"}]},{"name":"Assign :=","children":[{"name":"ID: duplicada"},{"name":"Int: 2"}]},{"name":"fmt.Println","children":[{"name":"VarRef: duplicada"}]},{"name":"Assign :=","children":[{"name":"ID: precio"},{"name":"Int: 100"}]}]};
+    const margin = {top: 30, right: 120, bottom: 30, left: 60};
+    const width  = 1300 - margin.left - margin.right;
+    const height = 800  - margin.top  - margin.bottom;
+    let i = 0, duration = 250;
+
+    const svgRoot = d3.select('#tree-container').append('svg')
+        .attr('width',  width  + margin.left + margin.right)
+        .attr('height', height + margin.top  + margin.bottom)
+        .call(d3.zoom().scaleExtent([0.1, 4]).on('zoom', e => g.attr('transform', e.transform)))
+        .on('dblclick.zoom', null);
+
+    const g = svgRoot.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
+
+    const treeFn = d3.tree().size([height, width]);
+    const root   = d3.hierarchy(astData, d => d.children);
+    root.x0 = height / 2; root.y0 = 0;
+
+    // Collapse all nodes except root at startup
+    if (root.children) { root.children.forEach(collapseNode); }
+
+    update(root);
+
+    function collapseNode(d) {
+        if (d.children) {
+            d._children = d.children;
+            d._children.forEach(collapseNode);
+            d.children = null;
+        }
+    }
+
+    function expandNode(d) {
+        if (d._children) {
+            d.children = d._children;
+            d._children = null;
+        }
+        if (d.children) { d.children.forEach(expandNode); }
+    }
+
+    function expandAll()  { expandNode(root); update(root); }
+    function collapseAll() {
+        if (root.children) { root.children.forEach(collapseNode); }
+        update(root);
+    }
+    function resetView() {
+        svgRoot.transition().duration(400).call(
+            d3.zoom().transform, d3.zoomIdentity.translate(margin.left, margin.top));
+    }
+
+    function update(source) {
+        const treeData = treeFn(root);
+        const nodes    = treeData.descendants();
+        const links    = treeData.descendants().slice(1);
+        nodes.forEach(d => { d.y = d.depth * 200; });
+
+        const node = g.selectAll('g.node').data(nodes, d => d.id || (d.id = ++i));
+        const nodeEnter = node.enter().append('g')
+            .attr('class', d => 'node' + (d._children ? ' collapsed' : ''))
+            .attr('transform', d => `translate(${source.y0},${source.x0})`)
+            .on('click', (event, d) => { click(d); update(d); });
+
+        nodeEnter.append('circle').attr('r', 1e-6);
+        nodeEnter.append('text')
+            .attr('dy', '.35em')
+            .attr('x', d => d.children || d._children ? -14 : 14)
+            .attr('text-anchor', d => d.children || d._children ? 'end' : 'start')
+            .text(d => d.data.name);
+
+        const nodeUpdate = nodeEnter.merge(node);
+        nodeUpdate.transition().duration(duration)
+            .attr('transform', d => `translate(${d.y},${d.x})`)
+            .attr('class', d => 'node' + (d._children ? ' collapsed' : ''));
+        nodeUpdate.select('circle').transition().duration(duration).attr('r', 8);
+
+        const nodeExit = node.exit().transition().duration(duration)
+            .attr('transform', d => `translate(${source.y},${source.x})`).remove();
+        nodeExit.select('circle').attr('r', 1e-6);
+
+        const link = g.selectAll('path.link').data(links, d => d.id);
+        const linkEnter = link.enter().insert('path', 'g')
+            .attr('class', 'link')
+            .attr('d', d => { const o={x:source.x0,y:source.y0}; return diagonal(o,o); });
+
+        linkEnter.merge(link).transition().duration(duration)
+            .attr('d', d => diagonal(d, d.parent));
+
+        link.exit().transition().duration(duration)
+            .attr('d', d => { const o={x:source.x,y:source.y}; return diagonal(o,o); }).remove();
+
+        nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
+    }
+
+    function diagonal(s, d) {
+        return `M${s.y},${s.x}C${(s.y+d.y)/2},${s.x} ${(s.y+d.y)/2},${d.x} ${d.y},${d.x}`;
+    }
+
+    function click(d) {
+        if (d.children) { d._children = d.children; d.children = null; }
+        else             { d.children = d._children; d._children = null; }
+    }
+    </script>
+</body>
+</html>
