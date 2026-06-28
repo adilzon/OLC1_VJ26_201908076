@@ -1,21 +1,46 @@
-## CLASE 05
+## Requisitos
 
-Patron: Visitor
+- Java JDK 21
+- Apache Maven 3.9 o superior
 
-Ejemplo:
+Verifique la instalación con:
 
-- Operaciones
-- Variables
-- if
-- print
+```bash
+java -version
+mvn -version
+```
 
-## CLASE 06
+## Compilación
 
-GUI Interfaz Gráfica
+Ubíquese en la carpeta donde se encuentra el archivo `pom.xml` y ejecute:
 
-![GUI](../imgs/GUI.png)
+```bash
+mvn clean
+mvn compile
+```
 
-Ejemplo
+Si la compilación finaliza correctamente, Maven mostrará el mensaje:
 
-- Manejo y reporte de errores lexicos
-- Manejo recuperación y reporte de errores sintaticos 
+```text
+BUILD SUCCESS
+```
+
+## Generar el archivo ejecutable
+
+Para generar el archivo JAR con todas las dependencias:
+
+```bash
+mvn clean package
+```
+
+El archivo generado se encontrará en:
+
+```text
+target/clase06-1.0-jar-with-dependencies.jar
+```
+
+## Ejecutar la aplicación
+
+```bash
+java -jar target/clase06-1.0-jar-with-dependencies.jar
+```
